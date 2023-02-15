@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:8.0.32
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: music_school_ddd
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer:4.8.1
+    ports:
+      - 8080:8080
