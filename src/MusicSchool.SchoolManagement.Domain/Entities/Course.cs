@@ -1,6 +1,6 @@
 namespace MusicSchool.SchoolManagement.Domain.Entities;
 
-public class Course
+public class Course : IAggregateRoot
 {
     public Guid Id { get; init; }
 

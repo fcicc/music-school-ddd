@@ -1,6 +1,6 @@
 namespace MusicSchool.SchoolManagement.Domain.Entities;
 
-public class Allocation
+public class Allocation : IAggregateRoot
 {
     public Guid Id { get; init; }
 
