@@ -1,14 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using MusicSchool.SchoolManagement.Domain.Entities;
+﻿using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 using MusicSchool.SchoolManagement.Infrastructure.Repositories;
 
-IConfiguration config = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json")
-    .Build();
+SchoolManagementContextFactory contextFactory = new();
 
-using SchoolManagementContext context = new(config);
+using SchoolManagementContext context = contextFactory.CreateDbContext(args);
 
 StudentRepository studentRepo = new(context);
 

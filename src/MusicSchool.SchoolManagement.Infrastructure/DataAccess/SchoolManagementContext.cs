@@ -1,28 +1,20 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using MusicSchool.SchoolManagement.Domain.Entities;
+using MusicSchool.SchoolManagement.Infrastructure.DataAccess.Configuration;
 
 namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 
 public class SchoolManagementContext : DbContext
 {
-    private readonly IConfiguration _configuration;
-
-    public SchoolManagementContext(IConfiguration configuration)
+    public SchoolManagementContext(DbContextOptions<SchoolManagementContext> options)
+        : base(options)
     {
-        _configuration = configuration;
     }
 
     public DbSet<Student> Students => Set<Student>();
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        string? connectionString = _configuration.GetConnectionString("SchoolManagement");
-        if (connectionString == null)
-        {
-            throw new InvalidOperationException("Missing connection string \"SchoolManagement\".");
-        }
-
-        optionsBuilder.UseMySQL(connectionString);
+        modelBuilder.ApplyConfiguration(new StudentConfiguration());
     }
 }

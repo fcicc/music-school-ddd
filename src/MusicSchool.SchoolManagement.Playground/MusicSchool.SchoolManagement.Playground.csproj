@@ -5,10 +5,6 @@
     <ProjectReference Include="..\MusicSchool.SchoolManagement.Infrastructure\MusicSchool.SchoolManagement.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-  </ItemGroup>
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
