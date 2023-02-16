@@ -1,17 +1,29 @@
-﻿using MusicSchool.SchoolManagement.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MusicSchool.SchoolManagement.Domain.Entities;
+using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 using MusicSchool.SchoolManagement.Repositories;
 
 namespace MusicSchool.SchoolManagement.Infrastructure.Repositories;
 
 public class StudentRepository : IRepository<Student>
 {
-    public Task CreateAsync(Student entity)
+    private readonly SchoolManagementContext _context;
+
+    public StudentRepository(SchoolManagementContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
+    }
+
+    public Task CreateAsync(Student student)
+    {
+        _context.Students.Add(student);
+        return _context.SaveChangesAsync();
     }
 
     public Task<Student> FindOneAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return _context.Students
+            .Where(s => s.Id == id)
+            .FirstAsync();
     }
 }

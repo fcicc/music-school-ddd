@@ -1,8 +1,16 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Microsoft.Extensions.Configuration;
 using MusicSchool.SchoolManagement.Domain.Entities;
+using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 using MusicSchool.SchoolManagement.Infrastructure.Repositories;
 
-StudentRepository studentRepo = new();
+IConfiguration config = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+using SchoolManagementContext context = new(config);
+
+StudentRepository studentRepo = new(context);
 
 Student student = new()
 {
