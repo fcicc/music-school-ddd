@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicSchool.SchoolManagemen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicSchool.SchoolManagement.Playground", "src\MusicSchool.SchoolManagement.Playground\MusicSchool.SchoolManagement.Playground.csproj", "{446CEA21-AB47-45B9-9097-32DC0AAAF6C3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{498B8512-FB2F-4312-9AB3-B7C2148C2B9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicSchool.SchoolManagement.Domain.Tests", "tests\MusicSchool.SchoolManagement.Domain.Tests\MusicSchool.SchoolManagement.Domain.Tests.csproj", "{BB393FFC-1DED-42DF-BDC5-25DE091AF545}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +36,15 @@ Global
 		{446CEA21-AB47-45B9-9097-32DC0AAAF6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{446CEA21-AB47-45B9-9097-32DC0AAAF6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{446CEA21-AB47-45B9-9097-32DC0AAAF6C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB393FFC-1DED-42DF-BDC5-25DE091AF545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB393FFC-1DED-42DF-BDC5-25DE091AF545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB393FFC-1DED-42DF-BDC5-25DE091AF545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB393FFC-1DED-42DF-BDC5-25DE091AF545}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7D88450D-BBBF-4F5B-B9D0-4C315D0765D2} = {FF22C8B0-5BD8-4C4E-AB28-4888C0BE4782}
 		{F014182C-C6CA-4A83-A1A9-FCE7126FDC01} = {FF22C8B0-5BD8-4C4E-AB28-4888C0BE4782}
 		{446CEA21-AB47-45B9-9097-32DC0AAAF6C3} = {FF22C8B0-5BD8-4C4E-AB28-4888C0BE4782}
+		{BB393FFC-1DED-42DF-BDC5-25DE091AF545} = {498B8512-FB2F-4312-9AB3-B7C2148C2B9D}
 	EndGlobalSection
 EndGlobal
