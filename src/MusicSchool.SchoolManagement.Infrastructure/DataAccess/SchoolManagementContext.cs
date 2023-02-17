@@ -11,8 +11,6 @@ public class SchoolManagementContext : DbContext
     {
     }
 
-    public DbSet<Student> Students => Set<Student>();
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new StudentConfiguration());

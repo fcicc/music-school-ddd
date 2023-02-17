@@ -11,7 +11,7 @@ using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(SchoolManagementContext))]
-    [Migration("20230217005207_CreateStudentTable")]
+    [Migration("20230217011202_CreateStudentTable")]
     partial class CreateStudentTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

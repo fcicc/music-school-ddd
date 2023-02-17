@@ -8,7 +8,7 @@ SchoolManagementContextFactory contextFactory = new();
 
 using SchoolManagementContext context = contextFactory.CreateDbContext(args);
 
-IRepository<Student> studentRepo = new StudentRepository(context);
+IRepository<Student> studentRepo = new Repository<Student>(context);
 
 IStudentFactory studentFactory = new StudentFactory();
 
