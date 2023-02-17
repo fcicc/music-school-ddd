@@ -14,7 +14,7 @@ public class StudentRepository : IRepository<Student>
         _context = context;
     }
 
-    public Task CreateAsync(Student student)
+    public Task AddAsync(Student student)
     {
         _context.Students.Add(student);
         return _context.SaveChangesAsync();

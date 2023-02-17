@@ -1,20 +1,20 @@
 ﻿using MusicSchool.SchoolManagement.Domain.Entities;
+using MusicSchool.SchoolManagement.Factories;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 using MusicSchool.SchoolManagement.Infrastructure.Repositories;
+using MusicSchool.SchoolManagement.Repositories;
 
 SchoolManagementContextFactory contextFactory = new();
 
 using SchoolManagementContext context = contextFactory.CreateDbContext(args);
 
-StudentRepository studentRepo = new(context);
+IRepository<Student> studentRepo = new StudentRepository(context);
 
-Student student = new()
-{
-    Id = Guid.NewGuid(),
-    Name = "Luiz Melodia",
-};
+IStudentFactory studentFactory = new StudentFactory();
 
-await studentRepo.CreateAsync(student);
+Student student = studentFactory.CreateStudent("Luiz Melodia");
+
+await studentRepo.AddAsync(student);
 
 Student persistedStudent = await studentRepo.FindOneAsync(student.Id);
 
