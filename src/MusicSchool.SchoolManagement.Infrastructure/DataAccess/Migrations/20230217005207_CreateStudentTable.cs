@@ -5,15 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
 {
-    /// <inheritdoc />
     public partial class CreateStudentTable : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySQL:Charset", "utf8mb4");
-
             migrationBuilder.CreateTable(
                 name: "students",
                 columns: table => new
@@ -24,11 +19,9 @@ namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_students", x => x.id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
