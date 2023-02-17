@@ -8,7 +8,7 @@ public class SchoolManagementContextFactory : IDesignTimeDbContextFactory<School
     public SchoolManagementContext CreateDbContext(string[] args)
     {
         DbContextOptionsBuilder<SchoolManagementContext> optionsBuilder = new();
-        optionsBuilder.UseMySQL("server=localhost; database=music_school_ddd; user=root; password=password");
+        optionsBuilder.UseMySQL("server=localhost; database=school_management; user=root; password=password");
 
         return new SchoolManagementContext(optionsBuilder.Options);
     }
