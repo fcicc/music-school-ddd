@@ -13,6 +13,9 @@ public class SchoolManagementContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new StudentConfiguration());
+        modelBuilder
+            .ApplyConfiguration(new CourseConfiguration())
+            .ApplyConfiguration(new EnrollmentConfiguration())
+            .ApplyConfiguration(new StudentConfiguration());
     }
 }
