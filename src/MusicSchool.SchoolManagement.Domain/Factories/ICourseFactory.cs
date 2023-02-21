@@ -1,6 +1,6 @@
 using MusicSchool.SchoolManagement.Domain.Entities;
 
-namespace MusicSchool.SchoolManagement.Factories;
+namespace MusicSchool.SchoolManagement.Domain.Factories;
 
 public interface ICourseFactory
 {

@@ -1,5 +1,5 @@
 ﻿using MusicSchool.SchoolManagement.Domain.Entities;
-using MusicSchool.SchoolManagement.Factories;
+using MusicSchool.SchoolManagement.Domain.Factories;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 using MusicSchool.SchoolManagement.Infrastructure.Repositories;
 using MusicSchool.SchoolManagement.Repositories;

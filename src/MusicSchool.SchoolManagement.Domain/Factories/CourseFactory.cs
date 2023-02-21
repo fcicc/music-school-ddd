@@ -1,7 +1,7 @@
 using MusicSchool.SchoolManagement.Domain.Entities;
-using MusicSchool.SchoolManagement.Exceptions;
+using MusicSchool.SchoolManagement.Domain.Exceptions;
 
-namespace MusicSchool.SchoolManagement.Factories;
+namespace MusicSchool.SchoolManagement.Domain.Factories;
 
 public class CourseFactory : ICourseFactory
 {

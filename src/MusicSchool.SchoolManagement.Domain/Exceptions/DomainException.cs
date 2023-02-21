@@ -1,4 +1,4 @@
-namespace MusicSchool.SchoolManagement.Exceptions;
+namespace MusicSchool.SchoolManagement.Domain.Exceptions;
 
 public class DomainException : Exception
 {

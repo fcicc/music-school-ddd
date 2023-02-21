@@ -1,6 +1,6 @@
 using MusicSchool.SchoolManagement.Domain.Entities;
-using MusicSchool.SchoolManagement.Exceptions;
-using MusicSchool.SchoolManagement.Factories;
+using MusicSchool.SchoolManagement.Domain.Exceptions;
+using MusicSchool.SchoolManagement.Domain.Factories;
 
 namespace MusicSchool.SchoolManagement.Domain.Tests.Factories;
 
