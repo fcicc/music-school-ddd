@@ -37,18 +37,18 @@ Course persistedCourse = await courseRepo.FindOneAsync(course.Id);
 Enrollment persistedEnrollment = await enrollmentRepo.FindOneAsync(enrollment.Id);
 
 Console.WriteLine("Information about persisted student:");
-Console.WriteLine($"ID   = \"{persistedStudent.Id}\"");
-Console.WriteLine($"Name = \"{persistedStudent.Name}\"");
+Console.WriteLine($"ID   = {persistedStudent.Id}");
+Console.WriteLine($"Name = {persistedStudent.Name}");
 
 Console.WriteLine("Information about persisted course:");
-Console.WriteLine($"ID   = \"{persistedCourse.Id}\"");
-Console.WriteLine($"Name = \"{persistedCourse.Name}\"");
+Console.WriteLine($"ID   = {persistedCourse.Id}");
+Console.WriteLine($"Name = {persistedCourse.Name}");
 
 Console.WriteLine("Information about persisted enrollment:");
-Console.WriteLine($"ID                = \"{persistedEnrollment.Id}\"");
-Console.WriteLine($"Student ID        = \"{persistedEnrollment.StudentId}\"");
-Console.WriteLine($"Course ID         = \"{persistedEnrollment.CourseId}\"");
-Console.WriteLine($"Start Date        = \"{persistedEnrollment.StartDate}\"");
-Console.WriteLine($"End Date          = \"{persistedEnrollment.EndDate}\"");
-Console.WriteLine($"Lessons per Month = \"{persistedEnrollment.LessonsPerMonth}\"");
-Console.WriteLine($"Monthly Bill      = \"{persistedEnrollment.MonthlyBill}\"");
+Console.WriteLine($"ID                = {persistedEnrollment.Id}");
+Console.WriteLine($"Student ID        = {persistedEnrollment.StudentId}");
+Console.WriteLine($"Course ID         = {persistedEnrollment.CourseId}");
+Console.WriteLine($"Start Date        = {persistedEnrollment.StartDate}");
+Console.WriteLine($"End Date          = {persistedEnrollment.EndDate}");
+Console.WriteLine($"Lessons per Month = {persistedEnrollment.LessonsPerMonth}");
+Console.WriteLine($"Monthly Bill      = {persistedEnrollment.MonthlyBill}");

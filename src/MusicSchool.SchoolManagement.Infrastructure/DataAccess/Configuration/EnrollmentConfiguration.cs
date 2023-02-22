@@ -24,9 +24,19 @@ internal class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
             .WithMany()
             .HasForeignKey(nameof(Enrollment.CourseId));
 
-        builder.Property(e => e.StartDate).HasColumnName("start_date");
+        builder.Property(e => e.StartDate).HasColumnName("start_date")
+            .HasColumnType("date")
+            .HasConversion(
+                d => new DateTime(d.Year, d.Month, d.Day),
+                d => new DateOnly(d.Year, d.Month, d.Day)
+            );
 
-        builder.Property(e => e.EndDate).HasColumnName("end_date");
+        builder.Property(e => e.EndDate).HasColumnName("end_date")
+            .HasColumnType("date")
+            .HasConversion(
+                d => new DateTime(d.Year, d.Month, d.Day),
+                d => new DateOnly(d.Year, d.Month, d.Day)
+            );
 
         builder.Property(e => e.LessonsPerMonth).HasColumnName("lessons_per_month");
 
