@@ -22,6 +22,10 @@ public class StudentFactoryTests
     [Fact]
     public void CreateStudent_WithEmptyName_ThrowsDomainException()
     {
-        Assert.Throws<DomainException>(() => _sut.CreateStudent(""));
+        DomainException exception = Assert.Throws<DomainException>(
+            () => _sut.CreateStudent("")
+        );
+
+        Assert.Equal("Student name cannot be empty.", exception.Message);
     }
 }

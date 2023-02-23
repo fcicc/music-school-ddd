@@ -22,6 +22,10 @@ public class CourseFactoryTests
     [Fact]
     public void CreateCourse_WithEmptyName_ThrowsDomainException()
     {
-        Assert.Throws<DomainException>(() => _sut.CreateCourse(""));
+        DomainException exception = Assert.Throws<DomainException>(
+            () => _sut.CreateCourse("")
+        );
+
+        Assert.Equal("Course name cannot be empty.", exception.Message);
     }
 }
