@@ -202,15 +202,6 @@ public class EnrollmentServiceTests
                 Name = "Técnica Vocal",
             });
 
-        await Assert.ThrowsAsync<DomainException>(() => _sut.EnrollAsync(
-            studentId,
-            courseId,
-            startDate,
-            endDate,
-            lessonsPerMonth,
-            monthlyBill
-        ));
-
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
             () => _sut.EnrollAsync(
                 studentId,
