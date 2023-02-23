@@ -1,5 +1,4 @@
 ﻿using MusicSchool.SchoolManagement.Domain.Entities;
-using MusicSchool.SchoolManagement.Domain.Factories;
 using MusicSchool.SchoolManagement.Domain.Services;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 using MusicSchool.SchoolManagement.Infrastructure.Repositories;
@@ -13,21 +12,16 @@ IRepository<Student> studentRepo = new Repository<Student>(context);
 IRepository<Course> courseRepo = new Repository<Course>(context);
 IRepository<Enrollment> enrollmentRepo = new Repository<Enrollment>(context);
 
-IStudentFactory studentFactory = new StudentFactory();
-ICourseFactory courseFactory = new CourseFactory();
-
+IStudentService studentService = new StudentService(studentRepo);
+ICourseService courseService = new CourseService(courseRepo);
 IEnrollmentService enrollmentService = new EnrollmentService(
     enrollmentRepo,
     studentRepo,
     courseRepo
 );
 
-Student student = studentFactory.CreateStudent("Luiz Melodia");
-Course course = courseFactory.CreateCourse("Técnica Vocal");
-
-await studentRepo.AddAsync(student);
-await courseRepo.AddAsync(course);
-
+Student student = await studentService.CreateAsync("Luiz Melodia");
+Course course = await courseService.CreateAsync("Técnica Vocal");
 Enrollment enrollment = await enrollmentService.EnrollAsync(
     student.Id,
     course.Id,
