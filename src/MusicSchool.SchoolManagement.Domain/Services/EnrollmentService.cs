@@ -1,14 +1,22 @@
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.ValueObjects;
+using MusicSchool.SchoolManagement.Repositories;
 
-namespace MusicSchool.SchoolManagement.Domain.Factories;
+namespace MusicSchool.SchoolManagement.Domain.Services;
 
-public class EnrollmentFactory : IEnrollmentFactory
+public class EnrollmentService : IEnrollmentService
 {
-    public Enrollment CreateEnrollment(
-        Student student,
-        Course course,
+    private readonly IRepository<Enrollment> _enrollmentRepository;
+
+    public EnrollmentService(IRepository<Enrollment> enrollmentRepository)
+    {
+        _enrollmentRepository = enrollmentRepository;
+    }
+
+    public async Task<Enrollment> EnrollAsync(
+        Guid studentId,
+        Guid courseId,
         DateOnly startDate,
         DateOnly endDate,
         int lessonsPerMonth,
@@ -27,15 +35,19 @@ public class EnrollmentFactory : IEnrollmentFactory
             throw new DomainException("Enrollment monthly bill cannot be less than zero.");
         }
 
-        return new Enrollment
+        Enrollment enrollment = new()
         {
             Id = Guid.NewGuid(),
-            StudentId = student.Id,
-            CourseId = course.Id,
+            StudentId = studentId,
+            CourseId = courseId,
             StartDate = startDate,
             EndDate = endDate,
             LessonsPerMonth = lessonsPerMonth,
             MonthlyBill = monthlyBill,
         };
+
+        await _enrollmentRepository.AddAsync(enrollment);
+
+        return enrollment;
     }
 }
