@@ -1,8 +1,8 @@
 ﻿using MusicSchool.SchoolManagement.Domain.Entities;
+using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 using MusicSchool.SchoolManagement.Infrastructure.Repositories;
-using MusicSchool.SchoolManagement.Repositories;
 
 SchoolManagementContextFactory contextFactory = new();
 

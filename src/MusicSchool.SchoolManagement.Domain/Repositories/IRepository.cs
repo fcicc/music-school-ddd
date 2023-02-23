@@ -1,6 +1,6 @@
 using MusicSchool.SchoolManagement.Domain.Entities;
 
-namespace MusicSchool.SchoolManagement.Repositories;
+namespace MusicSchool.SchoolManagement.Domain.Repositories;
 
 public interface IRepository<TEntity> where TEntity : IAggregateRoot
 {

@@ -1,6 +1,6 @@
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
-using MusicSchool.SchoolManagement.Repositories;
+using MusicSchool.SchoolManagement.Domain.Repositories;
 
 namespace MusicSchool.SchoolManagement.Domain.Services;
 

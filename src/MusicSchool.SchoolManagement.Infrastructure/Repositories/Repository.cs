@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicSchool.SchoolManagement.Domain.Entities;
+using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
-using MusicSchool.SchoolManagement.Repositories;
 
 namespace MusicSchool.SchoolManagement.Infrastructure.Repositories;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IAggregateRoot
+public class Repository<TEntity> : IRepository<TEntity>
+    where TEntity : class, IAggregateRoot
 {
     private readonly SchoolManagementContext _context;
 
