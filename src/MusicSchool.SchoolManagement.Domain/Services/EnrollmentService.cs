@@ -8,10 +8,17 @@ namespace MusicSchool.SchoolManagement.Domain.Services;
 public class EnrollmentService : IEnrollmentService
 {
     private readonly IRepository<Enrollment> _enrollmentRepository;
+    private readonly IRepository<Student> _studentRepository;
+    private readonly IRepository<Course> _courseRepository;
 
-    public EnrollmentService(IRepository<Enrollment> enrollmentRepository)
+    public EnrollmentService(
+        IRepository<Enrollment> enrollmentRepository,
+        IRepository<Student> studentRepository,
+        IRepository<Course> courseRepository)
     {
         _enrollmentRepository = enrollmentRepository;
+        _studentRepository = studentRepository;
+        _courseRepository = courseRepository;
     }
 
     public async Task<Enrollment> EnrollAsync(
@@ -22,17 +29,31 @@ public class EnrollmentService : IEnrollmentService
         int lessonsPerMonth,
         BrlAmount monthlyBill)
     {
+        Student? student = await _studentRepository.FindOneAsync(studentId);
+        if (student == null)
+        {
+            throw new DomainException("Student not found.");
+        }
+
+        Course? course = await _courseRepository.FindOneAsync(courseId);
+        if (course == null)
+        {
+            throw new DomainException("Course not found.");
+        }
+
         if (startDate > endDate)
         {
-            throw new DomainException("Enrollment start date cannot be after end date.");
+            throw new DomainException("Start date cannot be after end date.");
         }
+
         if (lessonsPerMonth <= 0)
         {
-            throw new DomainException("Enrollment lessons per month should be greater than zero.");
+            throw new DomainException("Lessons per month should be greater than zero.");
         }
+
         if (monthlyBill < 0)
         {
-            throw new DomainException("Enrollment monthly bill cannot be less than zero.");
+            throw new DomainException("Monthly bill cannot be less than zero.");
         }
 
         Enrollment enrollment = new()

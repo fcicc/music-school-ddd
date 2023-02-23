@@ -20,10 +20,10 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return _context.SaveChangesAsync();
     }
 
-    public Task<TEntity> FindOneAsync(Guid id)
+    public Task<TEntity?> FindOneAsync(Guid id)
     {
         return _context.Set<TEntity>()
             .Where(s => s.Id == id)
-            .FirstAsync();
+            .FirstOrDefaultAsync();
     }
 }

@@ -16,7 +16,11 @@ IRepository<Enrollment> enrollmentRepo = new Repository<Enrollment>(context);
 IStudentFactory studentFactory = new StudentFactory();
 ICourseFactory courseFactory = new CourseFactory();
 
-IEnrollmentService enrollmentService = new EnrollmentService(enrollmentRepo);
+IEnrollmentService enrollmentService = new EnrollmentService(
+    enrollmentRepo,
+    studentRepo,
+    courseRepo
+);
 
 Student student = studentFactory.CreateStudent("Luiz Melodia");
 Course course = courseFactory.CreateCourse("Técnica Vocal");
