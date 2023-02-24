@@ -1,6 +1,7 @@
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
+using MusicSchool.SchoolManagement.Domain.Specifications;
 
 namespace MusicSchool.SchoolManagement.Domain.Services;
 
@@ -18,6 +19,14 @@ public class CourseService : ICourseService
         if (string.IsNullOrEmpty(name))
         {
             throw new DomainException("Course name cannot be empty.");
+        }
+
+        List<Course> existingCourses = await _courseRepository.FindAsync(
+            new CourseNameSpecification(name)
+        );
+        if (existingCourses.Any())
+        {
+            throw new DomainException("Course with same name already exists.");
         }
 
         Course course = new()

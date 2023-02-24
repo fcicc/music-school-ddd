@@ -3,14 +3,14 @@ using MusicSchool.SchoolManagement.Domain.Specifications;
 
 namespace MusicSchool.SchoolManagement.Domain.Tests.Specifications;
 
-public class StudentNameSpecificationTests
+public class CourseNameSpecificationTests
 {
     [Fact]
-    public void AsQueryable_WithName_FiltersStudents()
+    public void AsQueryable_WithName_FiltersCourses()
     {
-        const string filteredName = "Luiz Melodia";
+        const string filteredName = "Técnica Vocal";
 
-        List<Student> students = new()
+        List<Course> courses = new()
         {
             new()
             {
@@ -20,16 +20,16 @@ public class StudentNameSpecificationTests
             new()
             {
                 Id = Guid.NewGuid(),
-                Name = "José da Silva",
+                Name = "Guitarra",
             },
         };
 
-        StudentNameSpecification sut = new(filteredName);
+        CourseNameSpecification sut = new(filteredName);
 
-        List<Student> filteredList = students.AsQueryable()
+        List<Course> filteredList = courses.AsQueryable()
             .Where(sut.AsPredicate())
             .ToList();
 
-        Assert.All(filteredList, s => Assert.Equal(filteredName, s.Name));
+        Assert.All(filteredList, c => Assert.Equal(filteredName, c.Name));
     }
 }

@@ -15,9 +15,9 @@ public class StudentServiceTests
 
     public StudentServiceTests()
     {
-        _studentRepositoryMock = new Mock<IRepository<Student>>();
+        _studentRepositoryMock = new();
 
-        _sut = new StudentService(_studentRepositoryMock.Object);
+        _sut = new(_studentRepositoryMock.Object);
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public class StudentServiceTests
             ))
             .ReturnsAsync(new List<Student>
             {
-                new Student
+                new()
                 {
                     Id = Guid.NewGuid(),
                     Name = validName,

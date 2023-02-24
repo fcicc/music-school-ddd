@@ -17,11 +17,11 @@ public class EnrollmentServiceTests
 
     public EnrollmentServiceTests()
     {
-        _enrollmentRepositoryMock = new Mock<IRepository<Enrollment>>();
-        _studentRepositoryMock = new Mock<IRepository<Student>>();
-        _courseRepositoryMock = new Mock<IRepository<Course>>();
+        _enrollmentRepositoryMock = new();
+        _studentRepositoryMock = new();
+        _courseRepositoryMock = new();
 
-        _sut = new EnrollmentService(
+        _sut = new(
             _enrollmentRepositoryMock.Object,
             _studentRepositoryMock.Object,
             _courseRepositoryMock.Object

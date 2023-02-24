@@ -3,6 +3,7 @@ using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
+using MusicSchool.SchoolManagement.Domain.Specifications;
 
 namespace MusicSchool.SchoolManagement.Domain.Tests.Services;
 
@@ -14,9 +15,9 @@ public class CourseServiceTests
 
     public CourseServiceTests()
     {
-        _courseRepositoryMock = new Mock<IRepository<Course>>();
+        _courseRepositoryMock = new();
 
-        _sut = new CourseService(_courseRepositoryMock.Object);
+        _sut = new(_courseRepositoryMock.Object);
     }
 
     [Fact]
@@ -24,12 +25,45 @@ public class CourseServiceTests
     {
         const string validName = "Técnica Vocal";
 
+        _courseRepositoryMock
+            .Setup(r => r.FindAsync(
+                It.Is<CourseNameSpecification>(c => c.Name == validName)
+            ))
+            .ReturnsAsync(new List<Course>());
+
         Course course = await _sut.CreateAsync(validName);
 
         Assert.NotEqual(Guid.Empty, course.Id);
         Assert.Equal(validName, course.Name);
 
         _courseRepositoryMock.Verify(r => r.AddAsync(course), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateAsync_WithExistingName_ThrowsDomainException()
+    {
+        const string validName = "Técnica Vocal";
+
+        _courseRepositoryMock
+            .Setup(r => r.FindAsync(
+                It.Is<CourseNameSpecification>(c => c.Name == validName)
+            ))
+            .ReturnsAsync(new List<Course>
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = validName,
+                },
+            });
+
+        DomainException exception = await Assert.ThrowsAsync<DomainException>(
+            () => _sut.CreateAsync(validName)
+        );
+
+        Assert.Equal("Course with same name already exists.", exception.Message);
+
+        _courseRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Course>()), Times.Never);
     }
 
     [Fact]
