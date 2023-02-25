@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MusicSchool.SchoolManagement.Domain.Repositories;
+using MusicSchool.SchoolManagement.Domain.Services;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 using MusicSchool.SchoolManagement.Infrastructure.Repositories;
 
@@ -15,7 +16,10 @@ builder.Services.AddDbContext<SchoolManagementContext>(options =>
 });
 
 builder.Services.AddControllers();
+
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 var app = builder.Build();
 
