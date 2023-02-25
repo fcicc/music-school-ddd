@@ -27,7 +27,6 @@ Enrollment enrollment = await enrollmentService.EnrollAsync(
     course.Id,
     new DateOnly(2023, 1, 1),
     new DateOnly(2023, 12, 31),
-    4,
     250
 );
 
@@ -45,5 +44,4 @@ Console.WriteLine($"Student ID        = {enrollment.StudentId}");
 Console.WriteLine($"Course ID         = {enrollment.CourseId}");
 Console.WriteLine($"Start Date        = {enrollment.StartDate}");
 Console.WriteLine($"End Date          = {enrollment.EndDate}");
-Console.WriteLine($"Lessons per Month = {enrollment.LessonsPerMonth}");
 Console.WriteLine($"Monthly Bill      = {enrollment.MonthlyBill}");

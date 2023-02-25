@@ -35,7 +35,6 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 1, 1);
         DateOnly endDate = new(2023, 12, 31);
-        int lessonsPerMonth = 4;
         BrlAmount monthlyBill = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
@@ -57,7 +56,6 @@ public class EnrollmentServiceTests
             courseId,
             startDate,
             endDate,
-            lessonsPerMonth,
             monthlyBill
         );
 
@@ -66,7 +64,6 @@ public class EnrollmentServiceTests
         Assert.Equal(courseId, enrollment.CourseId);
         Assert.Equal(startDate, enrollment.StartDate);
         Assert.Equal(endDate, enrollment.EndDate);
-        Assert.Equal(lessonsPerMonth, enrollment.LessonsPerMonth);
         Assert.Equal(monthlyBill, enrollment.MonthlyBill);
 
         _enrollmentRepositoryMock.Verify(r => r.AddAsync(enrollment), Times.Once);
@@ -79,7 +76,6 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 1, 1);
         DateOnly endDate = new(2023, 12, 31);
-        int lessonsPerMonth = 4;
         BrlAmount monthlyBill = 200;
 
         _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
@@ -95,7 +91,6 @@ public class EnrollmentServiceTests
                 courseId,
                 startDate,
                 endDate,
-                lessonsPerMonth,
                 monthlyBill
             )
         );
@@ -112,7 +107,6 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 1, 1);
         DateOnly endDate = new(2023, 12, 31);
-        int lessonsPerMonth = 4;
         BrlAmount monthlyBill = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
@@ -128,7 +122,6 @@ public class EnrollmentServiceTests
                 courseId,
                 startDate,
                 endDate,
-                lessonsPerMonth,
                 monthlyBill
             )
         );
@@ -145,7 +138,6 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 12, 31);
         DateOnly endDate = new(2023, 1, 1);
-        int lessonsPerMonth = 4;
         BrlAmount monthlyBill = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
@@ -168,52 +160,11 @@ public class EnrollmentServiceTests
                 courseId,
                 startDate,
                 endDate,
-                lessonsPerMonth,
                 monthlyBill
             )
         );
 
         Assert.Equal("Start date cannot be after end date.", exception.Message);
-
-        _enrollmentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Enrollment>()), Times.Never);
-    }
-
-    [Fact]
-    public async Task EnrollAsync_WithInvalidLessonsPerMonth_ThrowsDomainException()
-    {
-        Guid studentId = Guid.NewGuid();
-        Guid courseId = Guid.NewGuid();
-        DateOnly startDate = new(2023, 1, 1);
-        DateOnly endDate = new(2023, 12, 31);
-        int lessonsPerMonth = 0;
-        BrlAmount monthlyBill = 200;
-
-        _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
-            .ReturnsAsync(new Student
-            {
-                Id = studentId,
-                Name = "Luiz Melodia",
-            });
-
-        _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
-            .ReturnsAsync(new Course
-            {
-                Id = courseId,
-                Name = "Técnica Vocal",
-            });
-
-        DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(
-                studentId,
-                courseId,
-                startDate,
-                endDate,
-                lessonsPerMonth,
-                monthlyBill
-            )
-        );
-
-        Assert.Equal("Lessons per month should be greater than zero.", exception.Message);
 
         _enrollmentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Enrollment>()), Times.Never);
     }
@@ -225,7 +176,6 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 1, 1);
         DateOnly endDate = new(2023, 12, 31);
-        int lessonsPerMonth = 4;
         BrlAmount monthlyBill = -1;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
@@ -248,7 +198,6 @@ public class EnrollmentServiceTests
                 courseId,
                 startDate,
                 endDate,
-                lessonsPerMonth,
                 monthlyBill
             )
         );

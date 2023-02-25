@@ -51,10 +51,6 @@ namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
                         .HasColumnType("date")
                         .HasColumnName("end_date");
 
-                    b.Property<int>("LessonsPerMonth")
-                        .HasColumnType("int")
-                        .HasColumnName("lessons_per_month");
-
                     b.Property<decimal>("MonthlyBill")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("monthly_bill");

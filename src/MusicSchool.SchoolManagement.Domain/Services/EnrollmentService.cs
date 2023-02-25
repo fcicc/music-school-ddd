@@ -26,7 +26,6 @@ public class EnrollmentService : IEnrollmentService
         Guid courseId,
         DateOnly startDate,
         DateOnly endDate,
-        int lessonsPerMonth,
         BrlAmount monthlyBill)
     {
         Student? student = await _studentRepository.FindOneAsync(studentId);
@@ -46,11 +45,6 @@ public class EnrollmentService : IEnrollmentService
             throw new DomainException("Start date cannot be after end date.");
         }
 
-        if (lessonsPerMonth <= 0)
-        {
-            throw new DomainException("Lessons per month should be greater than zero.");
-        }
-
         if (monthlyBill < 0)
         {
             throw new DomainException("Monthly bill cannot be less than zero.");
@@ -63,7 +57,6 @@ public class EnrollmentService : IEnrollmentService
             CourseId = courseId,
             StartDate = startDate,
             EndDate = endDate,
-            LessonsPerMonth = lessonsPerMonth,
             MonthlyBill = monthlyBill,
         };
 

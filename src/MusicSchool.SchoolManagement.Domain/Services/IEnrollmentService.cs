@@ -10,6 +10,5 @@ public interface IEnrollmentService
         Guid courseId,
         DateOnly startDate,
         DateOnly endDate,
-        int lessonsPerMonth,
         BrlAmount monthlyBill);
 }

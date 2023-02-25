@@ -38,8 +38,6 @@ internal class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
                 d => new DateOnly(d.Year, d.Month, d.Day)
             );
 
-        builder.Property(e => e.LessonsPerMonth).HasColumnName("lessons_per_month");
-
         builder.Property(e => e.MonthlyBill).HasColumnName("monthly_bill")
             .HasConversion(a => (decimal)a, v => (BrlAmount)v);
     }
