@@ -1,6 +1,7 @@
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
+using MusicSchool.SchoolManagement.Domain.Specifications;
 using MusicSchool.SchoolManagement.Domain.ValueObjects;
 
 namespace MusicSchool.SchoolManagement.Domain.Services;
@@ -48,6 +49,18 @@ public class EnrollmentService : IEnrollmentService
         if (monthlyBill < 0)
         {
             throw new DomainException("Monthly bill cannot be less than zero.");
+        }
+
+        List<Enrollment> overlappingEnrollments = await _enrollmentRepository
+            .FindAsync(new OverlappingEnrollmentSpecification(
+                studentId,
+                courseId,
+                startDate,
+                endDate
+            ));
+        if (overlappingEnrollments.Any())
+        {
+            throw new DomainException("There already exists an enrollment that overlaps the new one.");
         }
 
         Enrollment enrollment = new()

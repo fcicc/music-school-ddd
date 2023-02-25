@@ -3,6 +3,7 @@ using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
+using MusicSchool.SchoolManagement.Domain.Specifications;
 using MusicSchool.SchoolManagement.Domain.ValueObjects;
 
 namespace MusicSchool.SchoolManagement.Domain.Tests.Services;
@@ -51,6 +52,18 @@ public class EnrollmentServiceTests
                 Name = "Técnica Vocal",
             });
 
+        _enrollmentRepositoryMock
+            .Setup(r => r.FindAsync(
+                It.Is<OverlappingEnrollmentSpecification>(
+                    s =>
+                        s.StudentId == studentId &&
+                        s.CourseId == courseId &&
+                        s.StartDate == startDate &&
+                        s.EndDate == endDate
+                )
+            ))
+            .ReturnsAsync(new List<Enrollment>());
+
         Enrollment enrollment = await _sut.EnrollAsync(
             studentId,
             courseId,
@@ -85,6 +98,18 @@ public class EnrollmentServiceTests
                 Name = "Técnica Vocal",
             });
 
+        _enrollmentRepositoryMock
+            .Setup(r => r.FindAsync(
+                It.Is<OverlappingEnrollmentSpecification>(
+                    s =>
+                        s.StudentId == studentId &&
+                        s.CourseId == courseId &&
+                        s.StartDate == startDate &&
+                        s.EndDate == endDate
+                )
+            ))
+            .ReturnsAsync(new List<Enrollment>());
+
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
             () => _sut.EnrollAsync(
                 studentId,
@@ -115,6 +140,18 @@ public class EnrollmentServiceTests
                 Id = studentId,
                 Name = "Luiz Melodia",
             });
+
+        _enrollmentRepositoryMock
+            .Setup(r => r.FindAsync(
+                It.Is<OverlappingEnrollmentSpecification>(
+                    s =>
+                        s.StudentId == studentId &&
+                        s.CourseId == courseId &&
+                        s.StartDate == startDate &&
+                        s.EndDate == endDate
+                )
+            ))
+            .ReturnsAsync(new List<Enrollment>());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
             () => _sut.EnrollAsync(
@@ -154,6 +191,18 @@ public class EnrollmentServiceTests
                 Name = "Técnica Vocal",
             });
 
+        _enrollmentRepositoryMock
+            .Setup(r => r.FindAsync(
+                It.Is<OverlappingEnrollmentSpecification>(
+                    s =>
+                        s.StudentId == studentId &&
+                        s.CourseId == courseId &&
+                        s.StartDate == startDate &&
+                        s.EndDate == endDate
+                )
+            ))
+            .ReturnsAsync(new List<Enrollment>());
+
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
             () => _sut.EnrollAsync(
                 studentId,
@@ -192,6 +241,18 @@ public class EnrollmentServiceTests
                 Name = "Técnica Vocal",
             });
 
+        _enrollmentRepositoryMock
+            .Setup(r => r.FindAsync(
+                It.Is<OverlappingEnrollmentSpecification>(
+                    s =>
+                        s.StudentId == studentId &&
+                        s.CourseId == courseId &&
+                        s.StartDate == startDate &&
+                        s.EndDate == endDate
+                )
+            ))
+            .ReturnsAsync(new List<Enrollment>());
+
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
             () => _sut.EnrollAsync(
                 studentId,
@@ -203,6 +264,67 @@ public class EnrollmentServiceTests
         );
 
         Assert.Equal("Monthly bill cannot be less than zero.", exception.Message);
+
+        _enrollmentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Enrollment>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task EnrollAsync_WithOverlappingEnrollment_ThrowsDomainException()
+    {
+        Guid studentId = Guid.NewGuid();
+        Guid courseId = Guid.NewGuid();
+        DateOnly startDate = new(2023, 1, 1);
+        DateOnly endDate = new(2023, 12, 31);
+        BrlAmount monthlyBill = 200;
+
+        _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
+            .ReturnsAsync(new Student
+            {
+                Id = studentId,
+                Name = "Luiz Melodia",
+            });
+
+        _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
+            .ReturnsAsync(new Course
+            {
+                Id = courseId,
+                Name = "Técnica Vocal",
+            });
+
+        _enrollmentRepositoryMock
+            .Setup(r => r.FindAsync(
+                It.Is<OverlappingEnrollmentSpecification>(
+                    s =>
+                        s.StudentId == studentId &&
+                        s.CourseId == courseId &&
+                        s.StartDate == startDate &&
+                        s.EndDate == endDate
+                )
+            ))
+            .ReturnsAsync(new List<Enrollment>
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    StudentId = studentId,
+                    CourseId = courseId,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    MonthlyBill = monthlyBill
+                }
+            });
+
+        DomainException exception = await Assert.ThrowsAsync<DomainException>(
+            () => _sut.EnrollAsync(
+                studentId,
+                courseId,
+                startDate,
+                endDate,
+                monthlyBill
+            )
+        );
+
+        Assert.Equal("There already exists an enrollment that overlaps the new one.", exception.Message);
 
         _enrollmentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Enrollment>()), Times.Never);
     }
