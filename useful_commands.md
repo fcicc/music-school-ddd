@@ -12,8 +12,8 @@ dotnet ef migrations add $MIGRATION_NAME -p .\src\MusicSchool.SchoolManagement.I
 dotnet ef database update -p .\src\MusicSchool.SchoolManagement.Infrastructure
 ```
 
-## Run "playground" console app
+## Run API
 
 ```
-dotnet run --project .\src\MusicSchool.SchoolManagement.Playground
+dotnet run --project .\src\MusicSchool.SchoolManagement.Api
 ```

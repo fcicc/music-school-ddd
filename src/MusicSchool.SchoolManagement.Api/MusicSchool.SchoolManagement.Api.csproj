@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MusicSchool.SchoolManagement.Domain\MusicSchool.SchoolManagement.Domain.csproj" />
+    <ProjectReference Include="..\MusicSchool.SchoolManagement.Infrastructure\MusicSchool.SchoolManagement.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

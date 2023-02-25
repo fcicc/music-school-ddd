@@ -23,6 +23,12 @@ public class Repository<TEntity> : IRepository<TEntity>
             .FirstOrDefaultAsync();
     }
 
+    public Task<List<TEntity>> FindAsync()
+    {
+        return _context.Set<TEntity>()
+            .ToListAsync();
+    }
+
     public Task<List<TEntity>> FindAsync(ISpecification<TEntity> specification)
     {
         return _context.Set<TEntity>()
