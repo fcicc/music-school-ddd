@@ -9,7 +9,7 @@ dotnet ef migrations add $MIGRATION_NAME -p .\src\MusicSchool.SchoolManagement.I
 ## Update database schema
 
 ```
-dotnet ef database update -p .\src\MusicSchool.SchoolManagement.Infrastructure --connection "server=localhost; database=school_management; user=root; password=password"
+dotnet ef database update -p .\src\MusicSchool.SchoolManagement.Infrastructure
 ```
 
 ## Run "playground" console app
