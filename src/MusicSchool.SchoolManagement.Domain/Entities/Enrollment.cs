@@ -12,9 +12,9 @@ public class Enrollment : IAggregateRoot
 
     public Guid CourseId { get; init; }
 
-    public DateOnly StartDate { get; init; }
+    public DateMonthOnly StartMonth { get; init; }
 
-    public DateOnly EndDate { get; init; }
+    public DateMonthOnly EndMonth { get; init; }
 
     public BrlAmount MonthlyBillingValue { get; init; }
 }

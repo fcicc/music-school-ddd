@@ -40,8 +40,8 @@ namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
                     id = table.Column<Guid>(type: "char(36)", nullable: false),
                     student_id = table.Column<Guid>(type: "char(36)", nullable: false),
                     course_id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    start_date = table.Column<DateTime>(type: "date", nullable: false),
-                    end_date = table.Column<DateTime>(type: "date", nullable: false),
+                    start_month = table.Column<string>(type: "char(7)", nullable: false),
+                    end_month = table.Column<string>(type: "char(7)", nullable: false),
                     monthly_billing_value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>

@@ -34,8 +34,8 @@ public class EnrollmentServiceTests
     {
         Guid studentId = Guid.NewGuid();
         Guid courseId = Guid.NewGuid();
-        DateOnly startDate = new(2023, 1, 1);
-        DateOnly endDate = new(2023, 12, 31);
+        DateMonthOnly startMonth = new(2023, 1);
+        DateMonthOnly endMonth = new(2023, 12);
         BrlAmount monthlyBillingValue = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
@@ -58,8 +58,8 @@ public class EnrollmentServiceTests
                     s =>
                         s.StudentId == studentId &&
                         s.CourseId == courseId &&
-                        s.StartDate == startDate &&
-                        s.EndDate == endDate
+                        s.StartMonth == startMonth &&
+                        s.EndMonth == endMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
@@ -67,16 +67,16 @@ public class EnrollmentServiceTests
         Enrollment enrollment = await _sut.EnrollAsync(
             studentId,
             courseId,
-            startDate,
-            endDate,
+            startMonth,
+            endMonth,
             monthlyBillingValue
         );
 
         Assert.NotEqual(Guid.Empty, enrollment.Id);
         Assert.Equal(studentId, enrollment.StudentId);
         Assert.Equal(courseId, enrollment.CourseId);
-        Assert.Equal(startDate, enrollment.StartDate);
-        Assert.Equal(endDate, enrollment.EndDate);
+        Assert.Equal(startMonth, enrollment.StartMonth);
+        Assert.Equal(endMonth, enrollment.EndMonth);
         Assert.Equal(monthlyBillingValue, enrollment.MonthlyBillingValue);
 
         _enrollmentRepositoryMock.Verify(r => r.AddAsync(enrollment), Times.Once);
@@ -87,8 +87,8 @@ public class EnrollmentServiceTests
     {
         Guid studentId = Guid.NewGuid();
         Guid courseId = Guid.NewGuid();
-        DateOnly startDate = new(2023, 1, 1);
-        DateOnly endDate = new(2023, 12, 31);
+        DateMonthOnly startMonth = new(2023, 1);
+        DateMonthOnly endMonth = new(2023, 12);
         BrlAmount monthlyBillingValue = 200;
 
         _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
@@ -104,8 +104,8 @@ public class EnrollmentServiceTests
                     s =>
                         s.StudentId == studentId &&
                         s.CourseId == courseId &&
-                        s.StartDate == startDate &&
-                        s.EndDate == endDate
+                        s.StartMonth == startMonth &&
+                        s.EndMonth == endMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
@@ -114,8 +114,8 @@ public class EnrollmentServiceTests
             () => _sut.EnrollAsync(
                 studentId,
                 courseId,
-                startDate,
-                endDate,
+                startMonth,
+                endMonth,
                 monthlyBillingValue
             )
         );
@@ -130,8 +130,8 @@ public class EnrollmentServiceTests
     {
         Guid studentId = Guid.NewGuid();
         Guid courseId = Guid.NewGuid();
-        DateOnly startDate = new(2023, 1, 1);
-        DateOnly endDate = new(2023, 12, 31);
+        DateMonthOnly startMonth = new(2023, 1);
+        DateMonthOnly endMonth = new(2023, 12);
         BrlAmount monthlyBillingValue = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
@@ -147,8 +147,8 @@ public class EnrollmentServiceTests
                     s =>
                         s.StudentId == studentId &&
                         s.CourseId == courseId &&
-                        s.StartDate == startDate &&
-                        s.EndDate == endDate
+                        s.StartMonth == startMonth &&
+                        s.EndMonth == endMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
@@ -157,8 +157,8 @@ public class EnrollmentServiceTests
             () => _sut.EnrollAsync(
                 studentId,
                 courseId,
-                startDate,
-                endDate,
+                startMonth,
+                endMonth,
                 monthlyBillingValue
             )
         );
@@ -173,8 +173,8 @@ public class EnrollmentServiceTests
     {
         Guid studentId = Guid.NewGuid();
         Guid courseId = Guid.NewGuid();
-        DateOnly startDate = new(2023, 12, 31);
-        DateOnly endDate = new(2023, 1, 1);
+        DateMonthOnly startMonth = new(2023, 12);
+        DateMonthOnly endMonth = new(2023, 1);
         BrlAmount monthlyBillingValue = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
@@ -197,8 +197,8 @@ public class EnrollmentServiceTests
                     s =>
                         s.StudentId == studentId &&
                         s.CourseId == courseId &&
-                        s.StartDate == startDate &&
-                        s.EndDate == endDate
+                        s.StartMonth == startMonth &&
+                        s.EndMonth == endMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
@@ -207,13 +207,13 @@ public class EnrollmentServiceTests
             () => _sut.EnrollAsync(
                 studentId,
                 courseId,
-                startDate,
-                endDate,
+                startMonth,
+                endMonth,
                 monthlyBillingValue
             )
         );
 
-        Assert.Equal("Start date cannot be after end date.", exception.Message);
+        Assert.Equal("Start month cannot be after end month.", exception.Message);
 
         _enrollmentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Enrollment>()), Times.Never);
     }
@@ -223,8 +223,8 @@ public class EnrollmentServiceTests
     {
         Guid studentId = Guid.NewGuid();
         Guid courseId = Guid.NewGuid();
-        DateOnly startDate = new(2023, 1, 1);
-        DateOnly endDate = new(2023, 12, 31);
+        DateMonthOnly startMonth = new(2023, 1);
+        DateMonthOnly endMonth = new(2023, 12);
         BrlAmount monthlyBillingValue = -1;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
@@ -247,8 +247,8 @@ public class EnrollmentServiceTests
                     s =>
                         s.StudentId == studentId &&
                         s.CourseId == courseId &&
-                        s.StartDate == startDate &&
-                        s.EndDate == endDate
+                        s.StartMonth == startMonth &&
+                        s.EndMonth == endMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
@@ -257,8 +257,8 @@ public class EnrollmentServiceTests
             () => _sut.EnrollAsync(
                 studentId,
                 courseId,
-                startDate,
-                endDate,
+                startMonth,
+                endMonth,
                 monthlyBillingValue
             )
         );
@@ -273,8 +273,8 @@ public class EnrollmentServiceTests
     {
         Guid studentId = Guid.NewGuid();
         Guid courseId = Guid.NewGuid();
-        DateOnly startDate = new(2023, 1, 1);
-        DateOnly endDate = new(2023, 12, 31);
+        DateMonthOnly startMonth = new(2023, 1);
+        DateMonthOnly endMonth = new(2023, 12);
         BrlAmount monthlyBillingValue = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
@@ -297,8 +297,8 @@ public class EnrollmentServiceTests
                     s =>
                         s.StudentId == studentId &&
                         s.CourseId == courseId &&
-                        s.StartDate == startDate &&
-                        s.EndDate == endDate
+                        s.StartMonth == startMonth &&
+                        s.EndMonth == endMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>
@@ -308,8 +308,8 @@ public class EnrollmentServiceTests
                     Id = Guid.NewGuid(),
                     StudentId = studentId,
                     CourseId = courseId,
-                    StartDate = startDate,
-                    EndDate = endDate,
+                    StartMonth = startMonth,
+                    EndMonth = endMonth,
                     MonthlyBillingValue = monthlyBillingValue
                 }
             });
@@ -318,8 +318,8 @@ public class EnrollmentServiceTests
             () => _sut.EnrollAsync(
                 studentId,
                 courseId,
-                startDate,
-                endDate,
+                startMonth,
+                endMonth,
                 monthlyBillingValue
             )
         );

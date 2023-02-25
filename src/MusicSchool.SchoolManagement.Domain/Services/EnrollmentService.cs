@@ -25,8 +25,8 @@ public class EnrollmentService : IEnrollmentService
     public async Task<Enrollment> EnrollAsync(
         Guid studentId,
         Guid courseId,
-        DateOnly startDate,
-        DateOnly endDate,
+        DateMonthOnly startMonth,
+        DateMonthOnly endMonth,
         BrlAmount monthlyBillingValue)
     {
         Student? student = await _studentRepository.FindOneAsync(studentId);
@@ -41,9 +41,9 @@ public class EnrollmentService : IEnrollmentService
             throw new DomainException("Course not found.");
         }
 
-        if (startDate > endDate)
+        if (startMonth > endMonth)
         {
-            throw new DomainException("Start date cannot be after end date.");
+            throw new DomainException("Start month cannot be after end month.");
         }
 
         if (monthlyBillingValue < 0)
@@ -55,8 +55,8 @@ public class EnrollmentService : IEnrollmentService
             .FindAsync(new OverlappingEnrollmentSpecification(
                 studentId,
                 courseId,
-                startDate,
-                endDate
+                startMonth,
+                endMonth
             ));
         if (overlappingEnrollments.Any())
         {
@@ -68,8 +68,8 @@ public class EnrollmentService : IEnrollmentService
             Id = Guid.NewGuid(),
             StudentId = studentId,
             CourseId = courseId,
-            StartDate = startDate,
-            EndDate = endDate,
+            StartMonth = startMonth,
+            EndMonth = endMonth,
             MonthlyBillingValue = monthlyBillingValue,
         };
 

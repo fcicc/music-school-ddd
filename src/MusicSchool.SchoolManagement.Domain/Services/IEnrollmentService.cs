@@ -8,7 +8,7 @@ public interface IEnrollmentService
     Task<Enrollment> EnrollAsync(
         Guid studentId,
         Guid courseId,
-        DateOnly startDate,
-        DateOnly endDate,
+        DateMonthOnly startMonth,
+        DateMonthOnly endMonth,
         BrlAmount monthlyBill);
 }

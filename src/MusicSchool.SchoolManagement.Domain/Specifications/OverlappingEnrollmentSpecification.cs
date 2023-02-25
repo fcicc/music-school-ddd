@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using MusicSchool.SchoolManagement.Domain.Entities;
+using MusicSchool.SchoolManagement.Domain.ValueObjects;
 
 namespace MusicSchool.SchoolManagement.Domain.Specifications;
 
@@ -8,22 +9,22 @@ public class OverlappingEnrollmentSpecification : ISpecification<Enrollment>
     public OverlappingEnrollmentSpecification(
         Guid studentId,
         Guid courseId,
-        DateOnly startDate,
-        DateOnly endDate)
+        DateMonthOnly startMonth,
+        DateMonthOnly endMonth)
     {
         StudentId = studentId;
         CourseId = courseId;
-        StartDate = startDate;
-        EndDate = endDate;
+        StartMonth = startMonth;
+        EndMonth = endMonth;
     }
 
     public Guid StudentId { get; }
 
     public Guid CourseId { get; }
 
-    public DateOnly StartDate { get; }
+    public DateMonthOnly StartMonth { get; }
 
-    public DateOnly EndDate { get; }
+    public DateMonthOnly EndMonth { get; }
 
     public Expression<Func<Enrollment, bool>> AsPredicate()
     {
@@ -31,10 +32,10 @@ public class OverlappingEnrollmentSpecification : ISpecification<Enrollment>
             e.StudentId == StudentId &&
             e.CourseId == CourseId &&
             (
-                (e.StartDate >= StartDate && e.StartDate <= EndDate) ||
-                (e.EndDate >= StartDate && e.EndDate <= EndDate) ||
-                (StartDate >= e.StartDate && StartDate <= e.EndDate) ||
-                (EndDate >= e.StartDate && EndDate <= e.EndDate)
+                (e.StartMonth >= StartMonth && e.StartMonth <= EndMonth) ||
+                (e.EndMonth >= StartMonth && e.EndMonth <= EndMonth) ||
+                (StartMonth >= e.StartMonth && StartMonth <= e.EndMonth) ||
+                (EndMonth >= e.StartMonth && EndMonth <= e.EndMonth)
             );
     }
 }

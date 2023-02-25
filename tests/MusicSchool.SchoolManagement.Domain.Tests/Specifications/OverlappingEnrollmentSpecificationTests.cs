@@ -1,5 +1,6 @@
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Specifications;
+using MusicSchool.SchoolManagement.Domain.ValueObjects;
 
 namespace MusicSchool.SchoolManagement.Domain.Tests.Specifications;
 
@@ -10,23 +11,23 @@ public class OverlappingEnrollmentSpecificationTests
     public void IsSatisfiedBy_WithSpecifiedInfo_ReturnsExpectedResult(
         Guid studentId,
         Guid courseId,
-        DateOnly startDate,
-        DateOnly endDate,
+        DateMonthOnly startMonth,
+        DateMonthOnly endMonth,
         bool expectedResult)
     {
         Enrollment enrollment = new()
         {
             StudentId = Guid.Parse("87370ea2-9559-4521-8d51-3416fe5ff48a"),
             CourseId = Guid.Parse("56f735da-73f8-4ee2-a8c5-bdd9323c33af"),
-            StartDate = new DateOnly(2023, 1, 1),
-            EndDate = new DateOnly(2023, 12, 31),
+            StartMonth = new DateMonthOnly(2023, 1),
+            EndMonth = new DateMonthOnly(2023, 12),
         };
 
         OverlappingEnrollmentSpecification sut = new(
             studentId,
             courseId,
-            startDate,
-            endDate
+            startMonth,
+            endMonth
         );
 
         Assert.Equal(expectedResult, sut.IsSatisfiedBy(enrollment));
@@ -34,63 +35,63 @@ public class OverlappingEnrollmentSpecificationTests
 
     public static IEnumerable<object[]> GenerateTestData()
     {
-        // Equal dates
+        // Equal months
         yield return new object[]
         {
             Guid.Parse("87370ea2-9559-4521-8d51-3416fe5ff48a"),
             Guid.Parse("56f735da-73f8-4ee2-a8c5-bdd9323c33af"),
-            new DateOnly(2023, 1, 1),
-            new DateOnly(2023, 12, 31),
+            new DateMonthOnly(2023, 1),
+            new DateMonthOnly(2023, 12),
             true,
         };
 
-        // Left overlapping dates
+        // Left overlapping months
         yield return new object[]
         {
             Guid.Parse("87370ea2-9559-4521-8d51-3416fe5ff48a"),
             Guid.Parse("56f735da-73f8-4ee2-a8c5-bdd9323c33af"),
-            new DateOnly(2022, 7, 1),
-            new DateOnly(2023, 6, 30),
+            new DateMonthOnly(2022, 7),
+            new DateMonthOnly(2023, 6),
             true,
         };
 
-        // Right overlapping dates
+        // Right overlapping months
         yield return new object[]
         {
             Guid.Parse("87370ea2-9559-4521-8d51-3416fe5ff48a"),
             Guid.Parse("56f735da-73f8-4ee2-a8c5-bdd9323c33af"),
-            new DateOnly(2023, 7, 1),
-            new DateOnly(2024, 6, 30),
+            new DateMonthOnly(2023, 7),
+            new DateMonthOnly(2024, 6),
             true,
         };
 
-        // Inner overlapping dates
+        // Inner overlapping months
         yield return new object[]
         {
             Guid.Parse("87370ea2-9559-4521-8d51-3416fe5ff48a"),
             Guid.Parse("56f735da-73f8-4ee2-a8c5-bdd9323c33af"),
-            new DateOnly(2023, 6, 1),
-            new DateOnly(2023, 7, 31),
+            new DateMonthOnly(2023, 6),
+            new DateMonthOnly(2023, 7),
             true,
         };
 
-        // Outer overlapping dates
+        // Outer overlapping months
         yield return new object[]
         {
             Guid.Parse("87370ea2-9559-4521-8d51-3416fe5ff48a"),
             Guid.Parse("56f735da-73f8-4ee2-a8c5-bdd9323c33af"),
-            new DateOnly(2022, 7, 1),
-            new DateOnly(2024, 6, 30),
+            new DateMonthOnly(2022, 7),
+            new DateMonthOnly(2024, 6),
             true,
         };
 
-        // Non-overlapping dates
+        // Non-overlapping months
         yield return new object[]
         {
             Guid.Parse("87370ea2-9559-4521-8d51-3416fe5ff48a"),
             Guid.Parse("56f735da-73f8-4ee2-a8c5-bdd9323c33af"),
-            new DateOnly(2024, 1, 1),
-            new DateOnly(2024, 12, 31),
+            new DateMonthOnly(2024, 1),
+            new DateMonthOnly(2024, 12),
             false,
         };
 
@@ -99,8 +100,8 @@ public class OverlappingEnrollmentSpecificationTests
         {
             Guid.Parse("7ef130c0-e35a-4951-9924-a7cd0d370b6f"),
             Guid.Parse("56f735da-73f8-4ee2-a8c5-bdd9323c33af"),
-            new DateOnly(2023, 1, 1),
-            new DateOnly(2023, 12, 31),
+            new DateMonthOnly(2023, 1),
+            new DateMonthOnly(2023, 12),
             false,
         };
 
@@ -109,8 +110,8 @@ public class OverlappingEnrollmentSpecificationTests
         {
             Guid.Parse("87370ea2-9559-4521-8d51-3416fe5ff48a"),
             Guid.Parse("a37d57c3-a756-448c-a219-a0dc9c1d904c"),
-            new DateOnly(2023, 1, 1),
-            new DateOnly(2023, 12, 31),
+            new DateMonthOnly(2023, 1),
+            new DateMonthOnly(2023, 12),
             false,
         };
     }

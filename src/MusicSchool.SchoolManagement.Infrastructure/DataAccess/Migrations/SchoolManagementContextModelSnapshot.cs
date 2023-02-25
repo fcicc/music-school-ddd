@@ -47,17 +47,19 @@ namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("course_id");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("date")
-                        .HasColumnName("end_date");
+                    b.Property<string>("EndMonth")
+                        .IsRequired()
+                        .HasColumnType("char(7)")
+                        .HasColumnName("end_month");
 
                     b.Property<decimal>("MonthlyBillingValue")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("monthly_billing_value");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("date")
-                        .HasColumnName("start_date");
+                    b.Property<string>("StartMonth")
+                        .IsRequired()
+                        .HasColumnType("char(7)")
+                        .HasColumnName("start_month");
 
                     b.Property<Guid>("StudentId")
                         .HasColumnType("char(36)")
