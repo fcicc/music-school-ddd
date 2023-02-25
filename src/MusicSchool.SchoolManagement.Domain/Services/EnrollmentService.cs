@@ -27,7 +27,7 @@ public class EnrollmentService : IEnrollmentService
         Guid courseId,
         DateOnly startDate,
         DateOnly endDate,
-        BrlAmount monthlyBill)
+        BrlAmount monthlyBillingValue)
     {
         Student? student = await _studentRepository.FindOneAsync(studentId);
         if (student == null)
@@ -46,9 +46,9 @@ public class EnrollmentService : IEnrollmentService
             throw new DomainException("Start date cannot be after end date.");
         }
 
-        if (monthlyBill < 0)
+        if (monthlyBillingValue < 0)
         {
-            throw new DomainException("Monthly bill cannot be less than zero.");
+            throw new DomainException("Monthly billing value cannot be less than zero.");
         }
 
         List<Enrollment> overlappingEnrollments = await _enrollmentRepository
@@ -70,7 +70,7 @@ public class EnrollmentService : IEnrollmentService
             CourseId = courseId,
             StartDate = startDate,
             EndDate = endDate,
-            MonthlyBill = monthlyBill,
+            MonthlyBillingValue = monthlyBillingValue,
         };
 
         await _enrollmentRepository.AddAsync(enrollment);

@@ -42,7 +42,7 @@ namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
                     course_id = table.Column<Guid>(type: "char(36)", nullable: false),
                     start_date = table.Column<DateTime>(type: "date", nullable: false),
                     end_date = table.Column<DateTime>(type: "date", nullable: false),
-                    monthly_bill = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    monthly_billing_value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {

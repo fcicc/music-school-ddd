@@ -16,5 +16,5 @@ public class Enrollment : IAggregateRoot
 
     public DateOnly EndDate { get; init; }
 
-    public BrlAmount MonthlyBill { get; init; }
+    public BrlAmount MonthlyBillingValue { get; init; }
 }

@@ -36,7 +36,7 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 1, 1);
         DateOnly endDate = new(2023, 12, 31);
-        BrlAmount monthlyBill = 200;
+        BrlAmount monthlyBillingValue = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
             .ReturnsAsync(new Student
@@ -69,7 +69,7 @@ public class EnrollmentServiceTests
             courseId,
             startDate,
             endDate,
-            monthlyBill
+            monthlyBillingValue
         );
 
         Assert.NotEqual(Guid.Empty, enrollment.Id);
@@ -77,7 +77,7 @@ public class EnrollmentServiceTests
         Assert.Equal(courseId, enrollment.CourseId);
         Assert.Equal(startDate, enrollment.StartDate);
         Assert.Equal(endDate, enrollment.EndDate);
-        Assert.Equal(monthlyBill, enrollment.MonthlyBill);
+        Assert.Equal(monthlyBillingValue, enrollment.MonthlyBillingValue);
 
         _enrollmentRepositoryMock.Verify(r => r.AddAsync(enrollment), Times.Once);
     }
@@ -89,7 +89,7 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 1, 1);
         DateOnly endDate = new(2023, 12, 31);
-        BrlAmount monthlyBill = 200;
+        BrlAmount monthlyBillingValue = 200;
 
         _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
             .ReturnsAsync(new Course
@@ -116,7 +116,7 @@ public class EnrollmentServiceTests
                 courseId,
                 startDate,
                 endDate,
-                monthlyBill
+                monthlyBillingValue
             )
         );
 
@@ -132,7 +132,7 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 1, 1);
         DateOnly endDate = new(2023, 12, 31);
-        BrlAmount monthlyBill = 200;
+        BrlAmount monthlyBillingValue = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
             .ReturnsAsync(new Student
@@ -159,7 +159,7 @@ public class EnrollmentServiceTests
                 courseId,
                 startDate,
                 endDate,
-                monthlyBill
+                monthlyBillingValue
             )
         );
 
@@ -175,7 +175,7 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 12, 31);
         DateOnly endDate = new(2023, 1, 1);
-        BrlAmount monthlyBill = 200;
+        BrlAmount monthlyBillingValue = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
             .ReturnsAsync(new Student
@@ -209,7 +209,7 @@ public class EnrollmentServiceTests
                 courseId,
                 startDate,
                 endDate,
-                monthlyBill
+                monthlyBillingValue
             )
         );
 
@@ -219,13 +219,13 @@ public class EnrollmentServiceTests
     }
 
     [Fact]
-    public async Task EnrollAsync_WithInvalidMonthlyBill_ThrowsDomainException()
+    public async Task EnrollAsync_WithInvalidMonthlyBillingValue_ThrowsDomainException()
     {
         Guid studentId = Guid.NewGuid();
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 1, 1);
         DateOnly endDate = new(2023, 12, 31);
-        BrlAmount monthlyBill = -1;
+        BrlAmount monthlyBillingValue = -1;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
             .ReturnsAsync(new Student
@@ -259,11 +259,11 @@ public class EnrollmentServiceTests
                 courseId,
                 startDate,
                 endDate,
-                monthlyBill
+                monthlyBillingValue
             )
         );
 
-        Assert.Equal("Monthly bill cannot be less than zero.", exception.Message);
+        Assert.Equal("Monthly billing value cannot be less than zero.", exception.Message);
 
         _enrollmentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Enrollment>()), Times.Never);
     }
@@ -275,7 +275,7 @@ public class EnrollmentServiceTests
         Guid courseId = Guid.NewGuid();
         DateOnly startDate = new(2023, 1, 1);
         DateOnly endDate = new(2023, 12, 31);
-        BrlAmount monthlyBill = 200;
+        BrlAmount monthlyBillingValue = 200;
 
         _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
             .ReturnsAsync(new Student
@@ -310,7 +310,7 @@ public class EnrollmentServiceTests
                     CourseId = courseId,
                     StartDate = startDate,
                     EndDate = endDate,
-                    MonthlyBill = monthlyBill
+                    MonthlyBillingValue = monthlyBillingValue
                 }
             });
 
@@ -320,7 +320,7 @@ public class EnrollmentServiceTests
                 courseId,
                 startDate,
                 endDate,
-                monthlyBill
+                monthlyBillingValue
             )
         );
 

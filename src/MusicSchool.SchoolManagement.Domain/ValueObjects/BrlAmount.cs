@@ -4,10 +4,20 @@ namespace MusicSchool.SchoolManagement.Domain.ValueObjects;
 
 public struct BrlAmount : IComparable<BrlAmount>, IEquatable<BrlAmount>
 {
+    public BrlAmount()
+    {
+        Value = default;
+    }
+
+    public BrlAmount(decimal value)
+    {
+        Value = value;
+    }
+
     public decimal Value { get; set; }
 
     public static implicit operator BrlAmount(decimal value) =>
-        new BrlAmount { Value = value };
+        new BrlAmount(value);
 
     public static implicit operator decimal(BrlAmount brlAmount) =>
         brlAmount.Value;

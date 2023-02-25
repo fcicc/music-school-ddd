@@ -44,4 +44,4 @@ Console.WriteLine($"Student ID        = {enrollment.StudentId}");
 Console.WriteLine($"Course ID         = {enrollment.CourseId}");
 Console.WriteLine($"Start Date        = {enrollment.StartDate}");
 Console.WriteLine($"End Date          = {enrollment.EndDate}");
-Console.WriteLine($"Monthly Bill      = {enrollment.MonthlyBill}");
+Console.WriteLine($"Monthly Bill      = {enrollment.MonthlyBillingValue}");

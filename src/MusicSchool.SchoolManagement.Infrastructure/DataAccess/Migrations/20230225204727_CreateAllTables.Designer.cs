@@ -11,7 +11,7 @@ using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(SchoolManagementContext))]
-    [Migration("20230225202245_CreateAllTables")]
+    [Migration("20230225204727_CreateAllTables")]
     partial class CreateAllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,9 +53,9 @@ namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
                         .HasColumnType("date")
                         .HasColumnName("end_date");
 
-                    b.Property<decimal>("MonthlyBill")
+                    b.Property<decimal>("MonthlyBillingValue")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnName("monthly_bill");
+                        .HasColumnName("monthly_billing_value");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("date")
