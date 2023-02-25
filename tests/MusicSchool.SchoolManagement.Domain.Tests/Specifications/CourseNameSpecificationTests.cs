@@ -6,30 +6,28 @@ namespace MusicSchool.SchoolManagement.Domain.Tests.Specifications;
 public class CourseNameSpecificationTests
 {
     [Fact]
-    public void AsQueryable_WithName_FiltersCourses()
+    public void IsSatisfiedBy_WithMatchingName_ReturnsTrue()
     {
-        const string filteredName = "Técnica Vocal";
-
-        List<Course> courses = new()
+        Course course = new()
         {
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = filteredName,
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Guitarra",
-            },
+            Name = "Técnica Vocal"
         };
 
-        CourseNameSpecification sut = new(filteredName);
+        CourseNameSpecification sut = new(course.Name);
 
-        List<Course> filteredList = courses.AsQueryable()
-            .Where(sut.AsPredicate())
-            .ToList();
+        Assert.True(sut.IsSatisfiedBy(course));
+    }
 
-        Assert.All(filteredList, c => Assert.Equal(filteredName, c.Name));
+    [Fact]
+    public void IsSatisfiedBy_WithNonMatchingName_ReturnsTrue()
+    {
+        Course course = new()
+        {
+            Name = "Técnica Vocal"
+        };
+
+        CourseNameSpecification sut = new("Guitarra");
+
+        Assert.False(sut.IsSatisfiedBy(course));
     }
 }
