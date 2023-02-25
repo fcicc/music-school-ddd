@@ -5,29 +5,21 @@ namespace MusicSchool.SchoolManagement.Domain.Tests.Specifications;
 
 public class StudentNameSpecificationTests
 {
-    [Fact]
-    public void IsSatisfiedBy_WithMatchingName_ReturnsTrue()
+    [Theory]
+    [InlineData("Luiz Melodia", "Luiz Melodia", true)]
+    [InlineData("Luiz Melodia", "José da Silva", false)]
+    public void IsSatisfiedBy_WithSpecifiedName_ReturnsExpectedResult(
+        string studentName,
+        string specifiedName,
+        bool expectedResult)
     {
         Student student = new()
         {
-            Name = "Luiz Melodia"
+            Name = studentName
         };
 
-        StudentNameSpecification sut = new(student.Name);
+        StudentNameSpecification sut = new(specifiedName);
 
-        Assert.True(sut.IsSatisfiedBy(student));
-    }
-
-    [Fact]
-    public void IsSatisfiedBy_WithNonMatchingName_ReturnsTrue()
-    {
-        Student student = new()
-        {
-            Name = "Luiz Melodia"
-        };
-
-        StudentNameSpecification sut = new("José da Silva");
-
-        Assert.False(sut.IsSatisfiedBy(student));
+        Assert.Equal(expectedResult, sut.IsSatisfiedBy(student));
     }
 }

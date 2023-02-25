@@ -5,29 +5,21 @@ namespace MusicSchool.SchoolManagement.Domain.Tests.Specifications;
 
 public class CourseNameSpecificationTests
 {
-    [Fact]
-    public void IsSatisfiedBy_WithMatchingName_ReturnsTrue()
+    [Theory]
+    [InlineData("Técnica Vocal", "Técnica Vocal", true)]
+    [InlineData("Técnica Vocal", "Guitarra", false)]
+    public void IsSatisfiedBy_WithSpecifiedName_ReturnsExpectedResult(
+        string courseName,
+        string specifiedName,
+        bool expectedResult)
     {
         Course course = new()
         {
-            Name = "Técnica Vocal"
+            Name = courseName
         };
 
-        CourseNameSpecification sut = new(course.Name);
+        CourseNameSpecification sut = new(specifiedName);
 
-        Assert.True(sut.IsSatisfiedBy(course));
-    }
-
-    [Fact]
-    public void IsSatisfiedBy_WithNonMatchingName_ReturnsTrue()
-    {
-        Course course = new()
-        {
-            Name = "Técnica Vocal"
-        };
-
-        CourseNameSpecification sut = new("Guitarra");
-
-        Assert.False(sut.IsSatisfiedBy(course));
+        Assert.Equal(expectedResult, sut.IsSatisfiedBy(course));
     }
 }
