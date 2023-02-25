@@ -6,19 +6,18 @@ namespace MusicSchool.SchoolManagement.Domain.Tests.Specifications;
 public class StudentNameSpecificationTests
 {
     [Theory]
-    [InlineData("Luiz Melodia", "Luiz Melodia", true)]
-    [InlineData("Luiz Melodia", "José da Silva", false)]
+    [InlineData("Luiz Melodia", true)]
+    [InlineData("José da Silva", false)]
     public void IsSatisfiedBy_WithSpecifiedName_ReturnsExpectedResult(
-        string studentName,
-        string specifiedName,
+        string name,
         bool expectedResult)
     {
         Student student = new()
         {
-            Name = studentName
+            Name = "Luiz Melodia"
         };
 
-        StudentNameSpecification sut = new(specifiedName);
+        StudentNameSpecification sut = new(name);
 
         Assert.Equal(expectedResult, sut.IsSatisfiedBy(student));
     }
