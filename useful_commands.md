@@ -3,13 +3,13 @@
 ## Add migration
 
 ```
-dotnet ef migrations add $MIGRATION_NAME -p .\src\MusicSchool.SchoolManagement.Infrastructure -o DataAccess\Migrations
+dotnet ef migrations add $MIGRATION_NAME -p .\src\MusicSchool.SchoolManagement.Api -o Design\Migrations
 ```
 
 ## Update database schema
 
 ```
-dotnet ef database update -p .\src\MusicSchool.SchoolManagement.Infrastructure
+dotnet ef database update -p .\src\MusicSchool.SchoolManagement.Api
 ```
 
 ## Run API

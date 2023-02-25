@@ -8,7 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<SchoolManagementContext>(options =>
 {
-    options.UseMySQL(builder.Configuration.GetConnectionString("Default"));
+    options.UseMySQL(
+        builder.Configuration.GetConnectionString("Default"),
+        b => b.MigrationsAssembly("MusicSchool.SchoolManagement.Api")
+    );
 });
 
 builder.Services.AddControllers();

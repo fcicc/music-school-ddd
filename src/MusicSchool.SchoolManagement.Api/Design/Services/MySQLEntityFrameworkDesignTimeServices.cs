@@ -1,10 +1,9 @@
 // https://stackoverflow.com/a/74091072
 
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.DependencyInjection;
 using MySql.EntityFrameworkCore.Extensions;
 
-namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess;
+namespace MusicSchool.SchoolManagement.Api.Design.Services;
 
 public class MySQLEntityFrameworkDesignTimeServices : IDesignTimeServices
 {

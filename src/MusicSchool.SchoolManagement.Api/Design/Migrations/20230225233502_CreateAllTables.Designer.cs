@@ -8,10 +8,10 @@ using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 
 #nullable disable
 
-namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
+namespace MusicSchool.SchoolManagement.Api.Design.Migrations
 {
     [DbContext(typeof(SchoolManagementContext))]
-    [Migration("20230225213025_CreateAllTables")]
+    [Migration("20230225233502_CreateAllTables")]
     partial class CreateAllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

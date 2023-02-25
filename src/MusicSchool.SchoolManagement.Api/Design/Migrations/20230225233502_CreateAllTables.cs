@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess.Migrations
+namespace MusicSchool.SchoolManagement.Api.Design.Migrations
 {
     public partial class CreateAllTables : Migration
     {
