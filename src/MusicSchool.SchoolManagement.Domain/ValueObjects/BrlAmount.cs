@@ -22,6 +22,24 @@ public struct BrlAmount : IComparable<BrlAmount>, IEquatable<BrlAmount>
     public static implicit operator decimal(BrlAmount brlAmount) =>
         brlAmount.Value;
 
+    public static bool operator ==(BrlAmount x, BrlAmount y) =>
+        x.Equals(y);
+
+    public static bool operator !=(BrlAmount x, BrlAmount y) =>
+        !x.Equals(y);
+
+    public static bool operator >(BrlAmount x, BrlAmount y) =>
+        x.CompareTo(y) > 0;
+
+    public static bool operator <(BrlAmount x, BrlAmount y) =>
+        x.CompareTo(y) < 0;
+
+    public static bool operator >=(BrlAmount x, BrlAmount y) =>
+        x.CompareTo(y) >= 0;
+
+    public static bool operator <=(BrlAmount x, BrlAmount y) =>
+        x.CompareTo(y) <= 0;
+
     public override bool Equals([NotNullWhen(true)] object? obj) =>
         obj is BrlAmount other ? Equals(other) : false;
 
