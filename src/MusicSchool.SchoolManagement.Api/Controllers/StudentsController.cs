@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using MusicSchool.SchoolManagement.Domain.Entities;
+using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
 
@@ -40,11 +41,21 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<Student> PostStudentAsync(JsonDocument document)
+    public async Task<ActionResult<Student>> PostStudentAsync(JsonDocument document)
     {
         JsonElement student = document.RootElement;
         string name = student.GetProperty("name").GetString() ?? "";
 
-        return await _studentService.CreateAsync(name);
+        try
+        {
+            return await _studentService.CreateAsync(name);
+        }
+        catch (DomainException e)
+        {
+            return BadRequest(new
+            {
+                Message = e.Message,
+            });
+        }
     }
 }
