@@ -1,15 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Text.Json.Serialization;
+using MusicSchool.SchoolManagement.Domain.ValueObjects.Converters;
 
 namespace MusicSchool.SchoolManagement.Domain.ValueObjects;
 
+[JsonConverter(typeof(DateMonthOnlyJsonConverter))]
 public struct DateMonthOnly : IComparable<DateMonthOnly>, IEquatable<DateMonthOnly>
 {
-    public DateMonthOnly()
-    {
-        Year = 1;
-        Month = 1;
-    }
+    private const string StringFormat = "yyyy-MM";
 
     public DateMonthOnly(int year, int month)
     {
@@ -23,7 +22,7 @@ public struct DateMonthOnly : IComparable<DateMonthOnly>, IEquatable<DateMonthOn
 
     public static DateMonthOnly Parse(string s)
     {
-        DateTime dateTime = DateTime.ParseExact(s, "YYYY-MM", CultureInfo.InvariantCulture);
+        DateTime dateTime = DateTime.ParseExact(s, StringFormat, CultureInfo.InvariantCulture);
         return new(dateTime.Year, dateTime.Month);
     }
 
@@ -57,7 +56,7 @@ public struct DateMonthOnly : IComparable<DateMonthOnly>, IEquatable<DateMonthOn
     public override int GetHashCode() => ToDateTime().GetHashCode();
 
     public override string ToString() =>
-        ToDateTime().ToString("yyyy-MM", CultureInfo.InvariantCulture);
+        ToDateTime().ToString(StringFormat, CultureInfo.InvariantCulture);
 
     public DateTime ToDateTime() => new(Year, Month, 1);
 }
