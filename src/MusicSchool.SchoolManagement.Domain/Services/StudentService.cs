@@ -14,15 +14,15 @@ public class StudentService : IStudentService
         _studentRepository = studentRepository;
     }
 
-    public async Task<Student> CreateAsync(string name)
+    public async Task<Student> CreateAsync(IStudentService.CreateRequest request)
     {
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty(request.Name))
         {
             throw new DomainException("Student name cannot be empty.");
         }
 
         List<Student> existingStudents = await _studentRepository.FindAsync(
-            new StudentNameSpecification(name)
+            new StudentNameSpecification(request.Name)
         );
         if (existingStudents.Any())
         {
@@ -32,7 +32,7 @@ public class StudentService : IStudentService
         Student student = new()
         {
             Id = Guid.NewGuid(),
-            Name = name,
+            Name = request.Name,
         };
 
         await _studentRepository.AddAsync(student);

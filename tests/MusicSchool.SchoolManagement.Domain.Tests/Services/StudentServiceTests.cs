@@ -23,18 +23,21 @@ public class StudentServiceTests
     [Fact]
     public async Task CreateAsync_WithValidName_ReturnsNewStudent()
     {
-        const string validName = "Luiz Melodia";
+        IStudentService.CreateRequest request = new()
+        {
+            Name = "Luiz Melodia",
+        };
 
         _studentRepositoryMock
             .Setup(r => r.FindAsync(
-                It.Is<StudentNameSpecification>(s => s.Name == validName)
+                It.Is<StudentNameSpecification>(s => s.Name == request.Name)
             ))
             .ReturnsAsync(new List<Student>());
 
-        Student student = await _sut.CreateAsync(validName);
+        Student student = await _sut.CreateAsync(request);
 
         Assert.NotEqual(Guid.Empty, student.Id);
-        Assert.Equal(validName, student.Name);
+        Assert.Equal(request.Name, student.Name);
 
         _studentRepositoryMock.Verify(r => r.AddAsync(student), Times.Once);
     }
@@ -42,23 +45,26 @@ public class StudentServiceTests
     [Fact]
     public async Task CreateAsync_WithExistingName_ThrowsDomainException()
     {
-        const string validName = "Luiz Melodia";
+        IStudentService.CreateRequest request = new()
+        {
+            Name = "Luiz Melodia",
+        };
 
         _studentRepositoryMock
             .Setup(r => r.FindAsync(
-                It.Is<StudentNameSpecification>(s => s.Name == validName)
+                It.Is<StudentNameSpecification>(s => s.Name == request.Name)
             ))
             .ReturnsAsync(new List<Student>
             {
                 new()
                 {
                     Id = Guid.NewGuid(),
-                    Name = validName,
+                    Name = request.Name,
                 },
             });
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.CreateAsync(validName)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Student with same name already exists.", exception.Message);
@@ -69,8 +75,13 @@ public class StudentServiceTests
     [Fact]
     public async Task CreateAsync_WithEmptyName_ThrowsDomainException()
     {
+        IStudentService.CreateRequest request = new()
+        {
+            Name = "",
+        };
+
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.CreateAsync("")
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Student name cannot be empty.", exception.Message);

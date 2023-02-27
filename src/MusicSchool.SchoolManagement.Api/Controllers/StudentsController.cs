@@ -41,14 +41,11 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<ActionResult<Student>> PostStudentAsync(JsonDocument document)
+    public async Task<ActionResult<Student>> PostStudentAsync(IStudentService.CreateRequest request)
     {
-        JsonElement student = document.RootElement;
-        string name = student.GetProperty("name").GetString() ?? "";
-
         try
         {
-            return await _studentService.CreateAsync(name);
+            return await _studentService.CreateAsync(request);
         }
         catch (DomainException e)
         {
