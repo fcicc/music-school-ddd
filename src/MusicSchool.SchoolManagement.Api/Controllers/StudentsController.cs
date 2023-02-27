@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
@@ -41,7 +40,8 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<ActionResult<Student>> PostStudentAsync(IStudentService.CreateRequest request)
+    public async Task<ActionResult<Student>> PostStudentAsync(
+        IStudentService.CreateRequest request)
     {
         try
         {
