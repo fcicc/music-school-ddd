@@ -14,15 +14,15 @@ public class CourseService : ICourseService
         _courseRepository = courseRepository;
     }
 
-    public async Task<Course> CreateAsync(string name)
+    public async Task<Course> CreateAsync(ICourseService.CreateRequest request)
     {
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty(request.Name))
         {
             throw new DomainException("Course name cannot be empty.");
         }
 
         List<Course> existingCourses = await _courseRepository.FindAsync(
-            new CourseNameSpecification(name)
+            new CourseNameSpecification(request.Name)
         );
         if (existingCourses.Any())
         {
@@ -32,7 +32,7 @@ public class CourseService : ICourseService
         Course course = new()
         {
             Id = Guid.NewGuid(),
-            Name = name,
+            Name = request.Name,
         };
 
         await _courseRepository.AddAsync(course);

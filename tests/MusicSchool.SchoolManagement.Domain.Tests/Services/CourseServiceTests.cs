@@ -23,18 +23,21 @@ public class CourseServiceTests
     [Fact]
     public async Task CreateAsync_WithValidName_ReturnsNewCourse()
     {
-        const string validName = "Técnica Vocal";
+        ICourseService.CreateRequest request = new()
+        {
+            Name = "Técnica Vocal",
+        };
 
         _courseRepositoryMock
             .Setup(r => r.FindAsync(
-                It.Is<CourseNameSpecification>(c => c.Name == validName)
+                It.Is<CourseNameSpecification>(c => c.Name == request.Name)
             ))
             .ReturnsAsync(new List<Course>());
 
-        Course course = await _sut.CreateAsync(validName);
+        Course course = await _sut.CreateAsync(request);
 
         Assert.NotEqual(Guid.Empty, course.Id);
-        Assert.Equal(validName, course.Name);
+        Assert.Equal(request.Name, course.Name);
 
         _courseRepositoryMock.Verify(r => r.AddAsync(course), Times.Once);
     }
@@ -42,23 +45,26 @@ public class CourseServiceTests
     [Fact]
     public async Task CreateAsync_WithExistingName_ThrowsDomainException()
     {
-        const string validName = "Técnica Vocal";
+        ICourseService.CreateRequest request = new()
+        {
+            Name = "Técnica Vocal",
+        };
 
         _courseRepositoryMock
             .Setup(r => r.FindAsync(
-                It.Is<CourseNameSpecification>(c => c.Name == validName)
+                It.Is<CourseNameSpecification>(c => c.Name == request.Name)
             ))
             .ReturnsAsync(new List<Course>
             {
                 new()
                 {
                     Id = Guid.NewGuid(),
-                    Name = validName,
+                    Name = request.Name,
                 },
             });
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.CreateAsync(validName)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Course with same name already exists.", exception.Message);
@@ -69,8 +75,13 @@ public class CourseServiceTests
     [Fact]
     public async Task CreateAsync_WithEmptyName_ThrowsDomainException()
     {
+        ICourseService.CreateRequest request = new()
+        {
+            Name = "",
+        };
+
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.CreateAsync("")
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Course name cannot be empty.", exception.Message);
