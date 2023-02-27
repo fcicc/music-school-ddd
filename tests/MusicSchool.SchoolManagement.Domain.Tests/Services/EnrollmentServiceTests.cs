@@ -32,23 +32,26 @@ public class EnrollmentServiceTests
     [Fact]
     public async Task EnrollAsync_WithValidInput_AddsEnrollment()
     {
-        Guid studentId = Guid.NewGuid();
-        Guid courseId = Guid.NewGuid();
-        DateMonthOnly startMonth = new(2023, 1);
-        DateMonthOnly endMonth = new(2023, 12);
-        BrlAmount monthlyBillingValue = 200;
+        IEnrollmentService.EnrollRequest request = new()
+        {
+            StudentId = Guid.NewGuid(),
+            CourseId = Guid.NewGuid(),
+            StartMonth = new(2023, 1),
+            EndMonth = new(2023, 12),
+            MonthlyBillingValue = 200,
+        };
 
-        _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
+        _studentRepositoryMock.Setup(r => r.FindOneAsync(request.StudentId))
             .ReturnsAsync(new Student
             {
-                Id = studentId,
+                Id = request.StudentId,
                 Name = "Luiz Melodia",
             });
 
-        _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
+        _courseRepositoryMock.Setup(r => r.FindOneAsync(request.CourseId))
             .ReturnsAsync(new Course
             {
-                Id = courseId,
+                Id = request.CourseId,
                 Name = "Técnica Vocal",
             });
 
@@ -56,28 +59,22 @@ public class EnrollmentServiceTests
             .Setup(r => r.FindAsync(
                 It.Is<OverlappingEnrollmentSpecification>(
                     s =>
-                        s.StudentId == studentId &&
-                        s.CourseId == courseId &&
-                        s.StartMonth == startMonth &&
-                        s.EndMonth == endMonth
+                        s.StudentId == request.StudentId &&
+                        s.CourseId == request.CourseId &&
+                        s.StartMonth == request.StartMonth &&
+                        s.EndMonth == request.EndMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
 
-        Enrollment enrollment = await _sut.EnrollAsync(
-            studentId,
-            courseId,
-            startMonth,
-            endMonth,
-            monthlyBillingValue
-        );
+        Enrollment enrollment = await _sut.EnrollAsync(request);
 
         Assert.NotEqual(Guid.Empty, enrollment.Id);
-        Assert.Equal(studentId, enrollment.StudentId);
-        Assert.Equal(courseId, enrollment.CourseId);
-        Assert.Equal(startMonth, enrollment.StartMonth);
-        Assert.Equal(endMonth, enrollment.EndMonth);
-        Assert.Equal(monthlyBillingValue, enrollment.MonthlyBillingValue);
+        Assert.Equal(request.StudentId, enrollment.StudentId);
+        Assert.Equal(request.CourseId, enrollment.CourseId);
+        Assert.Equal(request.StartMonth, enrollment.StartMonth);
+        Assert.Equal(request.EndMonth, enrollment.EndMonth);
+        Assert.Equal(request.MonthlyBillingValue, enrollment.MonthlyBillingValue);
 
         _enrollmentRepositoryMock.Verify(r => r.AddAsync(enrollment), Times.Once);
     }
@@ -85,16 +82,19 @@ public class EnrollmentServiceTests
     [Fact]
     public async Task EnrollAsync_WithNonExistingStudent_ThrowsDomainException()
     {
-        Guid studentId = Guid.NewGuid();
-        Guid courseId = Guid.NewGuid();
-        DateMonthOnly startMonth = new(2023, 1);
-        DateMonthOnly endMonth = new(2023, 12);
-        BrlAmount monthlyBillingValue = 200;
+        IEnrollmentService.EnrollRequest request = new()
+        {
+            StudentId = Guid.NewGuid(),
+            CourseId = Guid.NewGuid(),
+            StartMonth = new(2023, 1),
+            EndMonth = new(2023, 12),
+            MonthlyBillingValue = 200,
+        };
 
-        _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
+        _courseRepositoryMock.Setup(r => r.FindOneAsync(request.CourseId))
             .ReturnsAsync(new Course
             {
-                Id = courseId,
+                Id = request.CourseId,
                 Name = "Técnica Vocal",
             });
 
@@ -102,22 +102,16 @@ public class EnrollmentServiceTests
             .Setup(r => r.FindAsync(
                 It.Is<OverlappingEnrollmentSpecification>(
                     s =>
-                        s.StudentId == studentId &&
-                        s.CourseId == courseId &&
-                        s.StartMonth == startMonth &&
-                        s.EndMonth == endMonth
+                        s.StudentId == request.StudentId &&
+                        s.CourseId == request.CourseId &&
+                        s.StartMonth == request.StartMonth &&
+                        s.EndMonth == request.EndMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(
-                studentId,
-                courseId,
-                startMonth,
-                endMonth,
-                monthlyBillingValue
-            )
+            () => _sut.EnrollAsync(request)
         );
 
         Assert.Equal("Student not found.", exception.Message);
@@ -128,16 +122,19 @@ public class EnrollmentServiceTests
     [Fact]
     public async Task EnrollAsync_WithNonExistingCourse_ThrowsDomainException()
     {
-        Guid studentId = Guid.NewGuid();
-        Guid courseId = Guid.NewGuid();
-        DateMonthOnly startMonth = new(2023, 1);
-        DateMonthOnly endMonth = new(2023, 12);
-        BrlAmount monthlyBillingValue = 200;
+        IEnrollmentService.EnrollRequest request = new()
+        {
+            StudentId = Guid.NewGuid(),
+            CourseId = Guid.NewGuid(),
+            StartMonth = new(2023, 1),
+            EndMonth = new(2023, 12),
+            MonthlyBillingValue = 200,
+        };
 
-        _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
+        _studentRepositoryMock.Setup(r => r.FindOneAsync(request.StudentId))
             .ReturnsAsync(new Student
             {
-                Id = studentId,
+                Id = request.StudentId,
                 Name = "Luiz Melodia",
             });
 
@@ -145,22 +142,16 @@ public class EnrollmentServiceTests
             .Setup(r => r.FindAsync(
                 It.Is<OverlappingEnrollmentSpecification>(
                     s =>
-                        s.StudentId == studentId &&
-                        s.CourseId == courseId &&
-                        s.StartMonth == startMonth &&
-                        s.EndMonth == endMonth
+                        s.StudentId == request.StudentId &&
+                        s.CourseId == request.CourseId &&
+                        s.StartMonth == request.StartMonth &&
+                        s.EndMonth == request.EndMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(
-                studentId,
-                courseId,
-                startMonth,
-                endMonth,
-                monthlyBillingValue
-            )
+            () => _sut.EnrollAsync(request)
         );
 
         Assert.Equal("Course not found.", exception.Message);
@@ -171,23 +162,26 @@ public class EnrollmentServiceTests
     [Fact]
     public async Task EnrollAsync_WithInvalidPeriod_ThrowsDomainException()
     {
-        Guid studentId = Guid.NewGuid();
-        Guid courseId = Guid.NewGuid();
-        DateMonthOnly startMonth = new(2023, 12);
-        DateMonthOnly endMonth = new(2023, 1);
-        BrlAmount monthlyBillingValue = 200;
+        IEnrollmentService.EnrollRequest request = new()
+        {
+            StudentId = Guid.NewGuid(),
+            CourseId = Guid.NewGuid(),
+            StartMonth = new(2023, 12),
+            EndMonth = new(2023, 1),
+            MonthlyBillingValue = 200,
+        };
 
-        _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
+        _studentRepositoryMock.Setup(r => r.FindOneAsync(request.StudentId))
             .ReturnsAsync(new Student
             {
-                Id = studentId,
+                Id = request.StudentId,
                 Name = "Luiz Melodia",
             });
 
-        _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
+        _courseRepositoryMock.Setup(r => r.FindOneAsync(request.CourseId))
             .ReturnsAsync(new Course
             {
-                Id = courseId,
+                Id = request.CourseId,
                 Name = "Técnica Vocal",
             });
 
@@ -195,22 +189,16 @@ public class EnrollmentServiceTests
             .Setup(r => r.FindAsync(
                 It.Is<OverlappingEnrollmentSpecification>(
                     s =>
-                        s.StudentId == studentId &&
-                        s.CourseId == courseId &&
-                        s.StartMonth == startMonth &&
-                        s.EndMonth == endMonth
+                        s.StudentId == request.StudentId &&
+                        s.CourseId == request.CourseId &&
+                        s.StartMonth == request.StartMonth &&
+                        s.EndMonth == request.EndMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(
-                studentId,
-                courseId,
-                startMonth,
-                endMonth,
-                monthlyBillingValue
-            )
+            () => _sut.EnrollAsync(request)
         );
 
         Assert.Equal("Start month cannot be after end month.", exception.Message);
@@ -221,23 +209,26 @@ public class EnrollmentServiceTests
     [Fact]
     public async Task EnrollAsync_WithInvalidMonthlyBillingValue_ThrowsDomainException()
     {
-        Guid studentId = Guid.NewGuid();
-        Guid courseId = Guid.NewGuid();
-        DateMonthOnly startMonth = new(2023, 1);
-        DateMonthOnly endMonth = new(2023, 12);
-        BrlAmount monthlyBillingValue = -1;
+        IEnrollmentService.EnrollRequest request = new()
+        {
+            StudentId = Guid.NewGuid(),
+            CourseId = Guid.NewGuid(),
+            StartMonth = new(2023, 1),
+            EndMonth = new(2023, 12),
+            MonthlyBillingValue = -1,
+        };
 
-        _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
+        _studentRepositoryMock.Setup(r => r.FindOneAsync(request.StudentId))
             .ReturnsAsync(new Student
             {
-                Id = studentId,
+                Id = request.StudentId,
                 Name = "Luiz Melodia",
             });
 
-        _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
+        _courseRepositoryMock.Setup(r => r.FindOneAsync(request.CourseId))
             .ReturnsAsync(new Course
             {
-                Id = courseId,
+                Id = request.CourseId,
                 Name = "Técnica Vocal",
             });
 
@@ -245,22 +236,16 @@ public class EnrollmentServiceTests
             .Setup(r => r.FindAsync(
                 It.Is<OverlappingEnrollmentSpecification>(
                     s =>
-                        s.StudentId == studentId &&
-                        s.CourseId == courseId &&
-                        s.StartMonth == startMonth &&
-                        s.EndMonth == endMonth
+                        s.StudentId == request.StudentId &&
+                        s.CourseId == request.CourseId &&
+                        s.StartMonth == request.StartMonth &&
+                        s.EndMonth == request.EndMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(
-                studentId,
-                courseId,
-                startMonth,
-                endMonth,
-                monthlyBillingValue
-            )
+            () => _sut.EnrollAsync(request)
         );
 
         Assert.Equal("Monthly billing value cannot be less than zero.", exception.Message);
@@ -271,23 +256,26 @@ public class EnrollmentServiceTests
     [Fact]
     public async Task EnrollAsync_WithOverlappingEnrollment_ThrowsDomainException()
     {
-        Guid studentId = Guid.NewGuid();
-        Guid courseId = Guid.NewGuid();
-        DateMonthOnly startMonth = new(2023, 1);
-        DateMonthOnly endMonth = new(2023, 12);
-        BrlAmount monthlyBillingValue = 200;
+        IEnrollmentService.EnrollRequest request = new()
+        {
+            StudentId = Guid.NewGuid(),
+            CourseId = Guid.NewGuid(),
+            StartMonth = new(2023, 1),
+            EndMonth = new(2023, 12),
+            MonthlyBillingValue = 200,
+        };
 
-        _studentRepositoryMock.Setup(r => r.FindOneAsync(studentId))
+        _studentRepositoryMock.Setup(r => r.FindOneAsync(request.StudentId))
             .ReturnsAsync(new Student
             {
-                Id = studentId,
+                Id = request.StudentId,
                 Name = "Luiz Melodia",
             });
 
-        _courseRepositoryMock.Setup(r => r.FindOneAsync(courseId))
+        _courseRepositoryMock.Setup(r => r.FindOneAsync(request.CourseId))
             .ReturnsAsync(new Course
             {
-                Id = courseId,
+                Id = request.CourseId,
                 Name = "Técnica Vocal",
             });
 
@@ -295,10 +283,10 @@ public class EnrollmentServiceTests
             .Setup(r => r.FindAsync(
                 It.Is<OverlappingEnrollmentSpecification>(
                     s =>
-                        s.StudentId == studentId &&
-                        s.CourseId == courseId &&
-                        s.StartMonth == startMonth &&
-                        s.EndMonth == endMonth
+                        s.StudentId == request.StudentId &&
+                        s.CourseId == request.CourseId &&
+                        s.StartMonth == request.StartMonth &&
+                        s.EndMonth == request.EndMonth
                 )
             ))
             .ReturnsAsync(new List<Enrollment>
@@ -306,22 +294,16 @@ public class EnrollmentServiceTests
                 new()
                 {
                     Id = Guid.NewGuid(),
-                    StudentId = studentId,
-                    CourseId = courseId,
-                    StartMonth = startMonth,
-                    EndMonth = endMonth,
-                    MonthlyBillingValue = monthlyBillingValue
+                    StudentId = request.StudentId,
+                    CourseId = request.CourseId,
+                    StartMonth = request.StartMonth,
+                    EndMonth = request.EndMonth,
+                    MonthlyBillingValue = request.MonthlyBillingValue
                 }
             });
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(
-                studentId,
-                courseId,
-                startMonth,
-                endMonth,
-                monthlyBillingValue
-            )
+            () => _sut.EnrollAsync(request)
         );
 
         Assert.Equal("There already exists an enrollment that overlaps the new one.", exception.Message);

@@ -22,41 +22,36 @@ public class EnrollmentService : IEnrollmentService
         _courseRepository = courseRepository;
     }
 
-    public async Task<Enrollment> EnrollAsync(
-        Guid studentId,
-        Guid courseId,
-        DateMonthOnly startMonth,
-        DateMonthOnly endMonth,
-        BrlAmount monthlyBillingValue)
+    public async Task<Enrollment> EnrollAsync(IEnrollmentService.EnrollRequest request)
     {
-        Student? student = await _studentRepository.FindOneAsync(studentId);
+        Student? student = await _studentRepository.FindOneAsync(request.StudentId);
         if (student == null)
         {
             throw new DomainException("Student not found.");
         }
 
-        Course? course = await _courseRepository.FindOneAsync(courseId);
+        Course? course = await _courseRepository.FindOneAsync(request.CourseId);
         if (course == null)
         {
             throw new DomainException("Course not found.");
         }
 
-        if (startMonth > endMonth)
+        if (request.StartMonth > request.EndMonth)
         {
             throw new DomainException("Start month cannot be after end month.");
         }
 
-        if (monthlyBillingValue < 0)
+        if (request.MonthlyBillingValue < 0)
         {
             throw new DomainException("Monthly billing value cannot be less than zero.");
         }
 
         List<Enrollment> overlappingEnrollments = await _enrollmentRepository
             .FindAsync(new OverlappingEnrollmentSpecification(
-                studentId,
-                courseId,
-                startMonth,
-                endMonth
+                request.StudentId,
+                request.CourseId,
+                request.StartMonth,
+                request.EndMonth
             ));
         if (overlappingEnrollments.Any())
         {
@@ -66,11 +61,11 @@ public class EnrollmentService : IEnrollmentService
         Enrollment enrollment = new()
         {
             Id = Guid.NewGuid(),
-            StudentId = studentId,
-            CourseId = courseId,
-            StartMonth = startMonth,
-            EndMonth = endMonth,
-            MonthlyBillingValue = monthlyBillingValue,
+            StudentId = request.StudentId,
+            CourseId = request.CourseId,
+            StartMonth = request.StartMonth,
+            EndMonth = request.EndMonth,
+            MonthlyBillingValue = request.MonthlyBillingValue,
         };
 
         await _enrollmentRepository.AddAsync(enrollment);
