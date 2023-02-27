@@ -5,14 +5,14 @@ using MusicSchool.SchoolManagement.Domain.ValueObjects.Converters;
 namespace MusicSchool.SchoolManagement.Domain.ValueObjects;
 
 [JsonConverter(typeof(BrlAmountJsonConverter))]
-public struct BrlAmount : IComparable<BrlAmount>, IEquatable<BrlAmount>
+public readonly struct BrlAmount : IComparable<BrlAmount>, IEquatable<BrlAmount>
 {
     public BrlAmount(decimal value)
     {
         Value = value;
     }
 
-    public decimal Value { get; set; }
+    public decimal Value { get; }
 
     public static implicit operator BrlAmount(decimal value) =>
         new BrlAmount(value);

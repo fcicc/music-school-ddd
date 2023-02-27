@@ -6,24 +6,29 @@ using MusicSchool.SchoolManagement.Domain.ValueObjects.Converters;
 namespace MusicSchool.SchoolManagement.Domain.ValueObjects;
 
 [JsonConverter(typeof(DateMonthOnlyJsonConverter))]
-public struct DateMonthOnly : IComparable<DateMonthOnly>, IEquatable<DateMonthOnly>
+public readonly struct DateMonthOnly : IComparable<DateMonthOnly>, IEquatable<DateMonthOnly>
 {
     private const string StringFormat = "yyyy-MM";
 
+    private readonly DateTime _underlyingTimestamp;
+
     public DateMonthOnly(int year, int month)
     {
-        Year = year;
-        Month = month;
+        _underlyingTimestamp = new DateTime(year, month, 1);
     }
 
-    public int Year { get; set; }
+    public DateMonthOnly(DateTime dateTime)
+    {
+        _underlyingTimestamp = new DateTime(dateTime.Year, dateTime.Month, 1);
+    }
 
-    public int Month { get; set; }
+    public int Year => _underlyingTimestamp.Year;
+
+    public int Month => _underlyingTimestamp.Month;
 
     public static DateMonthOnly Parse(string s)
     {
-        DateTime dateTime = DateTime.ParseExact(s, StringFormat, CultureInfo.InvariantCulture);
-        return new(dateTime.Year, dateTime.Month);
+        return new(DateTime.ParseExact(s, StringFormat, CultureInfo.InvariantCulture));
     }
 
     public static bool operator ==(DateMonthOnly x, DateMonthOnly y) =>
@@ -48,15 +53,15 @@ public struct DateMonthOnly : IComparable<DateMonthOnly>, IEquatable<DateMonthOn
         obj is DateMonthOnly other ? Equals(other) : false;
 
     public int CompareTo(DateMonthOnly other) =>
-        ToDateTime().CompareTo(other.ToDateTime());
+        _underlyingTimestamp.CompareTo(other._underlyingTimestamp);
 
     public bool Equals(DateMonthOnly other) =>
-        ToDateTime().Equals(other.ToDateTime());
+        _underlyingTimestamp.Equals(other._underlyingTimestamp);
 
-    public override int GetHashCode() => ToDateTime().GetHashCode();
+    public override int GetHashCode() => _underlyingTimestamp.GetHashCode();
 
     public override string ToString() =>
-        ToDateTime().ToString(StringFormat, CultureInfo.InvariantCulture);
+        _underlyingTimestamp.ToString(StringFormat, CultureInfo.InvariantCulture);
 
-    public DateTime ToDateTime() => new(Year, Month, 1);
+    public DateTime ToDateTime() => _underlyingTimestamp;
 }
