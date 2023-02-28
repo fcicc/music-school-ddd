@@ -49,7 +49,6 @@ public class CoursesController : ControllerBase
         }
         catch (DomainException e)
         {
-            // TODO: use standard format
             return BadRequest(new
             {
                 Message = e.Message,
