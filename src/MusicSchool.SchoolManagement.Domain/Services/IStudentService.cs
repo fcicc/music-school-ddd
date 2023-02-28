@@ -4,9 +4,9 @@ namespace MusicSchool.SchoolManagement.Domain.Services;
 
 public interface IStudentService
 {
-    Task<Student> CreateAsync(CreateRequest request);
+    Task<Student> CreateAsync(CreateStudentRequest request);
 
-    public class CreateRequest
+    public class CreateStudentRequest
     {
         public string Name { get; init; } = "";
     }

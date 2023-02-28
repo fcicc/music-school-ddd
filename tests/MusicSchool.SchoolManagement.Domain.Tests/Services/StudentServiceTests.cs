@@ -23,7 +23,7 @@ public class StudentServiceTests
     [Fact]
     public async Task CreateAsync_WithValidName_ReturnsNewStudent()
     {
-        IStudentService.CreateRequest request = new()
+        IStudentService.CreateStudentRequest request = new()
         {
             Name = "Luiz Melodia",
         };
@@ -45,7 +45,7 @@ public class StudentServiceTests
     [Fact]
     public async Task CreateAsync_WithExistingName_ThrowsDomainException()
     {
-        IStudentService.CreateRequest request = new()
+        IStudentService.CreateStudentRequest request = new()
         {
             Name = "Luiz Melodia",
         };
@@ -75,7 +75,7 @@ public class StudentServiceTests
     [Fact]
     public async Task CreateAsync_WithEmptyName_ThrowsDomainException()
     {
-        IStudentService.CreateRequest request = new()
+        IStudentService.CreateStudentRequest request = new()
         {
             Name = "",
         };

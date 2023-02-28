@@ -14,7 +14,7 @@ public class StudentService : IStudentService
         _studentRepository = studentRepository;
     }
 
-    public async Task<Student> CreateAsync(IStudentService.CreateRequest request)
+    public async Task<Student> CreateAsync(IStudentService.CreateStudentRequest request)
     {
         if (string.IsNullOrEmpty(request.Name))
         {

@@ -41,7 +41,7 @@ public class StudentsController : ControllerBase
 
     [HttpPost("")]
     public async Task<ActionResult<Student>> PostStudentAsync(
-        IStudentService.CreateRequest request)
+        IStudentService.CreateStudentRequest request)
     {
         try
         {

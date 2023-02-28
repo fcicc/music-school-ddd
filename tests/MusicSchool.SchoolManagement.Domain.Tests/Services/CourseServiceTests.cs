@@ -23,7 +23,7 @@ public class CourseServiceTests
     [Fact]
     public async Task CreateAsync_WithValidName_ReturnsNewCourse()
     {
-        ICourseService.CreateRequest request = new()
+        ICourseService.CreateCourseRequest request = new()
         {
             Name = "Técnica Vocal",
         };
@@ -45,7 +45,7 @@ public class CourseServiceTests
     [Fact]
     public async Task CreateAsync_WithExistingName_ThrowsDomainException()
     {
-        ICourseService.CreateRequest request = new()
+        ICourseService.CreateCourseRequest request = new()
         {
             Name = "Técnica Vocal",
         };
@@ -75,7 +75,7 @@ public class CourseServiceTests
     [Fact]
     public async Task CreateAsync_WithEmptyName_ThrowsDomainException()
     {
-        ICourseService.CreateRequest request = new()
+        ICourseService.CreateCourseRequest request = new()
         {
             Name = "",
         };

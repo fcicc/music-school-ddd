@@ -14,7 +14,7 @@ public class CourseService : ICourseService
         _courseRepository = courseRepository;
     }
 
-    public async Task<Course> CreateAsync(ICourseService.CreateRequest request)
+    public async Task<Course> CreateAsync(ICourseService.CreateCourseRequest request)
     {
         if (string.IsNullOrEmpty(request.Name))
         {
