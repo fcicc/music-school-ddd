@@ -3,6 +3,8 @@ using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
+using MusicSchool.SchoolManagement.Domain.Specifications;
+using MusicSchool.SchoolManagement.Domain.ValueObjects;
 
 namespace MusicSchool.SchoolManagement.Api.Controllers;
 
@@ -11,20 +13,35 @@ namespace MusicSchool.SchoolManagement.Api.Controllers;
 public class StudentsController : ControllerBase
 {
     private readonly IRepository<Student> _studentRepository;
+    private readonly IRepository<Enrollment> _enrollmentRepository;
     private readonly IStudentService _studentService;
 
     public StudentsController(
         IRepository<Student> studentRepository,
+        IRepository<Enrollment> enrollmentRepository,
         IStudentService studentService)
     {
         _studentRepository = studentRepository;
+        _enrollmentRepository = enrollmentRepository;
         _studentService = studentService;
     }
 
     [HttpGet("")]
-    public Task<List<Student>> GetStudentsAsync()
+    public Task<List<Student>> GetStudentsAsync([FromQuery] bool activeOnly = false)
     {
-        return _studentRepository.FindAsync();
+        List<ISpecification<Student>> specifications = new();
+
+        if (activeOnly)
+        {
+            specifications.Add(
+                new ActiveStudentSpecification(
+                    new DateMonthOnly(DateTime.Now),
+                    _enrollmentRepository.AsQueryable()
+                )
+            );
+        }
+
+        return _studentRepository.FindAsync(specifications.ToArray());
     }
 
     [HttpGet("{id:guid}")]

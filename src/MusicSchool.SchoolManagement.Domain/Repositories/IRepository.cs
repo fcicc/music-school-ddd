@@ -10,4 +10,6 @@ public interface IRepository<TEntity> where TEntity : IAggregateRoot
     Task<List<TEntity>> FindAsync(params ISpecification<TEntity>[] specifications);
 
     Task AddAsync(TEntity entity);
+
+    IQueryable<TEntity> AsQueryable();
 }

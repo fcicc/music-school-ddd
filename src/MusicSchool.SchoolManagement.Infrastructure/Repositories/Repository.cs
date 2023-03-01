@@ -40,4 +40,9 @@ public class Repository<TEntity> : IRepository<TEntity>
         _context.Set<TEntity>().Add(entity);
         return _context.SaveChangesAsync();
     }
+
+    public IQueryable<TEntity> AsQueryable()
+    {
+        return _context.Set<TEntity>();
+    }
 }
