@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess.Configuration;
 
 namespace MusicSchool.SchoolManagement.Infrastructure.DataAccess;
