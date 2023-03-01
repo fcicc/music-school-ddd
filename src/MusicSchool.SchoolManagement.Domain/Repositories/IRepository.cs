@@ -7,9 +7,7 @@ public interface IRepository<TEntity> where TEntity : IAggregateRoot
 {
     Task<TEntity?> FindOneAsync(Guid id);
 
-    Task<List<TEntity>> FindAsync();
-
-    Task<List<TEntity>> FindAsync(ISpecification<TEntity> specification);
+    Task<List<TEntity>> FindAsync(params ISpecification<TEntity>[] specifications);
 
     Task AddAsync(TEntity entity);
 }

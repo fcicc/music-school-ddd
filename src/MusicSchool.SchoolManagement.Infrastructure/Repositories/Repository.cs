@@ -23,17 +23,16 @@ public class Repository<TEntity> : IRepository<TEntity>
             .FirstOrDefaultAsync();
     }
 
-    public Task<List<TEntity>> FindAsync()
+    public Task<List<TEntity>> FindAsync(params ISpecification<TEntity>[] specifications)
     {
-        return _context.Set<TEntity>()
-            .ToListAsync();
-    }
+        IQueryable<TEntity> queryable = _context.Set<TEntity>();
 
-    public Task<List<TEntity>> FindAsync(ISpecification<TEntity> specification)
-    {
-        return _context.Set<TEntity>()
-            .Where(specification.AsPredicate())
-            .ToListAsync();
+        foreach (ISpecification<TEntity> specification in specifications)
+        {
+            queryable = queryable.Where(specification.AsPredicate());
+        }
+
+        return queryable.ToListAsync();
     }
 
     public Task AddAsync(TEntity entity)
