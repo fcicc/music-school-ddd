@@ -1,6 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using MusicSchool.Finance.Infrastructure.DataAccess;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<FinanceContext>(options =>
+{
+    options.UseMySQL(
+        builder.Configuration.GetConnectionString("Default"),
+        b => b.MigrationsAssembly("MusicSchool.Finance.Api")
+    );
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
