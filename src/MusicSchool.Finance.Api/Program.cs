@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using MusicSchool.Finance.Domain.Entities;
+using MusicSchool.Finance.Domain.Repositories;
 using MusicSchool.Finance.Infrastructure.DataAccess;
+using MusicSchool.Finance.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,8 @@ builder.Services.AddDbContext<FinanceContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IRepository<Invoice>, InvoiceRepository>();
 
 var app = builder.Build();
 
