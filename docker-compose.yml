@@ -9,6 +9,14 @@ services:
     ports:
       - 3306:3306
 
+  finance_db:
+    image: mysql:8.0.31
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: finance
+    ports:
+      - 3307:3306
+
   adminer:
     image: adminer:4.8.1
     ports:
