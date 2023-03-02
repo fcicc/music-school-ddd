@@ -6,7 +6,7 @@ using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
 
 namespace MusicSchool.SchoolManagement.Infrastructure.Repositories;
 
-public class Repository<TEntity> : IRepository<TEntity>
+public abstract class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class, IAggregateRoot
 {
     private readonly SchoolManagementContext _context;
@@ -18,14 +18,14 @@ public class Repository<TEntity> : IRepository<TEntity>
 
     public Task<TEntity?> FindOneAsync(Guid id)
     {
-        return _context.Set<TEntity>()
+        return AsQueryable()
             .Where(s => s.Id == id)
             .FirstOrDefaultAsync();
     }
 
     public Task<List<TEntity>> FindAsync(params ISpecification<TEntity>[] specifications)
     {
-        IQueryable<TEntity> queryable = _context.Set<TEntity>();
+        IQueryable<TEntity> queryable = AsQueryable();
 
         foreach (ISpecification<TEntity> specification in specifications)
         {
@@ -41,7 +41,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         return _context.SaveChangesAsync();
     }
 
-    public IQueryable<TEntity> AsQueryable()
+    public virtual IQueryable<TEntity> AsQueryable()
     {
         return _context.Set<TEntity>();
     }
