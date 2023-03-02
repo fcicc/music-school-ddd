@@ -26,9 +26,19 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
+                    b.Property<string>("Month")
+                        .IsRequired()
+                        .HasColumnType("char(7)")
+                        .HasColumnName("month");
+
                     b.Property<Guid>("StudentId")
                         .HasColumnType("char(36)")
                         .HasColumnName("student_id");
+
+                    b.Property<string>("StudentName")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("student_name");
 
                     b.Property<decimal>("TotalValue")
                         .HasColumnType("decimal(18,2)")
@@ -48,6 +58,15 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                     b.Property<Guid>("EnrollmentId")
                         .HasColumnType("char(36)")
                         .HasColumnName("enrollment_id");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("course_id");
+
+                    b.Property<string>("CourseName")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("course_name");
 
                     b.Property<decimal>("Value")
                         .HasColumnType("decimal(18,2)")

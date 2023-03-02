@@ -15,6 +15,8 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                 {
                     id = table.Column<Guid>(type: "char(36)", nullable: false),
                     student_id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    student_name = table.Column<string>(type: "longtext", nullable: false),
+                    month = table.Column<string>(type: "char(7)", nullable: false),
                     total_value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -28,6 +30,8 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                 {
                     enrollment_id = table.Column<Guid>(type: "char(36)", nullable: false),
                     invoice_id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    course_id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    course_name = table.Column<string>(type: "longtext", nullable: false),
                     value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>

@@ -22,6 +22,10 @@ internal class InvoiceItemConfiguration : IEntityTypeConfiguration<InvoiceItem>
         builder.Property(InvoiceIdProperty).HasColumnName("invoice_id");
         builder.Property(i => i.EnrollmentId).HasColumnName("enrollment_id");
 
+        builder.Property(i => i.CourseId).HasColumnName("course_id");
+
+        builder.Property(i => i.CourseName).HasColumnName("course_name").IsRequired();
+
         builder.Property(i => i.Value).HasColumnName("value")
             .HasConversion(a => a.Value, v => new BrlAmount(v));
     }

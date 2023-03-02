@@ -16,6 +16,15 @@ internal class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
 
         builder.Property(i => i.StudentId).HasColumnName("student_id");
 
+        builder.Property(i => i.StudentName).HasColumnName("student_name").IsRequired();
+
+        builder.Property(i => i.Month).HasColumnName("month")
+            .HasColumnType("char(7)")
+            .HasConversion(
+                m => m.ToString(),
+                v => DateMonthOnly.Parse(v)
+            );
+
         builder.Property(i => i.TotalValue).HasColumnName("total_value")
             .HasConversion(a => a.Value, v => new BrlAmount(v));
     }

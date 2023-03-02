@@ -27,15 +27,15 @@ internal class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
         builder.Property(e => e.StartMonth).HasColumnName("start_month")
             .HasColumnType("char(7)")
             .HasConversion(
-                d => d.ToString(),
-                d => DateMonthOnly.Parse(d)
+                m => m.ToString(),
+                v => DateMonthOnly.Parse(v)
             );
 
         builder.Property(e => e.EndMonth).HasColumnName("end_month")
             .HasColumnType("char(7)")
             .HasConversion(
-                d => d.ToString(),
-                d => DateMonthOnly.Parse(d)
+                m => m.ToString(),
+                v => DateMonthOnly.Parse(v)
             );
 
         builder.Property(e => e.MonthlyBillingValue).HasColumnName("monthly_billing_value")
