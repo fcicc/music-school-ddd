@@ -3,6 +3,7 @@ using MusicSchool.Finance.Domain.Entities;
 using MusicSchool.Finance.Domain.Exceptions;
 using MusicSchool.Finance.Domain.External.SchoolManagement;
 using MusicSchool.Finance.Domain.External.SchoolManagement.Models;
+using MusicSchool.Finance.Domain.Repositories;
 using MusicSchool.Finance.Domain.Services;
 using MusicSchool.Finance.Domain.ValueObjects;
 
@@ -11,14 +12,19 @@ namespace MusicSchool.Finance.Domain.Tests.Services;
 public class InvoiceServiceTests
 {
     private readonly Mock<ISchoolManagementClient> _schoolManagementClientMock;
+    private readonly Mock<IRepository<Invoice>> _invoiceRepositoryMock;
 
     private readonly InvoiceService _sut;
 
     public InvoiceServiceTests()
     {
         _schoolManagementClientMock = new();
+        _invoiceRepositoryMock = new();
 
-        _sut = new(_schoolManagementClientMock.Object);
+        _sut = new(
+            _schoolManagementClientMock.Object,
+            _invoiceRepositoryMock.Object
+        );
     }
 
     [Fact]
@@ -169,6 +175,8 @@ public class InvoiceServiceTests
                 Assert.Equal(invoice.Items.Sum(i => i.Value), (decimal)invoice.TotalValue);
             }
         );
+
+        _invoiceRepositoryMock.Verify(r => r.AddRangeAsync(invoices.ToArray()), Times.Once);
     }
 
     [Fact]
@@ -353,6 +361,8 @@ public class InvoiceServiceTests
                 Assert.Equal(invoice.Items.Sum(i => i.Value), (decimal)invoice.TotalValue);
             }
         );
+
+        _invoiceRepositoryMock.Verify(r => r.AddRangeAsync(invoices.ToArray()), Times.Once);
     }
 
     [Fact]
@@ -372,6 +382,8 @@ public class InvoiceServiceTests
         );
 
         Assert.Equal("Student not found.", exception.Message);
+
+        _invoiceRepositoryMock.Verify(r => r.AddRangeAsync(It.IsAny<Invoice[]>()), Times.Never);
     }
 
     [Fact]
@@ -416,5 +428,7 @@ public class InvoiceServiceTests
             );
 
         Assert.Equal("Unexpected situation: course not found for enrollment.", exception.Message);
+
+        _invoiceRepositoryMock.Verify(r => r.AddRangeAsync(It.IsAny<Invoice[]>()), Times.Never);
     }
 }

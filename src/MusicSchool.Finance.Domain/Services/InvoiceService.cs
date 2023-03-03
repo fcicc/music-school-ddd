@@ -2,6 +2,7 @@ using MusicSchool.Finance.Domain.Entities;
 using MusicSchool.Finance.Domain.Exceptions;
 using MusicSchool.Finance.Domain.External.SchoolManagement;
 using MusicSchool.Finance.Domain.External.SchoolManagement.Models;
+using MusicSchool.Finance.Domain.Repositories;
 using MusicSchool.Finance.Domain.ValueObjects;
 
 namespace MusicSchool.Finance.Domain.Services;
@@ -9,10 +10,14 @@ namespace MusicSchool.Finance.Domain.Services;
 public class InvoiceService : IInvoiceService
 {
     private readonly ISchoolManagementClient _schoolManagementClient;
+    private readonly IRepository<Invoice> _invoiceRepository;
 
-    public InvoiceService(ISchoolManagementClient schoolManagementClient)
+    public InvoiceService(
+        ISchoolManagementClient schoolManagementClient,
+        IRepository<Invoice> invoiceRepository)
     {
         _schoolManagementClient = schoolManagementClient;
+        _invoiceRepository = invoiceRepository;
     }
 
     public async Task<List<Invoice>> GenerateInvoicesForStudentAsync(
@@ -92,7 +97,7 @@ public class InvoiceService : IInvoiceService
         // Order invoices by month
         invoices = invoices.OrderBy(i => i.Month).ToList();
 
-        // TODO: insert invoices into the database
+        await _invoiceRepository.AddRangeAsync(invoices.ToArray());
 
         return invoices;
     }

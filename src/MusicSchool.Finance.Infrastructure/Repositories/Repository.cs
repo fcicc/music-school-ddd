@@ -41,6 +41,12 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
         return _context.SaveChangesAsync();
     }
 
+    public Task AddRangeAsync(params TEntity[] entities)
+    {
+        _context.Set<TEntity>().AddRange(entities);
+        return _context.SaveChangesAsync();
+    }
+
     public virtual IQueryable<TEntity> AsQueryable()
     {
         return _context.Set<TEntity>();

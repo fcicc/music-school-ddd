@@ -11,5 +11,7 @@ public interface IRepository<TEntity> where TEntity : IAggregateRoot
 
     Task AddAsync(TEntity entity);
 
+    Task AddRangeAsync(params TEntity[] entities);
+
     IQueryable<TEntity> AsQueryable();
 }
