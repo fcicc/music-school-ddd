@@ -13,6 +13,7 @@ public class InvoiceRepository : Repository<Invoice>
 
     public override IQueryable<Invoice> AsQueryable()
     {
-        return base.AsQueryable().Include(i => i.Items);
+        return base.AsQueryable().Include(i => i.Items)
+            .OrderBy(i => i.Month).ThenBy(i => i.StudentName);
     }
 }
