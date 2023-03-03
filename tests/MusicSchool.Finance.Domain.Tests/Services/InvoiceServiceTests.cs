@@ -366,6 +366,35 @@ public class InvoiceServiceTests
     }
 
     [Fact]
+    public async Task GenerateInvoicesForStudentAsync_WithNoEnrollment_DoesNotGenerateInvoices()
+    {
+        StudentResponse student = new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Luiz Melodia",
+        };
+
+        _schoolManagementClientMock
+            .Setup(c => c.GetStudentAsync(student.Id))
+            .ReturnsAsync(student);
+
+        _schoolManagementClientMock
+            .Setup(c => c.GetEnrollmentsAsync(student.Id))
+            .ReturnsAsync(new List<EnrollmentResponse> { });
+
+        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        {
+            StudentId = student.Id,
+        };
+
+        List<Invoice> invoices = await _sut.GenerateInvoicesForStudentAsync(request);
+
+        Assert.Empty(invoices);
+
+        _invoiceRepositoryMock.Verify(r => r.AddRangeAsync(It.IsAny<Invoice[]>()), Times.Never);
+    }
+
+    [Fact]
     public async Task GenerateInvoicesForStudentAsync_WithNonExistingStudent_ThrowsDomainException()
     {
         IInvoiceService.GenerateInvoicesForStudentRequest request = new()

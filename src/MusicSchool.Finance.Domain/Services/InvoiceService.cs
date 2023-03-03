@@ -94,10 +94,13 @@ public class InvoiceService : IInvoiceService
             });
         }
 
-        // Order invoices by month
-        invoices = invoices.OrderBy(i => i.Month).ToList();
+        if (invoices.Count > 0)
+        {
+            // Order invoices by month
+            invoices = invoices.OrderBy(i => i.Month).ToList();
 
-        await _invoiceRepository.AddRangeAsync(invoices.ToArray());
+            await _invoiceRepository.AddRangeAsync(invoices.ToArray());
+        }
 
         return invoices;
     }
