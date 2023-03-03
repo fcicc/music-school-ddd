@@ -11,7 +11,7 @@ using MusicSchool.Finance.Infrastructure.DataAccess;
 namespace MusicSchool.Finance.Api.Design.Migrations
 {
     [DbContext(typeof(FinanceContext))]
-    [Migration("20230302122633_CreateAllTables")]
+    [Migration("20230303205928_CreateAllTables")]
     partial class CreateAllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

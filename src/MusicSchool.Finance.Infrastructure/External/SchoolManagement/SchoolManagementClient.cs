@@ -44,7 +44,7 @@ public class SchoolManagementClient : ISchoolManagementClient
             );
     }
 
-    public async Task<IReadOnlyList<EnrollmentResponse>> GetEnrollmentsAsync(Guid? studentId = null)
+    public async Task<List<EnrollmentResponse>> GetEnrollmentsAsync(Guid? studentId = null)
     {
         List<string> queryParams = new();
 

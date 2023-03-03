@@ -29,7 +29,7 @@ public class InvoiceService : IInvoiceService
             throw new DomainException("Student not found.");
         }
 
-        IReadOnlyList<EnrollmentResponse> enrollments =
+        List<EnrollmentResponse> enrollments =
             await _schoolManagementClient.GetEnrollmentsAsync(student.Id);
 
         // Group enrollments by month

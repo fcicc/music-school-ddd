@@ -14,7 +14,7 @@ public class Invoice : IAggregateRoot
 
     public DateMonthOnly Month { get; init; }
 
-    public IReadOnlyList<InvoiceItem> Items { get; init; } = new InvoiceItem[] { };
+    public List<InvoiceItem> Items { get; init; } = new();
 
     public BrlAmount TotalValue { get; init; }
 }

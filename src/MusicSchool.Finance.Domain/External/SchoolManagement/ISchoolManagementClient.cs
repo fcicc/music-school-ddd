@@ -6,7 +6,7 @@ public interface ISchoolManagementClient
 {
     Task<CourseResponse?> GetCourseAsync(Guid id);
 
-    Task<IReadOnlyList<EnrollmentResponse>> GetEnrollmentsAsync(Guid? studentId = null);
+    Task<List<EnrollmentResponse>> GetEnrollmentsAsync(Guid? studentId = null);
 
     Task<StudentResponse?> GetStudentAsync(Guid id);
 }
