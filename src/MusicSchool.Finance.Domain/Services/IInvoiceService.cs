@@ -4,5 +4,12 @@ namespace MusicSchool.Finance.Domain.Services;
 
 public interface IInvoiceService
 {
-    Task<IReadOnlyList<Invoice>> GenerateInvoicesForStudent(Guid studentId);
+    Task<List<Invoice>> GenerateInvoicesForStudentAsync(
+        GenerateInvoicesForStudentRequest request
+    );
+
+    public class GenerateInvoicesForStudentRequest
+    {
+        public Guid StudentId { get; set; }
+    }
 }

@@ -58,7 +58,12 @@ public class InvoiceServiceTests
             .Setup(c => c.GetEnrollmentsAsync(student.Id))
             .ReturnsAsync(new List<EnrollmentResponse> { enrollment });
 
-        IReadOnlyList<Invoice> invoices = await _sut.GenerateInvoicesForStudent(student.Id);
+        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        {
+            StudentId = student.Id,
+        };
+
+        List<Invoice> invoices = await _sut.GenerateInvoicesForStudentAsync(request);
 
         Assert.Collection(invoices,
             invoice =>
@@ -223,7 +228,12 @@ public class InvoiceServiceTests
             .Setup(c => c.GetEnrollmentsAsync(student.Id))
             .ReturnsAsync(new List<EnrollmentResponse> { enrollment1, enrollment2 });
 
-        IReadOnlyList<Invoice> invoices = await _sut.GenerateInvoicesForStudent(student.Id);
+        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        {
+            StudentId = student.Id,
+        };
+
+        List<Invoice> invoices = await _sut.GenerateInvoicesForStudentAsync(request);
 
         Assert.Collection(invoices,
             invoice =>
@@ -348,14 +358,17 @@ public class InvoiceServiceTests
     [Fact]
     public async Task GenerateInvoicesForStudentAsync_WithNonExistingStudent_ThrowsDomainException()
     {
-        Guid studentId = Guid.NewGuid();
+        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        {
+            StudentId = Guid.NewGuid(),
+        };
 
         _schoolManagementClientMock
-            .Setup(c => c.GetStudentAsync(studentId))
+            .Setup(c => c.GetStudentAsync(request.StudentId))
             .ReturnsAsync((StudentResponse?)null);
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.GenerateInvoicesForStudent(studentId)
+            () => _sut.GenerateInvoicesForStudentAsync(request)
         );
 
         Assert.Equal("Student not found.", exception.Message);
@@ -392,9 +405,14 @@ public class InvoiceServiceTests
             .Setup(c => c.GetCourseAsync(enrollment.CourseId))
             .ReturnsAsync((CourseResponse?)null);
 
+        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        {
+            StudentId = student.Id,
+        };
+
         InconsistentExternalStateException exception =
             await Assert.ThrowsAsync<InconsistentExternalStateException>(
-                () => _sut.GenerateInvoicesForStudent(student.Id)
+                () => _sut.GenerateInvoicesForStudentAsync(request)
             );
 
         Assert.Equal("Unexpected situation: course not found for enrollment.", exception.Message);

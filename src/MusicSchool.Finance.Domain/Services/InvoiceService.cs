@@ -15,16 +15,17 @@ public class InvoiceService : IInvoiceService
         _schoolManagementClient = schoolManagementClient;
     }
 
-    public async Task<IReadOnlyList<Invoice>> GenerateInvoicesForStudent(Guid studentId)
+    public async Task<List<Invoice>> GenerateInvoicesForStudentAsync(
+        IInvoiceService.GenerateInvoicesForStudentRequest request)
     {
-        StudentResponse? student = await _schoolManagementClient.GetStudentAsync(studentId);
+        StudentResponse? student = await _schoolManagementClient.GetStudentAsync(request.StudentId);
         if (student == null)
         {
             throw new DomainException("Student not found.");
         }
 
         IReadOnlyList<EnrollmentResponse> enrollments =
-            await _schoolManagementClient.GetEnrollmentsAsync(studentId);
+            await _schoolManagementClient.GetEnrollmentsAsync(student.Id);
 
         // Group enrollments by month
         Dictionary<DateMonthOnly, List<EnrollmentResponse>> enrollmentsByMonth =
