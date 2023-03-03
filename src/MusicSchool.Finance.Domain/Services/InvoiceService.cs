@@ -83,7 +83,7 @@ public class InvoiceService : IInvoiceService
                 StudentId = student.Id,
                 StudentName = student.Name,
                 Month = kv.Key,
-                Items = invoiceItems,
+                Items = invoiceItems.OrderBy(i => i.CourseName).ToList(),
                 TotalValue = invoiceItems.Sum(i => i.Value),
             });
         }
