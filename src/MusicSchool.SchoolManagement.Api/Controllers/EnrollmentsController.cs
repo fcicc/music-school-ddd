@@ -3,6 +3,7 @@ using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
+using MusicSchool.SchoolManagement.Domain.Specifications;
 
 namespace MusicSchool.SchoolManagement.Api.Controllers;
 
@@ -22,9 +23,18 @@ public class EnrollmentsController : ControllerBase
     }
 
     [HttpGet("")]
-    public Task<List<Enrollment>> GetEnrollmentsAsync()
+    public Task<List<Enrollment>> GetEnrollmentsAsync(Guid? studentId = null)
     {
-        return _enrollmentRepository.FindAsync();
+        List<ISpecification<Enrollment>> specifications = new();
+
+        if (studentId != null)
+        {
+            specifications.Add(
+                new EnrollmentForStudentSpecification(studentId.Value)
+            );
+        }
+
+        return _enrollmentRepository.FindAsync(specifications.ToArray());
     }
 
     [HttpGet("{id:guid}")]
