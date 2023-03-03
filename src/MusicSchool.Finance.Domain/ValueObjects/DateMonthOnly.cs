@@ -64,4 +64,9 @@ public readonly struct DateMonthOnly : IComparable<DateMonthOnly>, IEquatable<Da
         _underlyingTimestamp.ToString(StringFormat, CultureInfo.InvariantCulture);
 
     public DateTime ToDateTime() => _underlyingTimestamp;
+
+    public DateMonthOnly AddMonths(int months)
+    {
+        return new DateMonthOnly(_underlyingTimestamp.AddMonths(months));
+    }
 }

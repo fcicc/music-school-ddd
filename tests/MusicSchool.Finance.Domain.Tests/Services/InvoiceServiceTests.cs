@@ -1,7 +1,7 @@
 using Moq;
 using MusicSchool.Finance.Domain.Exceptions;
 using MusicSchool.Finance.Domain.External.SchoolManagement;
-using MusicSchool.Finance.Domain.External.SchoolManagement.Models.Response;
+using MusicSchool.Finance.Domain.External.SchoolManagement.Models;
 using MusicSchool.Finance.Domain.Services;
 
 namespace MusicSchool.Finance.Domain.Tests.Services;
@@ -26,7 +26,7 @@ public class InvoiceServiceTests
 
         _schoolManagementClientMock
             .Setup(c => c.GetStudentAsync(studentId))
-            .ReturnsAsync((Student?)null);
+            .ReturnsAsync((StudentResponse?)null);
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
             () => _sut.GenerateInvoicesForStudent(studentId)
