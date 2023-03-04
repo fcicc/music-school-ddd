@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
@@ -20,9 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IRepository<Course>, CourseRepository>();
-builder.Services.AddScoped<IRepository<Enrollment>, EnrollmentRepository>();
-builder.Services.AddScoped<IRepository<Student>, StudentRepository>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();

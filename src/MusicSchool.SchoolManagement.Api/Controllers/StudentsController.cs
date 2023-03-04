@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
@@ -29,25 +30,28 @@ public class StudentsController : ControllerBase
     [HttpGet("")]
     public Task<List<Student>> GetStudentsAsync([FromQuery] bool activeOnly = false)
     {
-        List<ISpecification<Student>> specifications = new();
+        IQueryable<Student> queryable = _studentRepository.AsQueryable();
 
         if (activeOnly)
         {
-            specifications.Add(
-                new ActiveStudentSpecification(
-                    new DateMonthOnly(DateTime.Now),
-                    _enrollmentRepository.AsQueryable()
-                )
-            );
+            queryable = queryable.WithSpecification(new ActiveStudentSpecification(
+                new DateMonthOnly(DateTime.Now),
+                _enrollmentRepository.AsQueryable()
+            ));
         }
 
-        return _studentRepository.FindAsync(specifications.ToArray());
+        return queryable
+            .OrderBy(s => s.Name)
+            .ToListAsync();
     }
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<Student>> GetStudentAsync(Guid id)
     {
-        Student? student = await _studentRepository.FindOneAsync(id);
+        Student? student = await _studentRepository
+            .AsQueryable()
+            .FirstOrDefaultAsync(s => s.Id == id);
+
         if (student == null)
         {
             return NotFound();

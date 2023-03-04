@@ -1,7 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
-using MusicSchool.SchoolManagement.Domain.Specifications;
 
 namespace MusicSchool.SchoolManagement.Domain.Services;
 
@@ -21,10 +21,11 @@ public class StudentService : IStudentService
             throw new DomainException("Student name cannot be empty.");
         }
 
-        List<Student> existingStudents = await _studentRepository.FindAsync(
-            new StudentNameSpecification(request.Name)
-        );
-        if (existingStudents.Any())
+        bool hasStudentWithName = await _studentRepository
+           .AsQueryable()
+           .AnyAsync(s => s.Name == request.Name);
+
+        if (hasStudentWithName)
         {
             throw new DomainException("Student with same name already exists.");
         }

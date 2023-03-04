@@ -1,9 +1,9 @@
+using MockQueryable.Moq;
 using Moq;
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
-using MusicSchool.SchoolManagement.Domain.Specifications;
 
 namespace MusicSchool.SchoolManagement.Domain.Tests.Services;
 
@@ -29,10 +29,8 @@ public class CourseServiceTests
         };
 
         _courseRepositoryMock
-            .Setup(r => r.FindAsync(
-                It.Is<CourseNameSpecification>(c => c.Name == request.Name)
-            ))
-            .ReturnsAsync(new List<Course>());
+            .Setup(r => r.AsQueryable())
+            .Returns(new List<Course>().BuildMock());
 
         Course course = await _sut.CreateAsync(request);
 
@@ -51,17 +49,14 @@ public class CourseServiceTests
         };
 
         _courseRepositoryMock
-            .Setup(r => r.FindAsync(
-                It.Is<CourseNameSpecification>(c => c.Name == request.Name)
-            ))
-            .ReturnsAsync(new List<Course>
+            .Setup(r => r.AsQueryable())
+            .Returns(new List<Course>
             {
                 new()
                 {
-                    Id = Guid.NewGuid(),
                     Name = request.Name,
                 },
-            });
+            }.BuildMock());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
             () => _sut.CreateAsync(request)

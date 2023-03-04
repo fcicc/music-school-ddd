@@ -1,8 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Specifications;
-using MusicSchool.SchoolManagement.Domain.ValueObjects;
 
 namespace MusicSchool.SchoolManagement.Domain.Services;
 
@@ -24,18 +24,6 @@ public class EnrollmentService : IEnrollmentService
 
     public async Task<Enrollment> EnrollAsync(IEnrollmentService.EnrollRequest request)
     {
-        Student? student = await _studentRepository.FindOneAsync(request.StudentId);
-        if (student == null)
-        {
-            throw new DomainException("Student not found.");
-        }
-
-        Course? course = await _courseRepository.FindOneAsync(request.CourseId);
-        if (course == null)
-        {
-            throw new DomainException("Course not found.");
-        }
-
         if (request.StartMonth > request.EndMonth)
         {
             throw new DomainException("Start month cannot be after end month.");
@@ -46,14 +34,35 @@ public class EnrollmentService : IEnrollmentService
             throw new DomainException("Monthly billing value cannot be less than zero.");
         }
 
-        List<Enrollment> overlappingEnrollments = await _enrollmentRepository
-            .FindAsync(new OverlappingEnrollmentSpecification(
+        bool hasStudent = await _studentRepository
+            .AsQueryable()
+            .AnyAsync(s => s.Id == request.StudentId);
+
+        if (!hasStudent)
+        {
+            throw new DomainException("Student not found.");
+        }
+
+        bool hasCourse = await _courseRepository
+            .AsQueryable()
+            .AnyAsync(c => c.Id == request.CourseId);
+
+        if (!hasCourse)
+        {
+            throw new DomainException("Course not found.");
+        }
+
+        bool hasOverlappingEnrollment = await _enrollmentRepository
+            .AsQueryable()
+            .WithSpecification(new OverlappingEnrollmentSpecification(
                 request.StudentId,
                 request.CourseId,
                 request.StartMonth,
                 request.EndMonth
-            ));
-        if (overlappingEnrollments.Any())
+            ))
+            .AnyAsync();
+
+        if (hasOverlappingEnrollment)
         {
             throw new DomainException("There already exists an enrollment that overlaps the new one.");
         }

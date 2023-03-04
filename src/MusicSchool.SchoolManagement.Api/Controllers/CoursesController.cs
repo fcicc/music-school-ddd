@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
@@ -24,13 +25,19 @@ public class CoursesController : ControllerBase
     [HttpGet("")]
     public Task<List<Course>> GetCoursesAsync()
     {
-        return _courseRepository.FindAsync();
+        return _courseRepository
+            .AsQueryable()
+            .OrderBy(c => c.Name)
+            .ToListAsync();
     }
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<Course>> GetCourseAsync(Guid id)
     {
-        Course? course = await _courseRepository.FindOneAsync(id);
+        Course? course = await _courseRepository
+            .AsQueryable()
+            .FirstOrDefaultAsync(c => c.Id == id);
+
         if (course == null)
         {
             return NotFound();

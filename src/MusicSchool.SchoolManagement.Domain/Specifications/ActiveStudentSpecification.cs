@@ -6,22 +6,21 @@ namespace MusicSchool.SchoolManagement.Domain.Specifications;
 
 public class ActiveStudentSpecification : ISpecification<Student>
 {
+    private readonly DateMonthOnly _atMonth;
+    public readonly IQueryable<Enrollment> _enrollments;
+
     public ActiveStudentSpecification(DateMonthOnly atMonth, IQueryable<Enrollment> enrollments)
     {
-        AtMonth = atMonth;
-        Enrollments = enrollments;
+        _atMonth = atMonth;
+        _enrollments = enrollments;
     }
-
-    public DateMonthOnly AtMonth { get; }
-
-    public IQueryable<Enrollment> Enrollments { get; }
 
     public Expression<Func<Student, bool>> AsPredicate()
     {
-        return s => Enrollments.Any(
+        return s => _enrollments.Any(
             e => e.StudentId == s.Id &&
-            e.StartMonth <= AtMonth &&
-            e.EndMonth >= AtMonth
+            e.StartMonth <= _atMonth &&
+            e.EndMonth >= _atMonth
         );
     }
 }

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MusicSchool.SchoolManagement.Domain.Entities;
 using MusicSchool.SchoolManagement.Domain.Exceptions;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
-using MusicSchool.SchoolManagement.Domain.Specifications;
 
 namespace MusicSchool.SchoolManagement.Api.Controllers;
 
@@ -25,22 +25,25 @@ public class EnrollmentsController : ControllerBase
     [HttpGet("")]
     public Task<List<Enrollment>> GetEnrollmentsAsync(Guid? studentId = null)
     {
-        List<ISpecification<Enrollment>> specifications = new();
+        IQueryable<Enrollment> queryable = _enrollmentRepository.AsQueryable();
 
         if (studentId != null)
         {
-            specifications.Add(
-                new EnrollmentForStudentSpecification(studentId.Value)
-            );
+            queryable = queryable.Where(e => e.StudentId == studentId.Value);
         }
 
-        return _enrollmentRepository.FindAsync(specifications.ToArray());
+        return queryable
+            .OrderBy(s => s.StartMonth).ThenBy(s => s.EndMonth)
+            .ToListAsync();
     }
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<Enrollment>> GetEnrollmentAsync(Guid id)
     {
-        Enrollment? enrollment = await _enrollmentRepository.FindOneAsync(id);
+        Enrollment? enrollment = await _enrollmentRepository
+            .AsQueryable()
+            .FirstOrDefaultAsync(e => e.Id == id);
+
         if (enrollment == null)
         {
             return NotFound();
