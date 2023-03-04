@@ -4,6 +4,7 @@ using MusicSchool.Finance.Domain.Repositories;
 using MusicSchool.Finance.Domain.Services;
 using MusicSchool.Finance.Infrastructure.DataAccess;
 using MusicSchool.Finance.Infrastructure.External.SchoolManagement;
+using MusicSchool.Finance.Infrastructure.Json;
 using MusicSchool.Finance.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +18,13 @@ builder.Services.AddDbContext<FinanceContext>(options =>
     );
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(
+        options => JsonConfigurationHelper.ConfigureJsonSerializerOptions(
+            options.JsonSerializerOptions
+        )
+    );
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

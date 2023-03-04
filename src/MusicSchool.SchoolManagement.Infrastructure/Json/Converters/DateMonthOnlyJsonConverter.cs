@@ -1,7 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using MusicSchool.SchoolManagement.Domain.ValueObjects;
 
-namespace MusicSchool.Finance.Domain.ValueObjects.Converters;
+namespace MusicSchool.SchoolManagement.Infrastructure.Json.Converters;
 
 public class DateMonthOnlyJsonConverter : JsonConverter<DateMonthOnly>
 {

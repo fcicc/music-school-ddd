@@ -1,11 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Text.Json.Serialization;
-using MusicSchool.Finance.Domain.ValueObjects.Converters;
 
 namespace MusicSchool.Finance.Domain.ValueObjects;
 
-[JsonConverter(typeof(DateMonthOnlyJsonConverter))]
 public readonly struct DateMonthOnly : IComparable<DateMonthOnly>, IEquatable<DateMonthOnly>
 {
     private const string StringFormat = "yyyy-MM";

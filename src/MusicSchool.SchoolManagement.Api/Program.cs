@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MusicSchool.SchoolManagement.Domain.Repositories;
 using MusicSchool.SchoolManagement.Domain.Services;
 using MusicSchool.SchoolManagement.Infrastructure.DataAccess;
+using MusicSchool.SchoolManagement.Infrastructure.Json;
 using MusicSchool.SchoolManagement.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,13 @@ builder.Services.AddDbContext<SchoolManagementContext>(options =>
     );
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(
+        options => JsonConfigurationHelper.ConfigureJsonSerializerOptions(
+            options.JsonSerializerOptions
+        )
+    );
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
