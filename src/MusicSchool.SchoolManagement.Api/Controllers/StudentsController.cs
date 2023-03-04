@@ -35,7 +35,7 @@ public class StudentsController : ControllerBase
         if (activeOnly)
         {
             queryable = queryable.WithSpecification(new ActiveStudentSpecification(
-                new DateMonthOnly(DateTime.Now),
+                DateMonthOnly.Current,
                 _enrollmentRepository.AsQueryable()
             ));
         }

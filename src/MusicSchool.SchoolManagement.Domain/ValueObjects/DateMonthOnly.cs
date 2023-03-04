@@ -23,6 +23,8 @@ public readonly struct DateMonthOnly : IComparable<DateMonthOnly>, IEquatable<Da
 
     public int Month => _underlyingTimestamp.Month;
 
+    public static DateMonthOnly Current => new DateMonthOnly(DateTime.Today);
+
     public static DateMonthOnly Parse(string s)
     {
         return new(DateTime.ParseExact(s, StringFormat, CultureInfo.InvariantCulture));
