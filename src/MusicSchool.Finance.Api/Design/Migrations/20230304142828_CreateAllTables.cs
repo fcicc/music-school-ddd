@@ -44,12 +44,39 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "invoice_payments",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    invoice_id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_invoice_payments", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_invoice_payments_invoices_invoice_id",
+                        column: x => x.invoice_id,
+                        principalTable: "invoices",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_invoice_payments_invoice_id",
+                table: "invoice_payments",
+                column: "invoice_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "invoice_items");
+
+            migrationBuilder.DropTable(
+                name: "invoice_payments");
 
             migrationBuilder.DropTable(
                 name: "invoices");

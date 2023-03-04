@@ -77,10 +77,41 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                     b.ToTable("invoice_items", (string)null);
                 });
 
+            modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.InvoicePayment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("invoice_id");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("invoice_payments", (string)null);
+                });
+
             modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.InvoiceItem", b =>
                 {
                     b.HasOne("MusicSchool.Finance.Domain.Entities.Invoice", null)
                         .WithMany("Items")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.InvoicePayment", b =>
+                {
+                    b.HasOne("MusicSchool.Finance.Domain.Entities.Invoice", null)
+                        .WithMany()
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
