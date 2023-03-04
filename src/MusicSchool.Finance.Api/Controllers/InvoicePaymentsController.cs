@@ -48,11 +48,11 @@ public class InvoicePaymentsController : ControllerBase
 
     [HttpPost("")]
     public async Task<ActionResult<InvoicePayment>> PostInvoicePaymentAsync(
-        IInvoicePaymentService.PayInvoiceRequest request)
+        IInvoicePaymentService.CreateInvoicePaymentRequest request)
     {
         try
         {
-            return await _invoicePaymentService.PayInvoiceAsync(request);
+            return await _invoicePaymentService.CreateAsync(request);
         }
         catch (DomainException e)
         {

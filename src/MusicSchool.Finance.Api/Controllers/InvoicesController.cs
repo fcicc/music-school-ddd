@@ -50,11 +50,11 @@ public class InvoicesController : ControllerBase
 
     [HttpPost("generate")]
     public async Task<ActionResult<List<Invoice>>> PostGenerateInvoicesAsync(
-        IInvoiceService.GenerateInvoicesForStudentRequest request)
+        IInvoiceService.GenerateInvoicesRequest request)
     {
         try
         {
-            return await _invoiceService.GenerateInvoicesForStudentAsync(request);
+            return await _invoiceService.GenerateInvoicesAsync(request);
         }
         catch (DomainException e)
         {

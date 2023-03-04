@@ -54,11 +54,11 @@ public class EnrollmentsController : ControllerBase
 
     [HttpPost("")]
     public async Task<ActionResult<Enrollment>> PostEnrollmentAsync(
-        IEnrollmentService.EnrollRequest request)
+        IEnrollmentService.CreateEnrollmentRequest request)
     {
         try
         {
-            return await _enrollmentService.EnrollAsync(request);
+            return await _enrollmentService.CreateAsync(request);
         }
         catch (DomainException e)
         {

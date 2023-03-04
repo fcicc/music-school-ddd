@@ -5,9 +5,9 @@ namespace MusicSchool.SchoolManagement.Domain.Services;
 
 public interface IEnrollmentService
 {
-    Task<Enrollment> EnrollAsync(EnrollRequest request);
+    Task<Enrollment> CreateAsync(CreateEnrollmentRequest request);
 
-    public class EnrollRequest
+    public class CreateEnrollmentRequest
     {
         public Guid StudentId { get; init; }
 

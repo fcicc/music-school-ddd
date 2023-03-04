@@ -29,9 +29,9 @@ public class EnrollmentServiceTests
     }
 
     [Fact]
-    public async Task EnrollAsync_WithValidInput_AddsEnrollment()
+    public async Task CreateAsync_WithValidInput_AddsEnrollment()
     {
-        IEnrollmentService.EnrollRequest request = new()
+        IEnrollmentService.CreateEnrollmentRequest request = new()
         {
             StudentId = Guid.NewGuid(),
             CourseId = Guid.NewGuid(),
@@ -64,7 +64,7 @@ public class EnrollmentServiceTests
             .Setup(r => r.AsQueryable())
             .Returns(new List<Enrollment>().BuildMock());
 
-        Enrollment enrollment = await _sut.EnrollAsync(request);
+        Enrollment enrollment = await _sut.CreateAsync(request);
 
         Assert.NotEqual(Guid.Empty, enrollment.Id);
         Assert.Equal(request.StudentId, enrollment.StudentId);
@@ -77,9 +77,9 @@ public class EnrollmentServiceTests
     }
 
     [Fact]
-    public async Task EnrollAsync_WithInvalidPeriod_ThrowsDomainException()
+    public async Task CreateAsync_WithInvalidPeriod_ThrowsDomainException()
     {
-        IEnrollmentService.EnrollRequest request = new()
+        IEnrollmentService.CreateEnrollmentRequest request = new()
         {
             StudentId = Guid.NewGuid(),
             CourseId = Guid.NewGuid(),
@@ -89,7 +89,7 @@ public class EnrollmentServiceTests
         };
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(request)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Start month cannot be after end month.", exception.Message);
@@ -98,9 +98,9 @@ public class EnrollmentServiceTests
     }
 
     [Fact]
-    public async Task EnrollAsync_WithInvalidMonthlyBillingValue_ThrowsDomainException()
+    public async Task CreateAsync_WithInvalidMonthlyBillingValue_ThrowsDomainException()
     {
-        IEnrollmentService.EnrollRequest request = new()
+        IEnrollmentService.CreateEnrollmentRequest request = new()
         {
             StudentId = Guid.NewGuid(),
             CourseId = Guid.NewGuid(),
@@ -110,7 +110,7 @@ public class EnrollmentServiceTests
         };
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(request)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Monthly billing value cannot be less than zero.", exception.Message);
@@ -119,9 +119,9 @@ public class EnrollmentServiceTests
     }
 
     [Fact]
-    public async Task EnrollAsync_WithNonExistingStudent_ThrowsDomainException()
+    public async Task CreateAsync_WithNonExistingStudent_ThrowsDomainException()
     {
-        IEnrollmentService.EnrollRequest request = new()
+        IEnrollmentService.CreateEnrollmentRequest request = new()
         {
             StudentId = Guid.NewGuid(),
             CourseId = Guid.NewGuid(),
@@ -135,7 +135,7 @@ public class EnrollmentServiceTests
             .Returns(new List<Student>().BuildMock());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(request)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Student not found.", exception.Message);
@@ -144,9 +144,9 @@ public class EnrollmentServiceTests
     }
 
     [Fact]
-    public async Task EnrollAsync_WithNonExistingCourse_ThrowsDomainException()
+    public async Task CreateAsync_WithNonExistingCourse_ThrowsDomainException()
     {
-        IEnrollmentService.EnrollRequest request = new()
+        IEnrollmentService.CreateEnrollmentRequest request = new()
         {
             StudentId = Guid.NewGuid(),
             CourseId = Guid.NewGuid(),
@@ -170,7 +170,7 @@ public class EnrollmentServiceTests
             .Returns(new List<Course>().BuildMock());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(request)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Course not found.", exception.Message);
@@ -179,9 +179,9 @@ public class EnrollmentServiceTests
     }
 
     [Fact]
-    public async Task EnrollAsync_WithOverlappingEnrollment_ThrowsDomainException()
+    public async Task CreateAsync_WithOverlappingEnrollment_ThrowsDomainException()
     {
-        IEnrollmentService.EnrollRequest request = new()
+        IEnrollmentService.CreateEnrollmentRequest request = new()
         {
             StudentId = Guid.NewGuid(),
             CourseId = Guid.NewGuid(),
@@ -225,7 +225,7 @@ public class EnrollmentServiceTests
             }.BuildMock());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.EnrollAsync(request)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("There already exists an enrollment that overlaps the new one.", exception.Message);

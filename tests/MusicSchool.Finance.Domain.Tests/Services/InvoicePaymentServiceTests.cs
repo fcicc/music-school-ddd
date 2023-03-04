@@ -26,9 +26,9 @@ public class InvoicePaymentServiceTests
     }
 
     [Fact]
-    public async Task PayInvoiceAsync_WithValidInput_GeneratesInvoicePayment()
+    public async Task CreateAsync_WithValidInput_GeneratesInvoicePayment()
     {
-        IInvoicePaymentService.PayInvoiceRequest request = new()
+        IInvoicePaymentService.CreateInvoicePaymentRequest request = new()
         {
             InvoiceId = Guid.NewGuid(),
             Date = new DateOnly(2023, 3, 4),
@@ -49,7 +49,7 @@ public class InvoicePaymentServiceTests
             .Setup(r => r.AsQueryable())
             .Returns(new List<InvoicePayment>().BuildMock());
 
-        InvoicePayment invoicePayment = await _sut.PayInvoiceAsync(request);
+        InvoicePayment invoicePayment = await _sut.CreateAsync(request);
 
         Assert.NotEqual(Guid.Empty, invoicePayment.Id);
         Assert.Equal(request.Date, invoicePayment.Date);
@@ -60,9 +60,9 @@ public class InvoicePaymentServiceTests
     }
 
     [Fact]
-    public async Task PayInvoiceAsync_WithInvalidValue_ThrowsDomainException()
+    public async Task CreateAsync_WithInvalidValue_ThrowsDomainException()
     {
-        IInvoicePaymentService.PayInvoiceRequest request = new()
+        IInvoicePaymentService.CreateInvoicePaymentRequest request = new()
         {
             InvoiceId = Guid.NewGuid(),
             Date = new DateOnly(2023, 3, 4),
@@ -70,7 +70,7 @@ public class InvoicePaymentServiceTests
         };
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.PayInvoiceAsync(request)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Value cannot be less than zero.", exception.Message);
@@ -79,9 +79,9 @@ public class InvoicePaymentServiceTests
     }
 
     [Fact]
-    public async Task PayInvoiceAsync_WithNonExistingInvoice_ThrowsDomainException()
+    public async Task CreateAsync_WithNonExistingInvoice_ThrowsDomainException()
     {
-        IInvoicePaymentService.PayInvoiceRequest request = new()
+        IInvoicePaymentService.CreateInvoicePaymentRequest request = new()
         {
             InvoiceId = Guid.NewGuid(),
             Date = new DateOnly(2023, 3, 4),
@@ -93,7 +93,7 @@ public class InvoicePaymentServiceTests
             .Returns(new List<Invoice>().BuildMock());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.PayInvoiceAsync(request)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("Invoice not found.", exception.Message);
@@ -102,9 +102,9 @@ public class InvoicePaymentServiceTests
     }
 
     [Fact]
-    public async Task PayInvoiceAsync_WithPaidInvoice_ThrowsDomainException()
+    public async Task CreateAsync_WithPaidInvoice_ThrowsDomainException()
     {
-        IInvoicePaymentService.PayInvoiceRequest request = new()
+        IInvoicePaymentService.CreateInvoicePaymentRequest request = new()
         {
             InvoiceId = Guid.NewGuid(),
             Date = new DateOnly(2023, 3, 4),
@@ -132,7 +132,7 @@ public class InvoicePaymentServiceTests
             }.BuildMock());
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.PayInvoiceAsync(request)
+            () => _sut.CreateAsync(request)
         );
 
         Assert.Equal("This invoice is already paid.", exception.Message);

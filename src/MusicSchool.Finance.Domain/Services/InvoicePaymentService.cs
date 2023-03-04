@@ -18,8 +18,8 @@ public class InvoicePaymentService : IInvoicePaymentService
         _invoiceRepository = invoiceRepository;
     }
 
-    public async Task<InvoicePayment> PayInvoiceAsync(
-        IInvoicePaymentService.PayInvoiceRequest request)
+    public async Task<InvoicePayment> CreateAsync(
+        IInvoicePaymentService.CreateInvoicePaymentRequest request)
     {
         if (request.Value < 0)
         {

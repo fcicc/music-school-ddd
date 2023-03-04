@@ -28,7 +28,7 @@ public class InvoiceServiceTests
     }
 
     [Fact]
-    public async Task GenerateInvoicesForStudentAsync_WithOneEnrollment_GeneratesInvoices()
+    public async Task GenerateInvoicesAsync_WithOneEnrollment_GeneratesInvoices()
     {
         StudentResponse student = new()
         {
@@ -64,12 +64,12 @@ public class InvoiceServiceTests
             .Setup(c => c.GetEnrollmentsAsync(student.Id))
             .ReturnsAsync(new List<EnrollmentResponse> { enrollment });
 
-        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        IInvoiceService.GenerateInvoicesRequest request = new()
         {
             StudentId = student.Id,
         };
 
-        List<Invoice> invoices = await _sut.GenerateInvoicesForStudentAsync(request);
+        List<Invoice> invoices = await _sut.GenerateInvoicesAsync(request);
 
         Assert.Collection(invoices,
             invoice =>
@@ -180,7 +180,7 @@ public class InvoiceServiceTests
     }
 
     [Fact]
-    public async Task GenerateInvoicesForStudentAsync_WithTwoEnrollments_GeneratesInvoices()
+    public async Task GenerateInvoicesAsync_WithTwoEnrollments_GeneratesInvoices()
     {
         StudentResponse student = new()
         {
@@ -236,12 +236,12 @@ public class InvoiceServiceTests
             .Setup(c => c.GetEnrollmentsAsync(student.Id))
             .ReturnsAsync(new List<EnrollmentResponse> { enrollment1, enrollment2 });
 
-        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        IInvoiceService.GenerateInvoicesRequest request = new()
         {
             StudentId = student.Id,
         };
 
-        List<Invoice> invoices = await _sut.GenerateInvoicesForStudentAsync(request);
+        List<Invoice> invoices = await _sut.GenerateInvoicesAsync(request);
 
         Assert.Collection(invoices,
             invoice =>
@@ -366,7 +366,7 @@ public class InvoiceServiceTests
     }
 
     [Fact]
-    public async Task GenerateInvoicesForStudentAsync_WithNoEnrollment_DoesNotGenerateInvoices()
+    public async Task GenerateInvoicesAsync_WithNoEnrollment_DoesNotGenerateInvoices()
     {
         StudentResponse student = new()
         {
@@ -382,12 +382,12 @@ public class InvoiceServiceTests
             .Setup(c => c.GetEnrollmentsAsync(student.Id))
             .ReturnsAsync(new List<EnrollmentResponse> { });
 
-        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        IInvoiceService.GenerateInvoicesRequest request = new()
         {
             StudentId = student.Id,
         };
 
-        List<Invoice> invoices = await _sut.GenerateInvoicesForStudentAsync(request);
+        List<Invoice> invoices = await _sut.GenerateInvoicesAsync(request);
 
         Assert.Empty(invoices);
 
@@ -395,9 +395,9 @@ public class InvoiceServiceTests
     }
 
     [Fact]
-    public async Task GenerateInvoicesForStudentAsync_WithNonExistingStudent_ThrowsDomainException()
+    public async Task GenerateInvoicesAsync_WithNonExistingStudent_ThrowsDomainException()
     {
-        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        IInvoiceService.GenerateInvoicesRequest request = new()
         {
             StudentId = Guid.NewGuid(),
         };
@@ -407,7 +407,7 @@ public class InvoiceServiceTests
             .ReturnsAsync((StudentResponse?)null);
 
         DomainException exception = await Assert.ThrowsAsync<DomainException>(
-            () => _sut.GenerateInvoicesForStudentAsync(request)
+            () => _sut.GenerateInvoicesAsync(request)
         );
 
         Assert.Equal("Student not found.", exception.Message);
@@ -416,7 +416,7 @@ public class InvoiceServiceTests
     }
 
     [Fact]
-    public async Task GenerateInvoicesForStudentAsync_WithInvalidReferenceToCourse_ThrowsInconsistentExternalStateException()
+    public async Task GenerateInvoicesAsync_WithInvalidReferenceToCourse_ThrowsInconsistentExternalStateException()
     {
         StudentResponse student = new()
         {
@@ -446,14 +446,14 @@ public class InvoiceServiceTests
             .Setup(c => c.GetCourseAsync(enrollment.CourseId))
             .ReturnsAsync((CourseResponse?)null);
 
-        IInvoiceService.GenerateInvoicesForStudentRequest request = new()
+        IInvoiceService.GenerateInvoicesRequest request = new()
         {
             StudentId = student.Id,
         };
 
         InconsistentExternalStateException exception =
             await Assert.ThrowsAsync<InconsistentExternalStateException>(
-                () => _sut.GenerateInvoicesForStudentAsync(request)
+                () => _sut.GenerateInvoicesAsync(request)
             );
 
         Assert.Equal("Unexpected situation: course not found for enrollment.", exception.Message);

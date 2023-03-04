@@ -22,7 +22,7 @@ public class EnrollmentService : IEnrollmentService
         _courseRepository = courseRepository;
     }
 
-    public async Task<Enrollment> EnrollAsync(IEnrollmentService.EnrollRequest request)
+    public async Task<Enrollment> CreateAsync(IEnrollmentService.CreateEnrollmentRequest request)
     {
         if (request.StartMonth > request.EndMonth)
         {

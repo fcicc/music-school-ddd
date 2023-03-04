@@ -5,9 +5,9 @@ namespace MusicSchool.Finance.Domain.Services;
 
 public interface IInvoicePaymentService
 {
-    Task<InvoicePayment> PayInvoiceAsync(PayInvoiceRequest request);
+    Task<InvoicePayment> CreateAsync(CreateInvoicePaymentRequest request);
 
-    public class PayInvoiceRequest
+    public class CreateInvoicePaymentRequest
     {
         public Guid InvoiceId { get; init; }
 

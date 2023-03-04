@@ -20,8 +20,8 @@ public class InvoiceService : IInvoiceService
         _invoiceRepository = invoiceRepository;
     }
 
-    public async Task<List<Invoice>> GenerateInvoicesForStudentAsync(
-        IInvoiceService.GenerateInvoicesForStudentRequest request)
+    public async Task<List<Invoice>> GenerateInvoicesAsync(
+        IInvoiceService.GenerateInvoicesRequest request)
     {
         StudentResponse? student = await _schoolManagementClient.GetStudentAsync(request.StudentId);
         if (student == null)
