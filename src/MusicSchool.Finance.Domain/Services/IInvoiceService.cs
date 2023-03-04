@@ -10,6 +10,6 @@ public interface IInvoiceService
 
     public class GenerateInvoicesForStudentRequest
     {
-        public Guid StudentId { get; set; }
+        public Guid StudentId { get; init; }
     }
 }
