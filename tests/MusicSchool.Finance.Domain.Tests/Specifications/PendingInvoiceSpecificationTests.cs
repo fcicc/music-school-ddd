@@ -19,17 +19,17 @@ public class PendingInvoiceSpecificationTests
             Month = new DateMonthOnly(2023, 1),
         };
 
-        List<InvoicePayment> invoicePayments = new();
+        List<Transaction> transactions = new();
         if (isPaidInvoice)
         {
-            invoicePayments.Add(new()
+            transactions.Add(new InvoicePayment
             {
                 Id = Guid.NewGuid(),
                 InvoiceId = invoice.Id,
             });
         }
 
-        PendingInvoiceSpecification sut = new(atMonth, invoicePayments.AsQueryable());
+        PendingInvoiceSpecification sut = new(atMonth, transactions.AsQueryable());
 
         Assert.Equal(expectedResult, sut.IsSatisfiedBy(invoice));
     }

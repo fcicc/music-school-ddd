@@ -7,14 +7,14 @@ namespace MusicSchool.Finance.Domain.Services;
 
 public class InvoicePaymentService : IInvoicePaymentService
 {
-    private readonly IRepository<InvoicePayment> _invoicePaymentRepository;
+    private readonly IRepository<Transaction> _transactionRepository;
     private readonly IRepository<Invoice> _invoiceRepository;
 
     public InvoicePaymentService(
-        IRepository<InvoicePayment> invoicePaymentRepository,
+        IRepository<Transaction> transactionRepository,
         IRepository<Invoice> invoiceRepository)
     {
-        _invoicePaymentRepository = invoicePaymentRepository;
+        _transactionRepository = transactionRepository;
         _invoiceRepository = invoiceRepository;
     }
 
@@ -35,8 +35,9 @@ public class InvoicePaymentService : IInvoicePaymentService
             throw new DomainException("Invoice not found.");
         }
 
-        bool isPaidInvoice = await _invoicePaymentRepository
+        bool isPaidInvoice = await _transactionRepository
             .AsQueryable()
+            .OfType<InvoicePayment>()
             .AnyAsync(p => p.InvoiceId == request.InvoiceId);
 
         if (isPaidInvoice)
@@ -52,7 +53,7 @@ public class InvoicePaymentService : IInvoicePaymentService
             InvoiceId = request.InvoiceId,
         };
 
-        await _invoicePaymentRepository.AddAsync(invoicePayment);
+        await _transactionRepository.AddAsync(invoicePayment);
 
         return invoicePayment;
     }

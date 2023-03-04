@@ -8,46 +8,46 @@ using MusicSchool.Finance.Domain.Services;
 namespace MusicSchool.Finance.Api.Controllers;
 
 [ApiController]
-[Route("/invoicePayments")]
-public class InvoicePaymentsController : ControllerBase
+[Route("/transactions")]
+public class TransactionsController : ControllerBase
 {
-    private readonly IRepository<InvoicePayment> _invoicePaymentRepository;
+    private readonly IRepository<Transaction> _transactionRepository;
     private readonly IInvoicePaymentService _invoicePaymentService;
 
-    public InvoicePaymentsController(
-        IRepository<InvoicePayment> invoicePaymentRepository,
+    public TransactionsController(
+        IRepository<Transaction> transactionRepository,
         IInvoicePaymentService invoicePaymentService)
     {
-        _invoicePaymentRepository = invoicePaymentRepository;
+        _transactionRepository = transactionRepository;
         _invoicePaymentService = invoicePaymentService;
     }
 
     [HttpGet("")]
-    public Task<List<InvoicePayment>> GetInvoicePaymentsAsync()
+    public Task<List<Transaction>> GetTransactionsAsync()
     {
-        return _invoicePaymentRepository
+        return _transactionRepository
             .AsQueryable()
-            .OrderBy(p => p.Date)
+            .OrderBy(t => t.Date)
             .ToListAsync();
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<InvoicePayment>> GetInvoicePaymentAsync(Guid id)
+    public async Task<ActionResult<Transaction>> GetTransactionAsync(Guid id)
     {
-        InvoicePayment? invoicePayment = await _invoicePaymentRepository
+        Transaction? transaction = await _transactionRepository
             .AsQueryable()
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(t => t.Id == id);
 
-        if (invoicePayment == null)
+        if (transaction == null)
         {
             return NotFound();
         }
 
-        return invoicePayment;
+        return transaction;
     }
 
     [HttpPost("")]
-    public async Task<ActionResult<InvoicePayment>> PostInvoicePaymentAsync(
+    public async Task<ActionResult<Transaction>> PostTransactionAsync(
         IInvoicePaymentService.CreateInvoicePaymentRequest request)
     {
         try

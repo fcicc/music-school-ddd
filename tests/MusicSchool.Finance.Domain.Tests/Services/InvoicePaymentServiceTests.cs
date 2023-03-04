@@ -9,18 +9,18 @@ namespace MusicSchool.Finance.Domain.Tests.Services;
 
 public class InvoicePaymentServiceTests
 {
-    private readonly Mock<IRepository<InvoicePayment>> _invoicePaymentRepositoryMock;
+    private readonly Mock<IRepository<Transaction>> _transactionRepositoryMock;
     private readonly Mock<IRepository<Invoice>> _invoiceRepositoryMock;
 
     private readonly InvoicePaymentService _sut;
 
     public InvoicePaymentServiceTests()
     {
-        _invoicePaymentRepositoryMock = new();
+        _transactionRepositoryMock = new();
         _invoiceRepositoryMock = new();
 
         _sut = new(
-            _invoicePaymentRepositoryMock.Object,
+            _transactionRepositoryMock.Object,
             _invoiceRepositoryMock.Object
         );
     }
@@ -45,9 +45,9 @@ public class InvoicePaymentServiceTests
                 },
             }.BuildMock());
 
-        _invoicePaymentRepositoryMock
+        _transactionRepositoryMock
             .Setup(r => r.AsQueryable())
-            .Returns(new List<InvoicePayment>().BuildMock());
+            .Returns(new List<Transaction>().BuildMock());
 
         InvoicePayment invoicePayment = await _sut.CreateAsync(request);
 
@@ -56,7 +56,7 @@ public class InvoicePaymentServiceTests
         Assert.Equal(request.Value, invoicePayment.Value);
         Assert.Equal(request.InvoiceId, invoicePayment.InvoiceId);
 
-        _invoicePaymentRepositoryMock.Verify(r => r.AddAsync(invoicePayment), Times.Once);
+        _transactionRepositoryMock.Verify(r => r.AddAsync(invoicePayment), Times.Once);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class InvoicePaymentServiceTests
 
         Assert.Equal("Value cannot be less than zero.", exception.Message);
 
-        _invoicePaymentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<InvoicePayment>()), Times.Never);
+        _transactionRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Transaction>()), Times.Never);
     }
 
     [Fact]
@@ -98,7 +98,7 @@ public class InvoicePaymentServiceTests
 
         Assert.Equal("Invoice not found.", exception.Message);
 
-        _invoicePaymentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<InvoicePayment>()), Times.Never);
+        _transactionRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Transaction>()), Times.Never);
     }
 
     [Fact]
@@ -121,11 +121,11 @@ public class InvoicePaymentServiceTests
                 },
             }.BuildMock());
 
-        _invoicePaymentRepositoryMock
+        _transactionRepositoryMock
             .Setup(r => r.AsQueryable())
-            .Returns(new List<InvoicePayment>
+            .Returns(new List<Transaction>
             {
-                new()
+                new InvoicePayment()
                 {
                     InvoiceId = request.InvoiceId,
                 },
@@ -137,6 +137,6 @@ public class InvoicePaymentServiceTests
 
         Assert.Equal("This invoice is already paid.", exception.Message);
 
-        _invoicePaymentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<InvoicePayment>()), Times.Never);
+        _transactionRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Transaction>()), Times.Never);
     }
 }

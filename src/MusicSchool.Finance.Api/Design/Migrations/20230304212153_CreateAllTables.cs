@@ -46,19 +46,20 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "invoice_payments",
+                name: "transactions",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    invoice_id = table.Column<Guid>(type: "char(36)", nullable: false),
                     date = table.Column<DateTime>(type: "date", nullable: false),
-                    value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    type = table.Column<string>(type: "char(50)", nullable: false),
+                    invoice_id = table.Column<Guid>(type: "char(36)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_invoice_payments", x => x.id);
+                    table.PrimaryKey("PK_transactions", x => x.id);
                     table.ForeignKey(
-                        name: "FK_invoice_payments_invoices_invoice_id",
+                        name: "FK_transactions_invoices_invoice_id",
                         column: x => x.invoice_id,
                         principalTable: "invoices",
                         principalColumn: "id",
@@ -66,8 +67,8 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_invoice_payments_invoice_id",
-                table: "invoice_payments",
+                name: "IX_transactions_invoice_id",
+                table: "transactions",
                 column: "invoice_id");
         }
 
@@ -77,7 +78,7 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                 name: "invoice_items");
 
             migrationBuilder.DropTable(
-                name: "invoice_payments");
+                name: "transactions");
 
             migrationBuilder.DropTable(
                 name: "invoices");

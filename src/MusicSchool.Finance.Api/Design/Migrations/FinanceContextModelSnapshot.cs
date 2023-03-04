@@ -77,7 +77,7 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                     b.ToTable("invoice_items", (string)null);
                 });
 
-            modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.InvoicePayment", b =>
+            modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,9 +88,10 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                         .HasColumnType("date")
                         .HasColumnName("date");
 
-                    b.Property<Guid>("InvoiceId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("invoice_id");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("char(50)")
+                        .HasColumnName("type");
 
                     b.Property<decimal>("Value")
                         .HasColumnType("decimal(18,2)")
@@ -98,9 +99,22 @@ namespace MusicSchool.Finance.Api.Design.Migrations
 
                     b.HasKey("Id");
 
+                    b.ToTable("transactions", (string)null);
+
+                    b.HasDiscriminator<string>("Type").HasValue("Transaction");
+                });
+
+            modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.InvoicePayment", b =>
+                {
+                    b.HasBaseType("MusicSchool.Finance.Domain.Entities.Transaction");
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("invoice_id");
+
                     b.HasIndex("InvoiceId");
 
-                    b.ToTable("invoice_payments", (string)null);
+                    b.HasDiscriminator().HasValue("invoice_payment");
                 });
 
             modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.InvoiceItem", b =>
