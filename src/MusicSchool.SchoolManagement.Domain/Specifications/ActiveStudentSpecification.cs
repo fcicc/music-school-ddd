@@ -17,8 +17,8 @@ public class ActiveStudentSpecification : ISpecification<Student>
 
     public Expression<Func<Student, bool>> AsPredicate()
     {
-        return s => _enrollments.Any(
-            e => e.StudentId == s.Id &&
+        return s => _enrollments.Any(e =>
+            e.StudentId == s.Id &&
             e.StartMonth <= _atMonth &&
             e.EndMonth >= _atMonth
         );
