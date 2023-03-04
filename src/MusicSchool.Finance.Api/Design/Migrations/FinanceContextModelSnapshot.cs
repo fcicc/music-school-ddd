@@ -84,6 +84,10 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("date")
+                        .HasColumnName("date");
+
                     b.Property<Guid>("InvoiceId")
                         .HasColumnType("char(36)")
                         .HasColumnName("invoice_id");

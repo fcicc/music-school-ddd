@@ -11,6 +11,8 @@ public interface IInvoicePaymentService
     {
         public Guid InvoiceId { get; init; }
 
+        public DateOnly Date { get; init; }
+
         public BrlAmount Value { get; init; }
     }
 }

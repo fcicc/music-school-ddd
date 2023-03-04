@@ -31,6 +31,7 @@ public class InvoicePaymentServiceTests
         IInvoicePaymentService.PayInvoiceRequest request = new()
         {
             InvoiceId = Guid.NewGuid(),
+            Date = new DateOnly(2023, 3, 4),
             Value = 200,
         };
 
@@ -51,6 +52,7 @@ public class InvoicePaymentServiceTests
         InvoicePayment invoicePayment = await _sut.PayInvoiceAsync(request);
 
         Assert.NotEqual(Guid.Empty, invoicePayment.Id);
+        Assert.Equal(request.Date, invoicePayment.Date);
         Assert.Equal(request.Value, invoicePayment.Value);
         Assert.Equal(request.InvoiceId, invoicePayment.InvoiceId);
 
@@ -63,6 +65,7 @@ public class InvoicePaymentServiceTests
         IInvoicePaymentService.PayInvoiceRequest request = new()
         {
             InvoiceId = Guid.NewGuid(),
+            Date = new DateOnly(2023, 3, 4),
             Value = -1,
         };
 
@@ -81,6 +84,7 @@ public class InvoicePaymentServiceTests
         IInvoicePaymentService.PayInvoiceRequest request = new()
         {
             InvoiceId = Guid.NewGuid(),
+            Date = new DateOnly(2023, 3, 4),
             Value = 200,
         };
 
@@ -103,6 +107,7 @@ public class InvoicePaymentServiceTests
         IInvoicePaymentService.PayInvoiceRequest request = new()
         {
             InvoiceId = Guid.NewGuid(),
+            Date = new DateOnly(2023, 3, 4),
             Value = 200,
         };
 

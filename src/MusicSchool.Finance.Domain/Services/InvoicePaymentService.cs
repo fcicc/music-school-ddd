@@ -47,6 +47,7 @@ public class InvoicePaymentService : IInvoicePaymentService
         InvoicePayment invoicePayment = new()
         {
             Id = Guid.NewGuid(),
+            Date = request.Date,
             Value = request.Value,
             InvoiceId = request.InvoiceId,
         };

@@ -14,6 +14,13 @@ internal class InvoicePaymentConfiguration : IEntityTypeConfiguration<InvoicePay
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id).HasColumnName("id");
 
+        builder.Property(p => p.Date).HasColumnName("date")
+            .HasColumnType("date")
+            .HasConversion(
+                d => new DateTime(d.Year, d.Month, d.Day),
+                d => new DateOnly(d.Year, d.Month, d.Day)
+            );
+
         builder.Property(p => p.Value).HasColumnName("value")
             .HasConversion(a => a.Value, v => new BrlAmount(v));
 
