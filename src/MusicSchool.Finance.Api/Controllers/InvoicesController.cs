@@ -4,6 +4,8 @@ using MusicSchool.Finance.Domain.Entities;
 using MusicSchool.Finance.Domain.Exceptions;
 using MusicSchool.Finance.Domain.Repositories;
 using MusicSchool.Finance.Domain.Services;
+using MusicSchool.Finance.Domain.Specifications;
+using MusicSchool.Finance.Domain.ValueObjects;
 
 namespace MusicSchool.Finance.Api.Controllers;
 
@@ -12,22 +14,58 @@ namespace MusicSchool.Finance.Api.Controllers;
 public class InvoicesController : ControllerBase
 {
     private readonly IRepository<Invoice> _invoiceRepository;
+    private readonly IRepository<InvoicePayment> _invoicePaymentRepository;
     private readonly IInvoiceService _invoiceService;
 
     public InvoicesController(
         IRepository<Invoice> invoiceRepository,
+        IRepository<InvoicePayment> invoicePaymentRepository,
         IInvoiceService invoiceService)
     {
         _invoiceRepository = invoiceRepository;
+        _invoicePaymentRepository = invoicePaymentRepository;
         _invoiceService = invoiceService;
     }
 
     [HttpGet("")]
-    public Task<List<Invoice>> GetInvoicesAsync()
+    public Task<List<Invoice>> GetInvoicesAsync(
+        [FromQuery] InvoiceStatus status = InvoiceStatus.All)
     {
-        return _invoiceRepository
+        IQueryable<Invoice> queryable = _invoiceRepository
             .AsQueryable()
-            .Include(i => i.Items)
+            .Include(i => i.Items);
+
+        switch (status)
+        {
+            case InvoiceStatus.Paid:
+                queryable = queryable.WithSpecification(
+                    new PaidInvoiceSpecification(
+                        DateMonthOnly.Current,
+                        _invoicePaymentRepository.AsQueryable()
+                    )
+                );
+                break;
+
+            case InvoiceStatus.Pending:
+                queryable = queryable.WithSpecification(
+                    new PendingInvoiceSpecification(
+                        DateMonthOnly.Current,
+                        _invoicePaymentRepository.AsQueryable()
+                    )
+                );
+                break;
+
+            case InvoiceStatus.Overdue:
+                queryable = queryable.WithSpecification(
+                    new OverdueInvoiceSpecification(
+                        DateMonthOnly.Current,
+                        _invoicePaymentRepository.AsQueryable()
+                    )
+                );
+                break;
+        }
+
+        return queryable
             .OrderBy(i => i.Month).ThenBy(i => i.StudentName)
             .ToListAsync();
     }
@@ -63,5 +101,13 @@ public class InvoicesController : ControllerBase
                 Message = e.Message,
             });
         }
+    }
+
+    public enum InvoiceStatus
+    {
+        All = 0,
+        Paid = 1,
+        Pending = 2,
+        Overdue = 3,
     }
 }
