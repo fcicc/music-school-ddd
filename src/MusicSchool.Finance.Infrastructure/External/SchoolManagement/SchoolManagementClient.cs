@@ -47,7 +47,7 @@ public class SchoolManagementClient : ISchoolManagementClient
 
     public async Task<StudentResponse?> GetStudentAsync(Guid id)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync(
+        using HttpResponseMessage response = await _httpClient.GetAsync(
             $"/students/{id}"
         );
         if (response.StatusCode == HttpStatusCode.NotFound)
