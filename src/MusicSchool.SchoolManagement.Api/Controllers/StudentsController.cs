@@ -28,16 +28,19 @@ public class StudentsController : ControllerBase
     }
 
     [HttpGet("")]
-    public Task<List<Student>> GetStudentsAsync([FromQuery] bool activeOnly = false)
+    public Task<List<Student>> GetStudentsAsync(
+        [FromQuery] StudentStatus status = StudentStatus.All)
     {
         IQueryable<Student> queryable = _studentRepository.AsQueryable();
 
-        if (activeOnly)
+        switch (status)
         {
-            queryable = queryable.WithSpecification(new ActiveStudentSpecification(
-                DateMonthOnly.Current,
-                _enrollmentRepository.AsQueryable()
-            ));
+            case StudentStatus.Active:
+                queryable = queryable.WithSpecification(new ActiveStudentSpecification(
+                    DateMonthOnly.Current,
+                    _enrollmentRepository.AsQueryable()
+                ));
+                break;
         }
 
         return queryable
@@ -75,5 +78,11 @@ public class StudentsController : ControllerBase
                 Message = e.Message,
             });
         }
+    }
+
+    public enum StudentStatus
+    {
+        All = 0,
+        Active = 1,
     }
 }
