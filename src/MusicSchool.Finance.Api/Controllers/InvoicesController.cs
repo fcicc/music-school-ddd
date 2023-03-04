@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MusicSchool.Finance.Domain.Entities;
 using MusicSchool.Finance.Domain.Exceptions;
 using MusicSchool.Finance.Domain.Repositories;
@@ -24,13 +25,21 @@ public class InvoicesController : ControllerBase
     [HttpGet("")]
     public Task<List<Invoice>> GetInvoicesAsync()
     {
-        return _invoiceRepository.FindAsync();
+        return _invoiceRepository
+            .AsQueryable()
+            .Include(i => i.Items)
+            .OrderBy(i => i.Month).ThenBy(i => i.StudentName)
+            .ToListAsync();
     }
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<Invoice>> GetInvoiceAsync(Guid id)
     {
-        Invoice? invoice = await _invoiceRepository.FindOneAsync(id);
+        Invoice? invoice = await _invoiceRepository
+            .AsQueryable()
+            .Include(i => i.Items)
+            .FirstOrDefaultAsync(i => i.Id == id);
+
         if (invoice == null)
         {
             return NotFound();

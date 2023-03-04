@@ -99,6 +99,7 @@ public class InvoiceService : IInvoiceService
             // Order invoices by month
             invoices = invoices.OrderBy(i => i.Month).ToList();
 
+            // Save invoices
             await _invoiceRepository.AddRangeAsync(invoices.ToArray());
         }
 

@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MusicSchool.Finance.Domain.Entities;
 using MusicSchool.Finance.Domain.External.SchoolManagement;
 using MusicSchool.Finance.Domain.Repositories;
 using MusicSchool.Finance.Domain.Services;
@@ -22,7 +21,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IRepository<Invoice>, InvoiceRepository>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddHttpClient<ISchoolManagementClient, SchoolManagementClient>(
     client => client.BaseAddress = new Uri(builder.Configuration["SchoolManagementApiUrl"])
