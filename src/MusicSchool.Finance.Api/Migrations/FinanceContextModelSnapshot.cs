@@ -84,7 +84,7 @@ namespace MusicSchool.Finance.Api.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateOnly>("Date")
                         .HasColumnType("date")
                         .HasColumnName("date");
 

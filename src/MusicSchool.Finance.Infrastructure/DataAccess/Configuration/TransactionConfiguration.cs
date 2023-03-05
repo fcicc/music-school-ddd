@@ -22,12 +22,7 @@ internal class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
         builder.HasKey(t => t.Id);
         builder.Property(t => t.Id).HasColumnName("id");
 
-        builder.Property(t => t.Date).HasColumnName("date")
-            .HasColumnType("date")
-            .HasConversion(
-                d => new DateTime(d.Year, d.Month, d.Day),
-                d => new DateOnly(d.Year, d.Month, d.Day)
-            );
+        builder.Property(t => t.Date).HasColumnName("date");
 
         builder.Property(t => t.Value).HasColumnName("value")
             .HasConversion(a => a.Value, v => new BrlAmount(v));

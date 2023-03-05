@@ -57,7 +57,7 @@ namespace MusicSchool.Finance.Api.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    date = table.Column<DateTime>(type: "date", nullable: false),
+                    date = table.Column<DateOnly>(type: "date", nullable: false),
                     value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     type = table.Column<string>(type: "char(50)", nullable: false),
                     invoice_id = table.Column<Guid>(type: "char(36)", nullable: true)

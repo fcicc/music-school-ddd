@@ -20,10 +20,5 @@ public static class SwaggerGenHelper
             Type = "string",
             Example = new OpenApiString(DateMonthOnly.Current.ToString()),
         });
-        options.MapType<DateOnly>(() => new OpenApiSchema
-        {
-            Type = "string",
-            Format = "date",
-        });
     }
 }
