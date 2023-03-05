@@ -5,13 +5,13 @@
 ### School Management context
 
 ```
-dotnet ef migrations add $MIGRATION_NAME -p .\src\MusicSchool.SchoolManagement.Api -o Design\Migrations
+dotnet ef migrations add $MIGRATION_NAME -p .\src\MusicSchool.SchoolManagement.Api -o Migrations
 ```
 
 ### Finance context
 
 ```
-dotnet ef migrations add $MIGRATION_NAME -p .\src\MusicSchool.Finance.Api -o Design\Migrations
+dotnet ef migrations add $MIGRATION_NAME -p .\src\MusicSchool.Finance.Api -o Migrations
 ```
 
 ## Update database schema

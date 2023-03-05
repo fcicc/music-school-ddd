@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SchoolManagementContext>(options =>
 {
     options.UseMySQL(
-        builder.Configuration.GetConnectionString("Default"),
+        builder.Configuration.GetConnectionString("Default") ?? "",
         b => b.MigrationsAssembly("MusicSchool.SchoolManagement.Api")
     );
 });

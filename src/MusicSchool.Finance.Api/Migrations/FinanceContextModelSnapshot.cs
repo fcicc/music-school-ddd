@@ -7,7 +7,7 @@ using MusicSchool.Finance.Infrastructure.DataAccess;
 
 #nullable disable
 
-namespace MusicSchool.Finance.Api.Design.Migrations
+namespace MusicSchool.Finance.Api.Migrations
 {
     [DbContext(typeof(FinanceContext))]
     partial class FinanceContextModelSnapshot : ModelSnapshot
@@ -16,7 +16,7 @@ namespace MusicSchool.Finance.Api.Design.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.Invoice", b =>
@@ -102,6 +102,8 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                     b.ToTable("transactions", (string)null);
 
                     b.HasDiscriminator<string>("Type").HasValue("Transaction");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.InvoicePayment", b =>

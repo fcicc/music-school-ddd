@@ -3,12 +3,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace MusicSchool.Finance.Api.Design.Migrations
+namespace MusicSchool.Finance.Api.Migrations
 {
+    /// <inheritdoc />
     public partial class CreateAllTables : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "invoices",
                 columns: table => new
@@ -22,7 +27,8 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_invoices", x => x.id);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "invoice_items",
@@ -43,7 +49,8 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                         principalTable: "invoices",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "transactions",
@@ -64,7 +71,8 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                         principalTable: "invoices",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_transactions_invoice_id",
@@ -72,6 +80,7 @@ namespace MusicSchool.Finance.Api.Design.Migrations
                 column: "invoice_id");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

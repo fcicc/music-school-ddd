@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FinanceContext>(options =>
 {
     options.UseMySQL(
-        builder.Configuration.GetConnectionString("Default"),
+        builder.Configuration.GetConnectionString("Default") ?? "",
         b => b.MigrationsAssembly("MusicSchool.Finance.Api")
     );
 });
@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(SwaggerGenHelper.Setup);
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddHttpClient<ISchoolManagementClient, SchoolManagementClient>(
-    client => client.BaseAddress = new Uri(builder.Configuration["SchoolManagementApiUrl"])
+    client => client.BaseAddress = new Uri(builder.Configuration["SchoolManagementApiUrl"] ?? "")
 );
 
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
