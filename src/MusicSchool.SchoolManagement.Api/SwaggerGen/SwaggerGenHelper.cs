@@ -15,10 +15,13 @@ public static class SwaggerGenHelper
         {
             Type = "number",
         });
+
         options.MapType<DateMonthOnly>(() => new OpenApiSchema
         {
             Type = "string",
             Example = new OpenApiString(DateMonthOnly.Current.ToString()),
         });
+
+        options.UseOneOfForPolymorphism();
     }
 }

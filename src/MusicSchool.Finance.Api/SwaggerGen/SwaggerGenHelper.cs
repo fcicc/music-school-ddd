@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using MusicSchool.Finance.Domain.Entities;
 using MusicSchool.Finance.Domain.ValueObjects;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -15,10 +16,13 @@ public static class SwaggerGenHelper
         {
             Type = "number",
         });
+
         options.MapType<DateMonthOnly>(() => new OpenApiSchema
         {
             Type = "string",
             Example = new OpenApiString(DateMonthOnly.Current.ToString()),
         });
+
+        options.UseOneOfForPolymorphism();
     }
 }
