@@ -11,11 +11,6 @@ public static class SwaggerGenHelper
     {
         options.SchemaFilter<EnumSchemaFilter>();
 
-        options.UseOneOfForPolymorphism();
-
-        options.SelectDiscriminatorNameUsing(_ => "type");
-        options.SelectDiscriminatorValueUsing(t => t.Name);
-
         options.MapType<BrlAmount>(() => new OpenApiSchema
         {
             Type = "number",
@@ -26,5 +21,25 @@ public static class SwaggerGenHelper
             Type = "string",
             Example = new OpenApiString(DateMonthOnly.Current.ToString()),
         });
+    }
+
+    private class EnumSchemaFilter : ISchemaFilter
+    {
+        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+        {
+            if (context.Type.IsEnum)
+            {
+                schema.Enum.Clear();
+
+                IEnumerable<string> names = Enum.GetNames(context.Type);
+                foreach (string name in names)
+                {
+                    schema.Enum.Add(new OpenApiString(name));
+                }
+
+                schema.Type = "string";
+                schema.Format = "";
+            }
+        }
     }
 }

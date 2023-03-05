@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using MusicSchool.Finance.Domain.ValueObjects;
@@ -13,8 +15,16 @@ public static class SwaggerGenHelper
 
         options.UseOneOfForPolymorphism();
 
-        options.SelectDiscriminatorNameUsing(_ => "type");
-        options.SelectDiscriminatorValueUsing(t => t.Name);
+        options.SelectDiscriminatorNameUsing(t =>
+            t.GetCustomAttribute<JsonPolymorphicAttribute>()?
+                .TypeDiscriminatorPropertyName
+        );
+
+        options.SelectDiscriminatorValueUsing(t =>
+            t.GetCustomAttributes<JsonDerivedTypeAttribute>(true)
+                .FirstOrDefault(a => a.DerivedType == t)?
+                .TypeDiscriminator as string
+        );
 
         options.MapType<BrlAmount>(() => new OpenApiSchema
         {
@@ -26,5 +36,25 @@ public static class SwaggerGenHelper
             Type = "string",
             Example = new OpenApiString(DateMonthOnly.Current.ToString()),
         });
+    }
+
+    private class EnumSchemaFilter : ISchemaFilter
+    {
+        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+        {
+            if (context.Type.IsEnum)
+            {
+                schema.Enum.Clear();
+
+                IEnumerable<string> names = Enum.GetNames(context.Type);
+                foreach (string name in names)
+                {
+                    schema.Enum.Add(new OpenApiString(name));
+                }
+
+                schema.Type = "string";
+                schema.Format = "";
+            }
+        }
     }
 }
