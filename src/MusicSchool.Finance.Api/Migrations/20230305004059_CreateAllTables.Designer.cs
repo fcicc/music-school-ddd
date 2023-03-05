@@ -11,7 +11,7 @@ using MusicSchool.Finance.Infrastructure.DataAccess;
 namespace MusicSchool.Finance.Api.Migrations
 {
     [DbContext(typeof(FinanceContext))]
-    [Migration("20230305002725_CreateAllTables")]
+    [Migration("20230305004059_CreateAllTables")]
     partial class CreateAllTables
     {
         /// <inheritdoc />
@@ -87,7 +87,7 @@ namespace MusicSchool.Finance.Api.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
-                    b.Property<DateOnly>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("date")
                         .HasColumnName("date");
 
