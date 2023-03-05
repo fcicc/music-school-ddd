@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -13,7 +12,7 @@ public class EnumSchemaFilter : ISchemaFilter
         {
             schema.Enum.Clear();
 
-            IEnumerable<string> names = Enum.GetNames(context.Type).Select(ToCamelCase);
+            IEnumerable<string> names = Enum.GetNames(context.Type);
             foreach (string name in names)
             {
                 schema.Enum.Add(new OpenApiString(name));
@@ -22,18 +21,5 @@ public class EnumSchemaFilter : ISchemaFilter
             schema.Type = "string";
             schema.Format = "";
         }
-    }
-
-    private string ToCamelCase(string value)
-    {
-        if (string.IsNullOrEmpty(value))
-        {
-            return value;
-        }
-
-        return string.Concat(
-            char.ToLowerInvariant(value[0]).ToString(CultureInfo.InvariantCulture),
-            value.Substring(1)
-        );
     }
 }

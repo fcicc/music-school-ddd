@@ -20,7 +20,7 @@ public class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                 UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
                 DerivedTypes =
                 {
-                    new(typeof(InvoicePayment), "invoicePayment")
+                    new(typeof(InvoicePayment), "InvoicePayment")
                 }
             };
         }
