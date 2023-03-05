@@ -20,9 +20,10 @@ public class OverdueInvoiceSpecification : ISpecification<Invoice>
     public Expression<Func<Invoice, bool>> AsPredicate()
     {
         return i =>
-            !_transactions
-                .OfType<InvoicePayment>()
-                .Any(p => p.InvoiceId == i.Id) &&
+            !_transactions.Any(t =>
+                t.GetType() == typeof(InvoicePayment) &&
+                ((InvoicePayment)t).InvoiceId == i.Id
+            ) &&
             i.Month < _atMonth;
     }
 }

@@ -48,8 +48,10 @@ public class TransactionService : ITransactionService
 
         bool isPaidInvoice = await _transactionRepository
             .AsQueryable()
-            .OfType<InvoicePayment>()
-            .AnyAsync(p => p.InvoiceId == request.InvoiceId);
+            .AnyAsync(t =>
+                t.GetType() == typeof(InvoicePayment) &&
+                ((InvoicePayment)t).InvoiceId == request.InvoiceId
+            );
 
         if (isPaidInvoice)
         {
