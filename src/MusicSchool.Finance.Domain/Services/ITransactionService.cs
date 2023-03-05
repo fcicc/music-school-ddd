@@ -14,6 +14,11 @@ public interface ITransactionService
         public BrlAmount Value { get; init; }
     }
 
+    public class CreateExtraPaymentRequest : CreateTransactionRequest
+    {
+        public string Description { get; init; } = "";
+    }
+
     public class CreateInvoicePaymentRequest : CreateTransactionRequest
     {
         public Guid InvoiceId { get; init; }

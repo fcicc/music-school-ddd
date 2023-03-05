@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MusicSchool.Finance.Domain.Entities;
-using MusicSchool.Finance.Domain.ValueObjects;
 
 namespace MusicSchool.Finance.Infrastructure.DataAccess.Configuration;
 

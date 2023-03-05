@@ -26,12 +26,38 @@ public class TransactionService : ITransactionService
             throw new DomainException("Value cannot be less than zero.");
         }
 
-        if (request is ITransactionService.CreateInvoicePaymentRequest r)
+        if (request is ITransactionService.CreateExtraPaymentRequest createExtraPaymentRequest)
         {
-            return await CreateInvoicePaymentAsync(r);
+            return await CreateExtraPaymentAsync(createExtraPaymentRequest);
+        }
+
+        if (request is ITransactionService.CreateInvoicePaymentRequest createInvoicePaymentRequest)
+        {
+            return await CreateInvoicePaymentAsync(createInvoicePaymentRequest);
         }
 
         throw new DomainException("Unknown transaction type.");
+    }
+
+    private async Task<Transaction> CreateExtraPaymentAsync(
+        ITransactionService.CreateExtraPaymentRequest request)
+    {
+        if (string.IsNullOrEmpty(request.Description))
+        {
+            throw new DomainException("Description should not be empty.");
+        }
+
+        ExtraPayment extraPayment = new()
+        {
+            Id = Guid.NewGuid(),
+            Date = request.Date,
+            Value = request.Value,
+            Description = request.Description,
+        };
+
+        await _transactionRepository.AddAsync(extraPayment);
+
+        return extraPayment;
     }
 
     private async Task<Transaction> CreateInvoicePaymentAsync(

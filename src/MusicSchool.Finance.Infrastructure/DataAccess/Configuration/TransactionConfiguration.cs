@@ -14,6 +14,7 @@ internal class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
         builder.ToTable("transactions");
 
         builder.HasDiscriminator<string>(TypeProperty)
+            .HasValue<ExtraPayment>("extra_payment")
             .HasValue<InvoicePayment>("invoice_payment");
 
         builder.Property(TypeProperty).HasColumnName("type")

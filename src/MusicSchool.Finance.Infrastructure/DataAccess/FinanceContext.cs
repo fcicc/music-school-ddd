@@ -15,7 +15,8 @@ public class FinanceContext : DbContext
         modelBuilder
             .ApplyConfiguration(new InvoiceConfiguration())
             .ApplyConfiguration(new InvoiceItemConfiguration())
-            .ApplyConfiguration(new InvoicePaymentConfiguration())
-            .ApplyConfiguration(new TransactionConfiguration());
+            .ApplyConfiguration(new TransactionConfiguration())
+            .ApplyConfiguration(new ExtraPaymentConfiguration())
+            .ApplyConfiguration(new InvoicePaymentConfiguration());
     }
 }

@@ -124,6 +124,47 @@ public class TransactionServiceTests
     }
 
     [Fact]
+    public async Task CreateAsync_WithExtraPaymentValidInput_GeneratesExtraPayment()
+    {
+        ITransactionService.CreateExtraPaymentRequest request = new()
+        {
+            Description = "foo",
+            Date = new DateOnly(2023, 3, 4),
+            Value = 200,
+        };
+
+        Transaction transaction = await _sut.CreateAsync(request);
+
+        Assert.NotEqual(Guid.Empty, transaction.Id);
+        Assert.Equal(request.Date, transaction.Date);
+        Assert.Equal(request.Value, transaction.Value);
+
+        ExtraPayment extraPayment = Assert.IsType<ExtraPayment>(transaction);
+        Assert.Equal(request.Description, extraPayment.Description);
+
+        _transactionRepositoryMock.Verify(r => r.AddAsync(transaction), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateAsync_WithExtraPaymentEmptyDescription_ThrowsDomainException()
+    {
+        ITransactionService.CreateExtraPaymentRequest request = new()
+        {
+            Description = "",
+            Date = new DateOnly(2023, 3, 4),
+            Value = 200,
+        };
+
+        DomainException exception = await Assert.ThrowsAsync<DomainException>(
+            () => _sut.CreateAsync(request)
+        );
+
+        Assert.Equal("Description should not be empty.", exception.Message);
+
+        _transactionRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Transaction>()), Times.Never);
+    }
+
+    [Fact]
     public async Task CreateAsync_WithInvalidValue_ThrowsDomainException()
     {
         CreateAnyTransactionRequest request = new()

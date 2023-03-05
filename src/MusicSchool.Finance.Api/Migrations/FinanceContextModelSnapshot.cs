@@ -106,6 +106,18 @@ namespace MusicSchool.Finance.Api.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.ExtraPayment", b =>
+                {
+                    b.HasBaseType("MusicSchool.Finance.Domain.Entities.Transaction");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("description");
+
+                    b.HasDiscriminator().HasValue("extra_payment");
+                });
+
             modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.InvoicePayment", b =>
                 {
                     b.HasBaseType("MusicSchool.Finance.Domain.Entities.Transaction");

@@ -60,6 +60,7 @@ namespace MusicSchool.Finance.Api.Migrations
                     date = table.Column<DateTime>(type: "date", nullable: false),
                     value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     type = table.Column<string>(type: "char(50)", nullable: false),
+                    description = table.Column<string>(type: "longtext", nullable: true),
                     invoice_id = table.Column<Guid>(type: "char(36)", nullable: true)
                 },
                 constraints: table =>

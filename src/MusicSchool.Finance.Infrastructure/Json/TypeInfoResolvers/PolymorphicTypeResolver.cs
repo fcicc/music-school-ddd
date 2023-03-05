@@ -21,6 +21,7 @@ public class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                 UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
                 DerivedTypes =
                 {
+                    new(typeof(ExtraPayment), "ExtraPayment"),
                     new(typeof(InvoicePayment), "InvoicePayment"),
                 },
             };
@@ -34,6 +35,7 @@ public class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                 UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
                 DerivedTypes =
                 {
+                    new(typeof(ITransactionService.CreateExtraPaymentRequest), "ExtraPayment"),
                     new(typeof(ITransactionService.CreateInvoicePaymentRequest), "InvoicePayment"),
                 },
             };

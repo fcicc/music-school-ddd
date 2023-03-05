@@ -11,7 +11,7 @@ using MusicSchool.Finance.Infrastructure.DataAccess;
 namespace MusicSchool.Finance.Api.Migrations
 {
     [DbContext(typeof(FinanceContext))]
-    [Migration("20230305004059_CreateAllTables")]
+    [Migration("20230305133407_CreateAllTables")]
     partial class CreateAllTables
     {
         /// <inheritdoc />
@@ -107,6 +107,18 @@ namespace MusicSchool.Finance.Api.Migrations
                     b.HasDiscriminator<string>("Type").HasValue("Transaction");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.ExtraPayment", b =>
+                {
+                    b.HasBaseType("MusicSchool.Finance.Domain.Entities.Transaction");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("description");
+
+                    b.HasDiscriminator().HasValue("extra_payment");
                 });
 
             modelBuilder.Entity("MusicSchool.Finance.Domain.Entities.InvoicePayment", b =>
