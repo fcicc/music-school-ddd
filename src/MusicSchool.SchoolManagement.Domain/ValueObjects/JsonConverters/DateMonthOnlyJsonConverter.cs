@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using MusicSchool.SchoolManagement.Domain.ValueObjects;
 
-namespace MusicSchool.SchoolManagement.Infrastructure.Json.Converters;
+namespace MusicSchool.SchoolManagement.Domain.ValueObjects.JsonConverters;
 
 public class DateMonthOnlyJsonConverter : JsonConverter<DateMonthOnly>
 {
