@@ -5,12 +5,12 @@ using MusicSchool.Finance.Domain.Repositories;
 
 namespace MusicSchool.Finance.Domain.Services;
 
-public class InvoicePaymentService : IInvoicePaymentService
+public class TransactionService : ITransactionService
 {
     private readonly IRepository<Transaction> _transactionRepository;
     private readonly IRepository<Invoice> _invoiceRepository;
 
-    public InvoicePaymentService(
+    public TransactionService(
         IRepository<Transaction> transactionRepository,
         IRepository<Invoice> invoiceRepository)
     {
@@ -18,14 +18,25 @@ public class InvoicePaymentService : IInvoicePaymentService
         _invoiceRepository = invoiceRepository;
     }
 
-    public async Task<InvoicePayment> CreateAsync(
-        IInvoicePaymentService.CreateInvoicePaymentRequest request)
+    public async Task<Transaction> CreateAsync(
+        ITransactionService.CreateTransactionRequest request)
     {
         if (request.Value < 0)
         {
             throw new DomainException("Value cannot be less than zero.");
         }
 
+        if (request is ITransactionService.CreateInvoicePaymentRequest r)
+        {
+            return await CreateInvoicePaymentAsync(r);
+        }
+
+        throw new DomainException("Unknown transaction type.");
+    }
+
+    private async Task<Transaction> CreateInvoicePaymentAsync(
+        ITransactionService.CreateInvoicePaymentRequest request)
+    {
         bool hasInvoice = await _invoiceRepository
             .AsQueryable()
             .AnyAsync(i => i.Id == request.InvoiceId);

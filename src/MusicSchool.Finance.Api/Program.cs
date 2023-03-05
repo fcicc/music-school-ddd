@@ -36,7 +36,7 @@ builder.Services.AddHttpClient<ISchoolManagementClient, SchoolManagementClient>(
 );
 
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
-builder.Services.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 var app = builder.Build();
 

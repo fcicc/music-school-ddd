@@ -12,14 +12,14 @@ namespace MusicSchool.Finance.Api.Controllers;
 public class TransactionsController : ControllerBase
 {
     private readonly IRepository<Transaction> _transactionRepository;
-    private readonly IInvoicePaymentService _invoicePaymentService;
+    private readonly ITransactionService _transactionService;
 
     public TransactionsController(
         IRepository<Transaction> transactionRepository,
-        IInvoicePaymentService invoicePaymentService)
+        ITransactionService transactionService)
     {
         _transactionRepository = transactionRepository;
-        _invoicePaymentService = invoicePaymentService;
+        _transactionService = transactionService;
     }
 
     [HttpGet("")]
@@ -48,11 +48,11 @@ public class TransactionsController : ControllerBase
 
     [HttpPost("")]
     public async Task<ActionResult<Transaction>> PostTransactionAsync(
-        IInvoicePaymentService.CreateInvoicePaymentRequest request)
+        ITransactionService.CreateTransactionRequest request)
     {
         try
         {
-            return await _invoicePaymentService.CreateAsync(request);
+            return await _transactionService.CreateAsync(request);
         }
         catch (DomainException e)
         {
