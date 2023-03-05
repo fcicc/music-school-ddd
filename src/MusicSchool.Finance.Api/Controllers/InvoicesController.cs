@@ -14,16 +14,16 @@ namespace MusicSchool.Finance.Api.Controllers;
 public class InvoicesController : ControllerBase
 {
     private readonly IRepository<Invoice> _invoiceRepository;
-    private readonly IRepository<Transaction> _transactionRepository;
+    private readonly IRepository<InvoicePayment> _invoicePaymentRepository;
     private readonly IInvoiceService _invoiceService;
 
     public InvoicesController(
         IRepository<Invoice> invoiceRepository,
-        IRepository<Transaction> transactionRepository,
+        IRepository<InvoicePayment> invoicePaymentRepository,
         IInvoiceService invoiceService)
     {
         _invoiceRepository = invoiceRepository;
-        _transactionRepository = transactionRepository;
+        _invoicePaymentRepository = invoicePaymentRepository;
         _invoiceService = invoiceService;
     }
 
@@ -41,7 +41,7 @@ public class InvoicesController : ControllerBase
                 queryable = queryable.WithSpecification(
                     new PaidInvoiceSpecification(
                         DateMonthOnly.Current,
-                        _transactionRepository.AsQueryable()
+                        _invoicePaymentRepository.AsQueryable()
                     )
                 );
                 break;
@@ -50,7 +50,7 @@ public class InvoicesController : ControllerBase
                 queryable = queryable.WithSpecification(
                     new PendingInvoiceSpecification(
                         DateMonthOnly.Current,
-                        _transactionRepository.AsQueryable()
+                        _invoicePaymentRepository.AsQueryable()
                     )
                 );
                 break;
@@ -59,7 +59,7 @@ public class InvoicesController : ControllerBase
                 queryable = queryable.WithSpecification(
                     new OverdueInvoiceSpecification(
                         DateMonthOnly.Current,
-                        _transactionRepository.AsQueryable()
+                        _invoicePaymentRepository.AsQueryable()
                     )
                 );
                 break;

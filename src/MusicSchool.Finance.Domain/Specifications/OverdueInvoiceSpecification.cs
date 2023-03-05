@@ -7,23 +7,20 @@ namespace MusicSchool.Finance.Domain.Specifications;
 public class OverdueInvoiceSpecification : ISpecification<Invoice>
 {
     private readonly DateMonthOnly _atMonth;
-    private readonly IQueryable<Transaction> _transactions;
+    private readonly IQueryable<InvoicePayment> _invoicePayments;
 
     public OverdueInvoiceSpecification(
         DateMonthOnly atMonth,
-        IQueryable<Transaction> transactions)
+        IQueryable<InvoicePayment> invoicePayments)
     {
         _atMonth = atMonth;
-        _transactions = transactions;
+        _invoicePayments = invoicePayments;
     }
 
     public Expression<Func<Invoice, bool>> AsPredicate()
     {
         return i =>
-            !_transactions.Any(t =>
-                t.GetType() == typeof(InvoicePayment) &&
-                ((InvoicePayment)t).InvoiceId == i.Id
-            ) &&
+            !_invoicePayments.Any(p => p.InvoiceId == i.Id) &&
             i.Month < _atMonth;
     }
 }
