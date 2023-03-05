@@ -1,13 +1,14 @@
 using System.Text.Json;
 using MusicSchool.Finance.Domain.Exceptions;
-using MusicSchool.Finance.Infrastructure.Json;
 
 namespace MusicSchool.Finance.Infrastructure.External.SchoolManagement;
 
 internal static class HttpContentExtensions
 {
-    private static readonly JsonSerializerOptions _jsonSerializerOptions =
-        JsonConfigurationHelper.ConfigureJsonSerializerOptions(new());
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    };
 
     public static async Task<TValue> ReadAsAsync<TValue>(this HttpContent content)
     {

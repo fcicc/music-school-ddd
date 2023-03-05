@@ -1,7 +1,11 @@
+using System.Text.Json.Serialization;
 using MusicSchool.Finance.Domain.ValueObjects;
 
 namespace MusicSchool.Finance.Domain.Entities;
 
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+[JsonDerivedType(typeof(ExtraPayment), "ExtraPayment")]
+[JsonDerivedType(typeof(InvoicePayment), "InvoicePayment")]
 public abstract class Transaction : IAggregateRoot
 {
     internal Transaction() { }

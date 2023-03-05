@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using MusicSchool.Finance.Domain.Entities;
 using MusicSchool.Finance.Domain.ValueObjects;
 
@@ -7,6 +8,9 @@ public interface ITransactionService
 {
     Task<Transaction> CreateAsync(CreateTransactionRequest request);
 
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+    [JsonDerivedType(typeof(CreateExtraPaymentRequest), "ExtraPayment")]
+    [JsonDerivedType(typeof(CreateInvoicePaymentRequest), "InvoicePayment")]
     public abstract class CreateTransactionRequest
     {
         public DateOnly Date { get; init; }

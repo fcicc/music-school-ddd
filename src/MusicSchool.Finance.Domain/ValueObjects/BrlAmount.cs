@@ -1,7 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+using MusicSchool.Finance.Domain.ValueObjects.JsonConverters;
 
 namespace MusicSchool.Finance.Domain.ValueObjects;
 
+[JsonConverter(typeof(BrlAmountJsonConverter))]
 public readonly struct BrlAmount : IComparable<BrlAmount>, IEquatable<BrlAmount>
 {
     public BrlAmount(decimal value)

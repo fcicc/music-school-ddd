@@ -1,8 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MusicSchool.Finance.Domain.ValueObjects;
 
-namespace MusicSchool.Finance.Infrastructure.Json.Converters;
+namespace MusicSchool.Finance.Domain.ValueObjects.JsonConverters;
 
 public class BrlAmountJsonConverter : JsonConverter<BrlAmount>
 {
