@@ -10,12 +10,7 @@ internal abstract class AbstractTransactionFactory<TRequest, TTransaction>
     public async Task<Transaction> CreateAsync(
         ITransactionService.CreateTransactionRequest request)
     {
-        if (request is TRequest concreteRequest)
-        {
-            return await CreateAsync(concreteRequest);
-        }
-
-        throw new InvalidOperationException("Invalid request type.");
+        return await CreateAsync((TRequest)request);
     }
 
     protected abstract Task<TTransaction> CreateAsync(TRequest request);

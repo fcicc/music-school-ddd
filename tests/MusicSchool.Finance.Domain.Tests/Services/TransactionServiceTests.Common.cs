@@ -6,13 +6,13 @@ using MusicSchool.Finance.Domain.Services;
 
 namespace MusicSchool.Finance.Domain.Tests.Services;
 
-public class TransactionServiceTests
+public class TransactionServiceTests_Common
 {
     private readonly Mock<IRepository<Transaction>> _transactionRepositoryMock;
 
     private readonly TransactionService _sut;
 
-    public TransactionServiceTests()
+    public TransactionServiceTests_Common()
     {
         _transactionRepositoryMock = new();
 
@@ -36,26 +36,4 @@ public class TransactionServiceTests
 
         _transactionRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Transaction>()), Times.Never);
     }
-
-    // private Mock<IRepository<Invoice>> CreateInvoiceRepositoryMock()
-    // {
-    //     Mock<IRepository<Invoice>> invoiceRepositoryMock = new();
-
-    //     _providerMock
-    //         .Setup(p => p.GetService(typeof(IRepository<Invoice>)))
-    //         .Returns(invoiceRepositoryMock.Object);
-
-    //     return invoiceRepositoryMock;
-    // }
-
-    // private Mock<IRepository<InvoicePayment>> CreateInvoicePaymentRepositoryMock()
-    // {
-    //     Mock<IRepository<InvoicePayment>> invoicePaymentRepositoryMock = new();
-
-    //     _providerMock
-    //         .Setup(p => p.GetService(typeof(IRepository<InvoicePayment>)))
-    //         .Returns(invoicePaymentRepositoryMock.Object);
-
-    //     return invoicePaymentRepositoryMock;
-    // }
 }
