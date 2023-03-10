@@ -33,7 +33,7 @@ public class InvoiceServiceTests
         StudentResponse student = new()
         {
             Id = Guid.NewGuid(),
-            Name = "Luiz Melodia",
+            Name = "Cesar Fausto",
         };
 
         CourseResponse course = new()
@@ -185,7 +185,7 @@ public class InvoiceServiceTests
         StudentResponse student = new()
         {
             Id = Guid.NewGuid(),
-            Name = "Luiz Melodia",
+            Name = "Luiza Antelmo",
         };
 
         CourseResponse course1 = new()
@@ -371,7 +371,7 @@ public class InvoiceServiceTests
         StudentResponse student = new()
         {
             Id = Guid.NewGuid(),
-            Name = "Luiz Melodia",
+            Name = "Vilma Frederica",
         };
 
         _schoolManagementClientMock
@@ -421,7 +421,7 @@ public class InvoiceServiceTests
         StudentResponse student = new()
         {
             Id = Guid.NewGuid(),
-            Name = "Luiz Melodia",
+            Name = "Carlos Alfredo",
         };
 
         EnrollmentResponse enrollment = new()

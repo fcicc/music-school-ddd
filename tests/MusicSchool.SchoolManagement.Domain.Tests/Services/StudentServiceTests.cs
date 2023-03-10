@@ -25,7 +25,7 @@ public class StudentServiceTests
     {
         IStudentService.CreateStudentRequest request = new()
         {
-            Name = "Luiz Melodia",
+            Name = "Constância Olga",
         };
 
         _studentRepositoryMock
@@ -45,7 +45,7 @@ public class StudentServiceTests
     {
         IStudentService.CreateStudentRequest request = new()
         {
-            Name = "Luiz Melodia",
+            Name = "Eugênia Flora",
         };
 
         _studentRepositoryMock

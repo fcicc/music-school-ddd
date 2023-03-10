@@ -15,13 +15,13 @@ public class ActiveStudentSpecificationTests
         Student student = new()
         {
             Id = Guid.NewGuid(),
-            Name = "Luiz Melodia",
+            Name = "Leia Maristela",
         };
 
         Student otherStudent = new()
         {
             Id = Guid.NewGuid(),
-            Name = "José da Silva",
+            Name = "Demétrio José",
         };
 
         Course course = new()
